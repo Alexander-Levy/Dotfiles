@@ -1,0 +1,73 @@
+/* Colors */ 
+@define-color background    #1a1b26;
+@define-color foreground    #a9b1d6;
+
+@define-color black         #000000;
+@define-color white         #ffffff;
+
+@define-color red           #b00407;
+@define-color green         #00f69b;
+@define-color orange        #ff602b;
+
+@define-color blue          #00b1f5;
+@define-color cyan          #0db9d7;
+
+@define-color yellow        #e0af68;
+@define-color magenta       #ad8ee6;
+
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 20px;
+    /*font-weight: bold;*/
+}
+
+window {
+    margin: 0px;
+    font-size: 16px;
+    font-family: monospace;
+    
+    border-radius: 8px;
+    border: 3px solid @green;
+    background-color: @black;
+}
+
+#input {
+    margin: 5px;
+    border: 1px solid @cyan; 
+    
+    color: @orange;
+    background-color: @black;
+}
+
+#inner-box {
+    margin: 8px;
+    border: none;
+    background-color: @black;
+}
+
+#outer-box {
+    margin: 5px;
+    border: none;
+    background-color: @black;
+}
+
+#scroll {
+    margin: 0px;
+    border: none;
+}
+
+#text {
+    margin: 10px;
+    border: none;
+    color: @orange;
+}
+
+#entry:selected {
+    font-weight: normal;
+    background-color: #414868;
+}
+
+#text:selected {
+    font-weight: normal;
+    background-color: #414868;
+}

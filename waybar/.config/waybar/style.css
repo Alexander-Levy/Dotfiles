@@ -1,0 +1,162 @@
+/* Waybar style settings */
+/* Colors */
+@define-color background    #1a1b26;
+@define-color foreground    #a9b1d6;
+
+@define-color black         #000000;
+@define-color white         #ffffff;
+
+@define-color red           #b00407;
+@define-color green         #00f69b;
+@define-color orange        #ff602b;
+
+@define-color blue          #00b1f5;
+@define-color cyan          #0db9d7;
+
+@define-color yellow        #e0af68;
+@define-color magenta       #ad8ee6;
+
+/* Global settings*/ 
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace; 
+    font-size: 16px;
+}
+
+/* Top bar settings*/
+window#waybar {
+    color: @green;
+    background-color: @black;
+    
+    border-radius: 5px;
+    border: 2px solid @green;
+}
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+/* Tooltips settings*/
+tooltip {
+  margin: 30px 0px;
+  background: @black;
+  border: 2px solid @green;
+}
+tooltip label {
+  color: @orange;
+}
+
+/* Animation */
+@keyframes blink {
+    to {
+        color: @green;
+        background-color: transparent;
+    }
+}
+
+/* Workspace buttons */
+/* Workspace that has something open but not active */
+#workspaces button {
+    padding: 10px;
+    color: @green;
+    background: transparent;
+    transition: 
+        padding 0.25s ease,
+        background-color 0.25s ease,
+        transform 0.2s ease;
+}
+/* Active Workspace */
+#workspaces button.active {
+    padding: 6px 14px;
+    color: transparent;
+    animation-name: blink;
+    animation-duration: 0.4s;
+    animation-timing-function: steps(12);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+#workspaces button.empty.active {
+    color: transparent;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(12);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+/* Background workspace thats empty*/
+#workspaces button.empty {}
+
+/* Set all the modules as white by default*/
+#memory,
+#network,
+#bluetooth,
+#battery,
+
+#power-profiles-daemon,
+
+#tray,
+#keyboard-state,
+#backlight,
+#pulseaudio,
+#clock { 
+    color: @orange;
+    margin: 7px 2px;
+    padding: 0px 5px;
+    border-radius: 5px;
+}
+
+/* Center Modules */
+#power-profiles-daemon {
+    font-size: 18px;
+    padding: 0px 2px;
+}
+#power-profiles-daemon.performance {
+    color: @red;
+    border: 2px solid @red;
+}
+#power-profiles-daemon.balanced {
+    color: @orange;
+    border: 2px solid @orange;
+}
+#power-profiles-daemon.power-saver {
+    color: @cyan;
+    border: 2px solid @cyan;
+}
+
+/* Left Modules */
+#network {
+    color: @blue;
+    padding: 0px 4px;
+    border: 2px solid @cyan;
+}
+#bluetooth {
+    color: @magenta;
+    padding: 0px 8px;
+    border: 2px solid @magenta;
+}
+#battery {
+    color: @green;
+    border: 2px solid @green;
+}
+
+/* Rigth Modules */
+#tray {
+    padding: 0px 8px;
+    border: 2px solid @blue;
+}
+#keyboard-state {
+    color: @green;
+    border: 2px solid @green;
+}
+#backlight {
+    color: @cyan;
+    border: 2px solid @cyan;
+}
+#pulseaudio {
+    color: @magenta;
+    border: 2px solid @magenta;
+}
+#clock {
+    color: @green;
+    margin: 8px 10px 8px 2px;
+    border: 2px solid @green;
+}
+

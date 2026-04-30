@@ -1,0 +1,185 @@
+{
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  General
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    "layer": "top",         // Waybar at top layer
+    "position": "top",      // Waybar position (top|bottom|left|right)
+    "spacing": 4,           // Gaps between modules (4px)
+    "height": 35,           // Waybar height (to be removed for auto height)
+    // Margins
+    "margin-top":    5,
+    "margin-left":   5,
+    "margin-right":  5,
+    "margin-bottom": 5,
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   Module Order
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    "modules-left": [
+        "hyprland/workspaces",
+        "network",
+        "bluetooth",
+        "battery"
+    ],
+    
+    "modules-center": [
+        "power-profiles-daemon"
+    ],
+    
+    "modules-right": [
+        "tray",
+        "keyboard-state",
+        "backlight",
+        "pulseaudio",
+        "clock"
+    ],
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Workspace Module
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "format-icons": {
+            "active": "",
+            "default": "",
+            "empty": ""
+        },
+        "icon-size": 10,
+        "sort-by-number": true,
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": []
+        }
+    },
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Status Widgets
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Network settings
+    "network": {
+        "interval": 2,
+        "format-wifi": "   ",
+        "format-ethernet": "󰀂 ",
+        "format-disconnected": "OFFLINE",
+        "format-disabled": " DOWN⚠ ",
+
+        "tooltip-format": " NETWORK STATUS:\n Name:\t\t{essid} \n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Local IP:\t\t{ipaddr}",
+        "tooltip-format-wifi": " NETWORK STATUS:\n Name:\t\t\t{essid}\n Signal Strength:\t{signalStrength}%\n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Frecuency:\t\t{frequency} GHz\n Local IP:\t\t{ipaddr}",
+        "on-click": "kitty -e nmtui"
+    },
+// Bluetooth settings
+    "bluetooth": {
+        "interval": 2,
+        "format": "  ",
+        "format-disabled": " 󰂲 ", 
+        "format-connected": " ({num_connections}) ",
+        "tooltip-format": " COMMUNICATION STATUS:\n Controller:\t{controller_alias}\n Status:\t{status}\n Devices:\t{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "kitty -e bluetui"
+    },
+// Battery Life settings
+"battery": {
+    "interval": 2,
+    "tooltip": true,
+    "states": {
+        "good": 80,
+        "warning": 50,
+        "critical": 30
+    },
+    "format":          " {capacity}% {icon} ",
+    "format-full":     " {icon} ",
+    "format-charging": "{capacity}%  ",
+    "format-icons": [" ", " ", " ", " ", " "],
+    "tooltip-format": " BATTERY STATUS:\n Capacity:\t\t{capacity}%\n Power Draw:\t\t{power:0.2f} Watts\n Battery Health:\t{health}%\n Time:\t\t\t{timeTo}" 
+},
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Power management setting
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    "power-profiles-daemon": {
+        "format": " {icon} ",
+        "tooltip-format": " POWER STATE:\n Power profile:\t{profile}\n Driver:\t{driver}",
+        "tooltip": true,
+        "format-icons": {
+            "default": "",
+            "performance": "CASPER",
+            "balanced": "BALTHASAR",
+            "power-saver": "MELCHIOR"
+        }
+    },
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Rigth side modules
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Tray settings
+    "tray": {
+        "icon-size": 24,
+        "spacing": 8
+    },
+// Clock
+    "clock": {
+        "format": "  {:%I:%M %p}",
+        "format-alt": "{:%A %d %B %Y}",
+        "tooltip-format": "<big><span color='#00f69b'>Calendar</span></big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode"          : "month",
+            "mode-mon-col"  : 3,
+            "on-scroll"     : 1,
+            "format": {
+                      "days":       "<span color='#00f69b'><b>{}</b></span>",
+                      "weeks":      "<span color='#ad8ee6'><b>W{}</b></span>",
+                      "months":     "<span color='#0db9d7'><b>{}</b></span>",
+                      "weekdays":   "<span color='#ad8ee6'><b>{}</b></span>",
+                      "today":      "<span color='#ff602b'><b>{}</b></span>"
+                      }
+        },
+        "actions":  {
+            "on-click-right": "mode"
+        }
+    },
+// Screen Brigthness settings 
+    "backlight": {
+        "tooltip": true,
+        "format": " {icon} ",
+        "tooltip-format": " MAGI SCREEN:\n Brigthness: {percent}% {icon}",
+        "format-icons": ["", "", "", "", "", "", "", "", ""]
+    },
+// Audio settings
+    "pulseaudio": {
+        "scroll-step": 5,          // %, can be a float
+        "max-volume": 150,
+        "reverse-scrolling": true, // fix scrolling control on touchpad
+        // Normal Look
+        "format": " {volume}% {icon}{format_source} ",
+        "format-muted": " MUTED {format_source}",
+        // Mic format
+        "format-source": "",
+        "format-source-muted": " ",
+        "format-icons": {
+            "headphone": " ",
+            "phone": " ",
+            "portable": " ",
+            "car": " ",
+            "default": [" ", " ", "  "]
+        },
+        "tooltip-format": " SOUND SYSTEM:\n Volume: {volume}%\n Device: {desc}",
+        "on-click": "kitty -e wiremix"
+    },
+// Caps and NumLock Key Indicators
+   "keyboard-state": {
+        "device-path": "/dev/input/event4",
+        "numlock":      true,
+        "capslock":     false,
+        "scrolllock":   false,
+
+        "format":   " {name} {icon} ",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    }
+}
+

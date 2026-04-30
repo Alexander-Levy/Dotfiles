@@ -1,0 +1,34 @@
+# Wofi Settings 
+
+# Window Settings 
+width=400
+location=center
+close_on_focus_loss=true
+
+# Display 
+show=drun
+lines=8
+columns=1
+dynamic_lines=true
+
+# Visual
+gtk_dark=true
+image_size=36
+allow_images=true
+prompt=SEARCHING MAGI DATABASE...
+
+# Search
+matching=strict-contains
+insensitive=true
+hide_scroll=true
+
+# terminal
+term=kitty
+
+# keybinds 
+key_submit=Return
+key_forward=Tab
+key_backward=Shift-ISO_Left_Tab
+
+# Style
+style=/home/levy/.config/wofi/style.css
