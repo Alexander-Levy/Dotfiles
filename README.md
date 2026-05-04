@@ -24,4 +24,5 @@ This repository was quickly thrown together out of need, will make it less worse
  - [ ] Clean up the configuration code
  - [ ] Add a readme file for each program
  - [ ] Make a quick install script for programs
+ - [ ] Make list of nvim plugins
 

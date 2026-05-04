@@ -42,23 +42,32 @@ require("lazy").setup({
   -- Color schemes
   { "Mofiqul/vscode.nvim" },
   { "folke/tokyonight.nvim" },
-  { "bluz71/vim-moonfly-colors" }, 
+  { "bluz71/vim-moonfly-colors" },
 
   -- File explorer
   { "nvim-tree/nvim-tree.lua" },
-  
+
   -- Status line
   { "nvim-lualine/lualine.nvim" },
 
   -- Telescope
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 
+  -- Treesitter / Syntax
+  { 'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate' },
+
   -- Autocomplete
   { "hrsh7th/nvim-cmp" },
   -- Sources:
-  { "hrsh7th/cmp-nvim-lsp" },
-  { "hrsh7th/cmp-buffer" },
   { "hrsh7th/cmp-path" },
+  { "hrsh7th/cmp-buffer" },
+  { "hrsh7th/cmp-nvim-lsp" },
+
+  -- LSP
+  { "neovim/nvim-lspconfig" },
+  -- Mason (Auto install LSPs)
+  { "williamboman/mason.nvim" },
+  { "williamboman/mason-lspconfig.nvim" },
 })
 
 -- ===========================================================================
@@ -73,8 +82,16 @@ require("nvim-tree").setup()
 -- Status line
 require("lualine").setup()
 
--- Telescope
-local builtin = require("telescope.builtin")
+-- Telescope Setup
+require('telescope').setup{
+  defaults = {},
+  pickers = {
+    find_files = { hidden = true },
+    live_grep  = { additional_args = function(opts)
+                    return {"--hidden"}
+                  end },
+  }
+}
 
 -- Autocomplete Setup
 local cmp = require("cmp")
@@ -84,30 +101,55 @@ cmp.setup({
     ["<CR>"] = cmp.mapping.confirm({ select = true }),
   }),
   sources = cmp.config.sources({
-    { name = "nvim_lsp" },
-    { name = "buffer" },
     { name = "path" },
+    { name = "buffer" },
+    { name = "nvim_lsp" },
   })
 })
+
+-- Treesitter Setup
+require('nvim-treesitter').setup {
+  install_dir = vim.fn.stdpath('data') .. '/site'
+}
+-- Parsers to install 
+require('nvim-treesitter').install { 'bash', 'c', 'cpp', 'css', 'fish', 'lua', 'python', 'hyprlang' }
+-- Syntax Highligthing (enabled per filetype)
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = { '<filetype>.lua' },
+--   callback = function() vim.treesitter.start() end,
+-- })
+
+-- Mason Setup
+require("mason").setup()
+require("mason-lspconfig").setup({
+  ensure_installed = { "lua_ls", "pylsp", "clangd", "jsonls", "vimls" }
+})
+
+-- LSP Setup
+vim.lsp.enable('lua_ls', 'pylsp', 'clangd', 'jsonls', 'vimls')
 
 -- ===========================================================================
 -- Keybinds
 -- ===========================================================================
-local keymap = vim.keymap
-
 -- File actions
-keymap.set("n", "<A-s>", ":w<CR>")   -- Alt + S: Save file 
-keymap.set("n", "<A-q>", ":q<CR>")   -- Alt + Q: Quit vim 
-keymap.set("n", "<A-w>", ":wq!<CR>") -- Alt + W: Save & Quit 
+vim.keymap.set("n", "<A-w>", ":w<CR>") -- Alt + S: Save file 
+vim.keymap.set("n", "<A-q>", ":q<CR>") -- Alt + Q: Quit vim 
 
 -- Line actions
-keymap.set("n", "<A-Up>",   ":m .-2<CR>==")     -- Alt + Up:   Move line up
-keymap.set("n", "<A-Down>", ":m .+1<CR>==")     -- Alt + Down: Move line down
-keymap.set("v", "<A-Up>", ":m '<-2<CR>gv=gv")   -- Alt + Up:   Move line up
-keymap.set("v", "<A-Down>", ":m '>+1<CR>gv=gv") -- Alt + Down: Move line down
+vim.keymap.set("n", "<A-Up>",   ":m .-2<CR>==")     -- Alt + Up:   Move line up
+vim.keymap.set("n", "<A-Down>", ":m .+1<CR>==")     -- Alt + Down: Move line down
+vim.keymap.set("v", "<A-Up>",   ":m '<-2<CR>gv=gv") -- Alt + Up:   Move line up
+vim.keymap.set("v", "<A-Down>", ":m '>+1<CR>gv=gv") -- Alt + Down: Move line down
 
 -- Explore files
-keymap.set("n", "<A-e>", ":NvimTreeToggle<CR>")  -- Alt + e: Open File Manager 
-keymap.set("n", "<A-f>", builtin.find_files, {}) -- Alt + f: Browse files by name
-keymap.set("n", "<A-g>", builtin.live_grep, {})  -- Alt + g: Browse files by content
+vim.keymap.set("n", "<A-e>", ":NvimTreeToggle<CR>") -- Alt + e: Open File Manager 
+vim.keymap.set("n", "<A-v>", require("telescope.builtin").oldfiles, {}) -- Browse recent files
+vim.keymap.set("n", "<A-g>", require("telescope.builtin").live_grep, {}) -- Alt + g: Browse files by content
+vim.keymap.set("n", "<A-f>", require("telescope.builtin").find_files, {}) -- Alt + f: Browse files by name
+
+-- Git 
+vim.keymap.set("n", "<C-g>", require("telescope.builtin").git_status, {}) -- Shift + c: change colorscheme
+
+-- Neovim 
+vim.keymap.set("n", "<S-c>", require("telescope.builtin").colorscheme, {}) -- Shift + c: change colorscheme
 
