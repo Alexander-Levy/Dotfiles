@@ -6,6 +6,7 @@ Some context on what software is running on my system
 
     Desktop Enviroment:
         hyprland    / Window Manager
+        fish        / Command Line Interpreter
         wofi        / App Launcher
         kitty       / Terminal emulator
         waybar      / Status bar

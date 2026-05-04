@@ -2,23 +2,21 @@
 -- Neovim Settings
 -- ===========================================================================
 -- Line settings
-vim.opt.wrap = false
-vim.opt.number = true               -- Show line numbers
-vim.opt.relativenumber = true       -- Relative line numbers
-vim.opt.cursorline = true           -- Highligth current line 
-vim.opt.scrolloff = 4               -- Keeps 4 at least lines below/above cursor
+vim.opt.wrap = false              -- Wrap line content if it does not fit current view
+vim.opt.number = true             -- Show line numbers
+vim.opt.relativenumber = true     -- Show line numbers in relation to current line
+vim.opt.cursorline = true         -- Highligth current line 
+vim.opt.scrolloff = 4             -- Keeps 4 at least lines below/above cursor
 
 -- Indentation 
-vim.opt.tabstop = 4                 -- Tabs = 4 spaces
+vim.opt.tabstop = 4               -- Tabs = 4 spaces
 vim.opt.shiftwidth = 4
-vim.opt.expandtab = true            -- Use spaces instead of tabs
-vim.opt.smartindent = true          -- Autoindent
-
--- Visual 
-vim.opt.termguicolors = true        -- Enable 24-bit colors
+vim.opt.expandtab = true          -- Use spaces instead of tabs
+vim.opt.smartindent = true        -- Autoindent
 
 -- Quality of Life
-vim.opt.clipboard = "unnamedplus"   -- Use system clipboard
+vim.opt.clipboard = "unnamedplus" -- Use system clipboard
+vim.opt.termguicolors = true      -- Enable 24-bit colors
 
 -- ===========================================================================
 -- Plugin Manager (lazy.nvim)
@@ -45,13 +43,22 @@ require("lazy").setup({
   { "bluz71/vim-moonfly-colors" },
 
   -- File explorer
-  { "nvim-tree/nvim-tree.lua" },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
 
   -- Status line
   { "nvim-lualine/lualine.nvim" },
 
-  -- Telescope
+  -- Telescope / UI Selector 
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+  { 'nvim-telescope/telescope-ui-select.nvim' },
 
   -- Treesitter / Syntax
   { 'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate' },
@@ -66,18 +73,20 @@ require("lazy").setup({
   -- LSP
   { "neovim/nvim-lspconfig" },
   -- Mason (Auto install LSPs)
-  { "williamboman/mason.nvim" },
-  { "williamboman/mason-lspconfig.nvim" },
+  { "mason-org/mason.nvim", opts = {} },
+  { "mason-org/mason-lspconfig.nvim", opts = {},
+    dependencies = {
+      { "neovim/nvim-lspconfig" },
+      { "mason-org/mason.nvim", opts = {} },
+    },
+  }
 })
 
 -- ===========================================================================
 -- Plugins Config
 -- ===========================================================================
 -- Colorsheme
-vim.cmd("colorscheme moonfly")
-
--- File explorer
-require("nvim-tree").setup()
+vim.cmd("colorscheme tokyonight-night")
 
 -- Status line
 require("lualine").setup()
@@ -90,8 +99,10 @@ require('telescope').setup{
     live_grep  = { additional_args = function(opts)
                     return {"--hidden"}
                   end },
-  }
+  },
+  extensions = { ["ui-select"] = { require("telescope.themes").get_dropdown {} } },
 }
+require("telescope").load_extension("ui-select")
 
 -- Autocomplete Setup
 local cmp = require("cmp")
@@ -111,16 +122,9 @@ cmp.setup({
 require('nvim-treesitter').setup {
   install_dir = vim.fn.stdpath('data') .. '/site'
 }
--- Parsers to install 
 require('nvim-treesitter').install { 'bash', 'c', 'cpp', 'css', 'fish', 'lua', 'python', 'hyprlang' }
--- Syntax Highligthing (enabled per filetype)
--- vim.api.nvim_create_autocmd('FileType', {
---   pattern = { '<filetype>.lua' },
---   callback = function() vim.treesitter.start() end,
--- })
 
 -- Mason Setup
-require("mason").setup()
 require("mason-lspconfig").setup({
   ensure_installed = { "lua_ls", "pylsp", "clangd", "jsonls", "vimls" }
 })
@@ -132,8 +136,8 @@ vim.lsp.enable('lua_ls', 'pylsp', 'clangd', 'jsonls', 'vimls')
 -- Keybinds
 -- ===========================================================================
 -- File actions
-vim.keymap.set("n", "<A-w>", ":w<CR>") -- Alt + S: Save file 
-vim.keymap.set("n", "<A-q>", ":q<CR>") -- Alt + Q: Quit vim 
+vim.keymap.set("n", "<A-w>", ":w<CR>")  -- Alt + S: Save file 
+vim.keymap.set("n", "<A-q>", ":q<CR>")  -- Alt + Q: Quit vim 
 
 -- Line actions
 vim.keymap.set("n", "<A-Up>",   ":m .-2<CR>==")     -- Alt + Up:   Move line up
@@ -142,13 +146,22 @@ vim.keymap.set("v", "<A-Up>",   ":m '<-2<CR>gv=gv") -- Alt + Up:   Move line up
 vim.keymap.set("v", "<A-Down>", ":m '>+1<CR>gv=gv") -- Alt + Down: Move line down
 
 -- Explore files
-vim.keymap.set("n", "<A-e>", ":NvimTreeToggle<CR>") -- Alt + e: Open File Manager 
-vim.keymap.set("n", "<A-v>", require("telescope.builtin").oldfiles, {}) -- Browse recent files
-vim.keymap.set("n", "<A-g>", require("telescope.builtin").live_grep, {}) -- Alt + g: Browse files by content
-vim.keymap.set("n", "<A-f>", require("telescope.builtin").find_files, {}) -- Alt + f: Browse files by name
+vim.keymap.set("n", "<A-e>", ":Neotree toggle filesystem reveal left<CR>", {})  -- Alt + e: Open file explorer on left 
+
+-- Telescope
+vim.keymap.set("n", "<A-v>", require("telescope.builtin").oldfiles, {})     -- Alt + v: Browse recent files
+vim.keymap.set("n", "<A-g>", require("telescope.builtin").live_grep, {})    -- Alt + g: Browse files by content
+vim.keymap.set("n", "<A-f>", require("telescope.builtin").find_files, {})   -- Alt + f: Browse files by name
+
+-- LSP 
+vim.keymap.set("n", "K", vim.lsp.buf.hover)         -- K: Show documentation
+vim.keymap.set("n", "gd", vim.lsp.buf.definition)   -- g + d: Go to definition
+vim.keymap.set("n", "gr", vim.lsp.buf.references)   -- g + r: Find references
+vim.keymap.set("n", "ca", vim.lsp.buf.code_action)  -- c + a: Code actions (How did i live without this?) 
+-- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename) -- Rename
 
 -- Git 
-vim.keymap.set("n", "<C-g>", require("telescope.builtin").git_status, {}) -- Shift + c: change colorscheme
+vim.keymap.set("n", "<C-g>", require("telescope.builtin").git_status) -- Ctrl + g: Show git status & preview diff
 
 -- Neovim 
 vim.keymap.set("n", "<S-c>", require("telescope.builtin").colorscheme, {}) -- Shift + c: change colorscheme
