@@ -6,7 +6,7 @@
   // Animated Logo (im him)
   "logo": {
     "type": "kitty-icat",
-    "source": "~/Gifs/eva.gif",
+    "source": "~/Pictures/eva.gif",
     "width": 20,
     "height": 20,
     "padding": {

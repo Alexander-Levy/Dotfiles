@@ -136,8 +136,9 @@ vim.lsp.enable('lua_ls', 'pylsp', 'clangd', 'jsonls', 'vimls')
 -- Keybinds
 -- ===========================================================================
 -- File actions
-vim.keymap.set("n", "<A-w>", ":w<CR>")  -- Alt + S: Save file 
-vim.keymap.set("n", "<A-q>", ":q<CR>")  -- Alt + Q: Quit vim 
+vim.keymap.set("n", "<A-w>", ":w<CR>")  -- Alt + s: Save file 
+vim.keymap.set("n", "<A-q>", ":q<CR>")  -- Alt + q: Quit nvim 
+vim.keymap.set("n", "<A-r>", ":so<CR>") -- Alt + r: Source file 
 
 -- Line actions
 vim.keymap.set("n", "<A-Up>",   ":m .-2<CR>==")     -- Alt + Up:   Move line up
@@ -147,6 +148,7 @@ vim.keymap.set("v", "<A-Down>", ":m '>+1<CR>gv=gv") -- Alt + Down: Move line dow
 
 -- Explore files
 vim.keymap.set("n", "<A-e>", ":Neotree toggle filesystem reveal left<CR>", {})  -- Alt + e: Open file explorer on left 
+-- vim.keymap.set("n", "<C-g>", ":Neotree toggle git_status reveal left<CR>", {})  -- Ctrl + g: Show git status & preview diff
 
 -- Telescope
 vim.keymap.set("n", "<A-v>", require("telescope.builtin").oldfiles, {})     -- Alt + v: Browse recent files
