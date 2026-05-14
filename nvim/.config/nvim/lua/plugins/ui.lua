@@ -11,7 +11,20 @@ require("lualine").setup()
 require('nvim-treesitter').setup {
   install_dir = vim.fn.stdpath('data') .. '/site'
 }
-require('nvim-treesitter').install { 'bash', 'c', 'cpp', 'css', 'fish', 'lua', 'python', 'hyprlang' }
+require('nvim-treesitter').install {
+    'bash',
+    'c', 'cpp',
+    'css',
+    'fish',
+    'lua',
+    'python',
+    'hyprlang',
+    'markdown', 'markdown_inline',
+    'html',
+    'latex',
+    'typst',
+    'yaml',
+}
 
 -- File Explorer 
 require("neo-tree").setup({
@@ -24,4 +37,9 @@ require("neo-tree").setup({
     },
   },
 })
+
+-- Markview
+require("markview").setup({
+    preview = { enable = false }
+});
 

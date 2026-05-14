@@ -2,9 +2,9 @@
 -- Levy's Neovim Keybinds
 -- ===========================================================================
 -- File actions
-vim.keymap.set("n", "<A-w>", ":w<CR>")  -- Alt + s: Save file 
-vim.keymap.set("n", "<A-q>", ":q<CR>")  -- Alt + q: Quit nvim 
-vim.keymap.set("n", "<A-r>", ":so<CR>") -- Alt + r: Source file 
+vim.keymap.set("n", "<A-w>", ":w<CR>")      -- Alt + s: Save file 
+vim.keymap.set("n", "<A-q>", ":q<CR>")      -- Alt + q: Quit nvim 
+vim.keymap.set("n", "<A-r>", ":so<CR>")     -- Alt + r: Source file 
 vim.keymap.set("n", "<A-t>", ":tabnew<CR>") -- Alt + t: New tab 
 
 -- Line actions
@@ -21,10 +21,9 @@ vim.keymap.set("n", "<C-g>", ":Neotree toggle git_status reveal left<CR>", {})  
 vim.keymap.set("n", "<A-v>", require("telescope.builtin").oldfiles, {})     -- Alt + v: Browse recent files
 vim.keymap.set("n", "<A-g>", require("telescope.builtin").live_grep, {})    -- Alt + g: Browse files by content
 vim.keymap.set("n", "<A-f>", require("telescope.builtin").find_files, {})   -- Alt + f: Browse files by name
--- Git 
-vim.keymap.set("n", "<C-g>", require("telescope.builtin").git_status) -- Ctrl + g: Show git status & preview diff
--- Neovim 
-vim.keymap.set("n", "<S-c>", require("telescope.builtin").colorscheme, {}) -- Shift + c: change colorscheme
+
+vim.keymap.set("n", "<S-g>", require("telescope.builtin").git_status)       -- Ctrl + g: Show git status & preview diff
+vim.keymap.set("n", "<S-c>", require("telescope.builtin").colorscheme, {})  -- Shift + c: change colorscheme
 
 -- Language Servers (lsps)  
 vim.keymap.set("n", "K", vim.lsp.buf.hover)         -- K: Show documentation
@@ -32,4 +31,7 @@ vim.keymap.set("n", "gd", vim.lsp.buf.definition)   -- g + d: Go to definition
 vim.keymap.set("n", "gr", vim.lsp.buf.references)   -- g + r: Find references
 vim.keymap.set("n", "ca", vim.lsp.buf.code_action)  -- c + a: Code actions (How did i live without this?) 
 -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename) -- Rename
+
+-- Markdown preview
+vim.keymap.set("n", "<A-m>", ":Markview Toggle<CR>") -- Alt + m: Toggle markview
 

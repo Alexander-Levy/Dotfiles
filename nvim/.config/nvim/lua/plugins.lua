@@ -18,10 +18,13 @@ require("lazy").setup({
   { "Mofiqul/vscode.nvim" },
   { "folke/tokyonight.nvim" },
   { "bluz71/vim-moonfly-colors" },
+  
   -- Treesitter / Syntax
   { 'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate' },
+  
   -- Status line
   { 'nvim-lualine/lualine.nvim', dependencies = { "nvim-tree/nvim-web-devicons" } },
+  
   -- Telescope / UI Selector 
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   { 'nvim-telescope/telescope-ui-select.nvim' },
@@ -66,6 +69,15 @@ require("lazy").setup({
       { "neovim/nvim-lspconfig" },
       { "mason-org/mason.nvim", opts = {} },
     },
+  },
+
+  -- Live Preview {markdown, latex, html, etc}
+  {
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+
+    -- Completion for `blink.cmp`
+    -- dependencies = { "saghen/blink.cmp" },
   },
 
 })
