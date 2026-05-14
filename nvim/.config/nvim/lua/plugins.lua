@@ -18,6 +18,13 @@ require("lazy").setup({
   { "Mofiqul/vscode.nvim" },
   { "folke/tokyonight.nvim" },
   { "bluz71/vim-moonfly-colors" },
+  -- Treesitter / Syntax
+  { 'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate' },
+  -- Status line
+  { 'nvim-lualine/lualine.nvim', dependencies = { "nvim-tree/nvim-web-devicons" } },
+  -- Telescope / UI Selector 
+  { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+  { 'nvim-telescope/telescope-ui-select.nvim' },
 
   -- File explorer
   {
@@ -32,15 +39,16 @@ require("lazy").setup({
     },
   },
 
-  -- Status line
-  { 'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' }},
-
-  -- Telescope / UI Selector 
-  { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-  { 'nvim-telescope/telescope-ui-select.nvim' },
-
-  -- Treesitter / Syntax
-  { 'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate' },
+  -- Dashboard
+  {
+    "nvimdev/dashboard-nvim",
+    event = 'VimEnter',
+    dependencies = {
+        "nvim-tree/nvim-web-devicons",
+        -- Optional: Animated splash
+        { "amansingh-afk/milli.nvim", lazy = false },
+    }
+  },
 
   -- Autocomplete
   { "hrsh7th/nvim-cmp" },
@@ -49,7 +57,7 @@ require("lazy").setup({
   { "hrsh7th/cmp-buffer" },
   { "hrsh7th/cmp-nvim-lsp" },
 
-  -- LSP
+  -- Language Server 
   { "neovim/nvim-lspconfig" },
   -- Mason (Auto install LSPs)
   { "mason-org/mason.nvim", opts = {} },
@@ -59,5 +67,6 @@ require("lazy").setup({
       { "mason-org/mason.nvim", opts = {} },
     },
   },
+
 })
 

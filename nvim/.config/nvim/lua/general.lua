@@ -1,5 +1,5 @@
 -- ===========================================================================
--- Neovim Settings
+-- Levy's Neovim General settings
 -- ===========================================================================
 -- Line settings
 vim.opt.wrap = false              -- Wrap line content if it does not fit current view

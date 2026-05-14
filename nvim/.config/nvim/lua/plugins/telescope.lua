@@ -1,11 +1,12 @@
--- Telescope Setup
+-- ===========================================================================
+-- Levy's Neovim Telescope
+-- ===========================================================================
 require('telescope').setup{
   defaults = {
-    -- Layout: puts the preview on the right in a wider split
     layout_strategy = 'horizontal',
     layout_config = {
         horizontal = {
-            preview_width = 0.6,   -- Preview takes 55% of the total width
+            preview_width = 0.6,
             results_width = 0.25,
             width  = 0.95,
             height = 0.90,
@@ -14,9 +15,9 @@ require('telescope').setup{
     },
 
     preview = {
-      treesitter = true,        -- Syntax highlights in preview (requires treesitter parsers installed)
-      filesize_limit = 2,       -- Don't preview files larger than 1MB
-      timeout = 250,            -- Timeout in ms for previewing a file
+      timeout = 250,      -- Timeout in ms for previewing a file
+      treesitter = true,  -- Syntax highlights in preview 
+      filesize_limit = 2, -- Don't preview files larger
     },
 
     winblend = 10,                  -- Makes the telescope semi-transparent (0 = solid, 20 = fairly transparent)
@@ -30,12 +31,11 @@ require('telescope').setup{
                     return {"--hidden"}
                   end },
   },
-  extensions = { ["ui-select"] = { require("telescope.themes").get_dropdown {} } },
+
+  extensions = {
+      ["ui-select"] = { require("telescope.themes").get_dropdown {} }
+  },
 }
+
 require("telescope").load_extension("ui-select")
 
--- -- Keybinds
--- vim.keymap.set("n", "<A-v>", require("telescope.builtin").oldfiles, {})     -- Alt + v: Browse recent files
--- vim.keymap.set("n", "<A-g>", require("telescope.builtin").live_grep, {})    -- Alt + g: Browse files by content
--- vim.keymap.set("n", "<A-f>", require("telescope.builtin").find_files, {})   -- Alt + f: Browse files by name
---
