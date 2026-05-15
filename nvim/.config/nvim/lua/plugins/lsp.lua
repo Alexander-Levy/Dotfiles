@@ -1,40 +1,74 @@
 -- ===========================================================================
 -- Levy's Neovim Language Server 
 -- ===========================================================================
--- Autocomplete Setup
-local cmp = require("cmp")
-cmp.setup({
-  mapping = cmp.mapping.preset.insert({
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<CR>"] = cmp.mapping.confirm({ select = true }),
-  }),
-  sources = cmp.config.sources({
-    { name = "path" },
-    { name = "buffer" },
-    { name = "nvim_lsp" },
-  })
-})
+return{
+    -- Autocomplete
+    {
+        "hrsh7th/nvim-cmp",
+        dependencies = {
+            -- Sources:
+            { "hrsh7th/cmp-path" },
+            { "hrsh7th/cmp-buffer" },
+            { "hrsh7th/cmp-nvim-lsp" },
+        },
 
--- Mason Setup
-require("mason-lspconfig").setup({
-  ensure_installed = { "lua_ls", "pylsp", "clangd", "jsonls", "vimls" }
-})
-
--- LSP Setup
-vim.lsp.config('lua_ls', {
-  settings = {
-    Lua = {
-      runtime = { version = 'LuaJIT' },         -- Neovim uses LuaJIT
-      workspace = {
-        checkThirdParty = false,
-        library = vim.api.nvim_get_runtime_file("", true), -- Loads all nvim runtime files
-      },
-      diagnostics = {
-        globals = { 'vim' },  -- Stops "undefined global vim" warnings
-      },
-      telemetry = { enable = false },
+        config = function()
+            local cmp = require("cmp")
+            cmp.setup({
+                mapping = cmp.mapping.preset.insert({
+                    ["<C-Space>"] = cmp.mapping.complete(),
+                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+                }),
+                sources = cmp.config.sources({
+                    { name = "path" },
+                    { name = "buffer" },
+                    { name = "nvim_lsp" },
+                })
+            })
+        end,
     },
-  },
-})
-vim.lsp.enable('lua_ls', 'pylsp', 'vimls', 'jsonls', 'clangd')
+
+    -- Mason (Auto install LSPs)
+    { "mason-org/mason.nvim", opts = {} },
+    {
+        "mason-org/mason-lspconfig.nvim",
+
+        config = function()
+            require("mason-lspconfig").setup({
+                ensure_installed = { "lua_ls", "pylsp", "clangd", "jsonls", "vimls" }
+            })
+        end,
+    },
+
+    -- Language Server 
+    {
+        "neovim/nvim-lspconfig",
+
+        config = function()
+            vim.lsp.config('lua_ls', {
+                settings = {
+                    Lua = {
+                        runtime = { version = 'LuaJIT' },         -- Neovim uses LuaJIT
+                        workspace = {
+                            checkThirdParty = false,
+                            library = vim.api.nvim_get_runtime_file("", true), -- Loads all nvim runtime files
+                        },
+                        diagnostics = {
+                            globals = { 'vim' },  -- Stops "undefined global vim" warnings
+                        },
+                        telemetry = { enable = false },
+                    },
+                },
+            })
+            vim.lsp.enable('lua_ls', 'pylsp', 'vimls', 'jsonls', 'clangd')
+
+            -- Keybinds
+            vim.keymap.set("n", "K", vim.lsp.buf.hover)         -- K: Show documentation
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition)   -- g + d: Go to definition
+            vim.keymap.set("n", "gr", vim.lsp.buf.references)   -- g + r: Find references
+            vim.keymap.set("n", "gca", vim.lsp.buf.code_action)  -- c + a: Code actions (How did i live without this?) 
+            -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename) -- Rename
+        end,
+    },
+}
 
