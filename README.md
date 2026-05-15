@@ -46,7 +46,7 @@ sudo pacman -Syu git fzf curl ripgrep tree-sitter-cli
 This repository was quickly thrown together out of need, will make it less worse in the future (maybe?). List is in no particular order.
 - [ ] Add wallpapers to repo
 - [ ] Make list of nvim plugins
-- [<] Make readme file not suck
+- [ ] Make readme file not suck
 - [ ] Clean up the configuration code
 - [ ] Add a readme file for each program
 - [ ] Make a quick install script for programs
