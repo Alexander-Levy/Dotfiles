@@ -85,5 +85,14 @@ return{
             vim.keymap.set("n", "<A-m>", ":Markview Toggle<CR>") -- Alt + m: Toggle markview
         end,
     },
+
+    -- Indent Lines 
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        ---@module "ibl"
+        ---@type ibl.config
+        opts = {},
+    },
 }
 
