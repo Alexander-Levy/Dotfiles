@@ -40,13 +40,6 @@ return{
                 },
             }
             require("telescope").load_extension("ui-select")
-
-            -- Keybinds 
-            vim.keymap.set("n", "<A-v>", require("telescope.builtin").oldfiles, {})     -- Alt + v: Browse recent files
-            vim.keymap.set("n", "<A-g>", require("telescope.builtin").live_grep, {})    -- Alt + g: Browse files by content
-            vim.keymap.set("n", "<A-f>", require("telescope.builtin").find_files, {})   -- Alt + f: Browse files by name
-            vim.keymap.set("n", "<S-g>", require("telescope.builtin").git_status)       -- Ctrl + g: Show git status & preview diff
-            vim.keymap.set("n", "<S-c>", require("telescope.builtin").colorscheme, {})  -- Shift + c: change colorscheme
         end,
     },
     { 'nvim-telescope/telescope-ui-select.nvim' },

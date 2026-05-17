@@ -2,6 +2,9 @@
 -- Levy's Neovim Language Server 
 -- ===========================================================================
 return{
+    -- Autoclose
+    { "m4xshen/autoclose.nvim", opts = {} },
+
     -- Autocomplete
     {
         "hrsh7th/nvim-cmp",
@@ -35,7 +38,18 @@ return{
 
         config = function()
             require("mason-lspconfig").setup({
-                ensure_installed = { "lua_ls", "pylsp", "clangd", "jsonls", "vimls" }
+                ensure_installed = {
+                    -- Config 
+                    "vimls",
+                    "cssls",
+                    "lua_ls",
+                    "jsonls",
+                    "hyprls",
+                    "fish_lsp",
+                    -- Dev
+                    "pylsp",
+                    "clangd",
+                }
             })
         end,
     },
@@ -61,13 +75,6 @@ return{
                 },
             })
             vim.lsp.enable('lua_ls', 'pylsp', 'vimls', 'jsonls', 'clangd')
-
-            -- Keybinds
-            vim.keymap.set("n", "K", vim.lsp.buf.hover)         -- K: Show documentation
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition)   -- g + d: Go to definition
-            vim.keymap.set("n", "gr", vim.lsp.buf.references)   -- g + r: Find references
-            vim.keymap.set("n", "gca", vim.lsp.buf.code_action)  -- c + a: Code actions (How did i live without this?) 
-            -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename) -- Rename
         end,
     },
 }

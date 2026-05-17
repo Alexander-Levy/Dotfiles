@@ -67,9 +67,6 @@ return{
                     },
                 }
             })
-            -- Keybinds
-            vim.keymap.set("n", "<A-e>", ":Neotree toggle filesystem reveal left<CR>", {})  -- Alt + e: Open file explorer on left 
-            vim.keymap.set("n", "<C-g>", ":Neotree toggle git_status reveal left<CR>", {})  -- Ctrl + g: Show git status & preview diff
         end,
     },
 
@@ -81,8 +78,6 @@ return{
             require("markview").setup({
                 preview = { enable = false }
             })
-            -- Keybinds 
-            vim.keymap.set("n", "<A-m>", ":Markview Toggle<CR>") -- Alt + m: Toggle markview
         end,
     },
 
@@ -95,9 +90,9 @@ return{
         config = function()
             require("indentmini").setup({
                 only_current = false,
-                enabled = false,
+                enabled = true,
                 char = '▏',
-                key = '<A-l>', -- optional, can be set here if you don't lazy-load
+                key = '<A-l>',
                 minlevel = 2,
                 exclude = { 'markdown', 'help', 'text', 'rst' },
                 exclude_nodetype = { 'string', 'comment' }
