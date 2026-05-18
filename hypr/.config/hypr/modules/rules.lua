@@ -19,7 +19,16 @@ hl.window_rule({
     no_focus = true,
 })
 
--- # Launch steam settings in floating mode but in a smaller window
+-- Launch steam in floating mode
+hl.window_rule({
+    name   = "steam-launcher",
+    match  = { class = "steam" },
+    float  = true,
+    center = true,
+    size   = {1270, 765},
+})
+
+-- Launch steam settings in floating mode but in a smaller window
 hl.window_rule({
     name   = "steam-settings",
     match  = { class = "steam", title = "Steam Settings" },
@@ -28,14 +37,14 @@ hl.window_rule({
     size   = {850, 730},
 })
 
--- # Launch steam games in fullscreen 
+-- Launch steam games in fullscreen 
 hl.window_rule({
     name       = "steam-game",
     match      = { class = "steam_app_.*" },
     fullscreen = true,
 })
 
--- # Launch Nitro Sense Manager floating
+-- Launch Nitro Sense Manager floating
 hl.window_rule({
     name   = "Nitro-run",
     match  = { class = "DivAcerManagerMax" },

@@ -12,12 +12,12 @@ local nitroSense   = "DAMX"
 local lockScreen   = "hyprlock"
 local notification = "swaync-client -t"
 local fileManager  = terminal .. " -e yazi"
-local taskManager  = terminal .. " -o font_size=11.0 -e btop"
+local taskManager  = terminal .. " -o font_size=14.0 -e btop"
 local closeSession = "command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"
 
 -- Utilities
 local colorPicker = "hyprpicker -n -a"
-local screenSaver = terminal .. "-e cmatrix -sa -u 3 -C cyan"
+local screenSaver = terminal .. " -e cmatrix -sa -u 3 -C cyan"
 local clipBoard   = 'cliphist list | wofi --dmenu --pre-display-cmd "echo \'%s\' | cut -f 2" | cliphist decode | wl-copy'
 
 -- ===========================================================================

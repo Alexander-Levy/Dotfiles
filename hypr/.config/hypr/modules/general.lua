@@ -17,7 +17,7 @@ hl.config({
     },
 
     decoration = {
-        rounding       = 4, -- Corners: 1: square, 4 semi, 10 round 
+        rounding       = 6, -- Corners: 1: square, 4 semi, 10 round 
         rounding_power = 2,
 
         active_opacity   = 1.0,
