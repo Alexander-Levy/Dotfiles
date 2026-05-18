@@ -5,6 +5,9 @@ return{
     -- Autoclose
     { "m4xshen/autoclose.nvim", opts = {} },
 
+    -- Color highlighting {hex, rgb, hsl, css} 
+    { "brenoprata10/nvim-highlight-colors", opts = {} },
+
     -- Autocomplete
     {
         "hrsh7th/nvim-cmp",
@@ -26,7 +29,10 @@ return{
                     { name = "path" },
                     { name = "buffer" },
                     { name = "nvim_lsp" },
-                })
+                }),
+                formatting = {
+                    format = require("nvim-highlight-colors").format,
+                }
             })
         end,
     },
@@ -41,7 +47,7 @@ return{
                 ensure_installed = {
                     -- Config 
                     "vimls",
-                    "cssls",
+                    -- "cssls",
                     "lua_ls",
                     "jsonls",
                     "hyprls",
