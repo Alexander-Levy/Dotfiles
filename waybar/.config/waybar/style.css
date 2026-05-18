@@ -1,20 +1,16 @@
-/* Waybar style settings */
+/* Levy's Waybar Style */
 /* Colors */
-@define-color background    #1a1b26;
-@define-color foreground    #a9b1d6;
-
-@define-color black         #000000;
-@define-color white         #ffffff;
-
-@define-color red           #b00407;
-@define-color green         #00f69b;
-@define-color orange        #ff602b;
-
-@define-color blue          #00b1f5;
-@define-color cyan          #0db9d7;
-
-@define-color yellow        #e0af68;
-@define-color magenta       #ad8ee6;
+@define-color background    #212337;
+@define-color foreground    #ebfafa;
+@define-color black         #323449;
+@define-color white         #ebfafa;
+@define-color red           #f16c75;
+@define-color green         #37f499;
+@define-color blue          #7081d0;
+@define-color yellow        #f1fc79;
+@define-color magenta       #a48cf2;
+@define-color cyan          #04d1f9;
+@define-color orange        #f7c67f;
 
 /* Global settings*/ 
 * {
@@ -25,10 +21,9 @@
 /* Top bar settings*/
 window#waybar {
     color: @green;
-    background-color: @black;
-    
-    border-radius: 5px;
-    border: 2px solid @green;
+    background: transparent;
+    /* border-radius: 20px; */
+    /* border: 2px solid @green; */
 }
 window#waybar.hidden {
     opacity: 0.2;
@@ -37,55 +32,40 @@ window#waybar.hidden {
 /* Tooltips settings*/
 tooltip {
   margin: 30px 0px;
-  background: @black;
-  border: 2px solid @green;
+  background: @background;
+  border: 2px solid @magenta;
 }
 tooltip label {
-  color: @orange;
+  color: @green;
 }
 
-/* Animation */
-@keyframes blink {
-    to {
-        color: @green;
-        background-color: transparent;
-    }
+/* Workspace style */
+#workspaces {
+  padding: 0px 6px;
+  margin: 0px 2px 0px 10px;
+  
+  border-radius: 20px;
+  border: 2px solid @blue;
+  background: @background;
 }
 
 /* Workspace buttons */
 /* Workspace that has something open but not active */
 #workspaces button {
-    padding: 10px;
     color: @green;
-    background: transparent;
-    transition: 
-        padding 0.25s ease,
-        background-color 0.25s ease,
-        transform 0.2s ease;
 }
 /* Active Workspace */
 #workspaces button.active {
-    padding: 6px 14px;
-    color: transparent;
-    animation-name: blink;
-    animation-duration: 0.4s;
-    animation-timing-function: steps(12);
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+    color: @magenta;
+    padding: 0px 15px;
 }
 #workspaces button.empty.active {
-    color: transparent;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: steps(12);
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+    color: @magenta;
 }
 /* Background workspace thats empty*/
 #workspaces button.empty {}
 
 /* Set all the modules as white by default*/
-#memory,
 #network,
 #bluetooth,
 #battery,
@@ -97,15 +77,16 @@ tooltip label {
 #backlight,
 #pulseaudio,
 #clock { 
-    color: @orange;
-    margin: 7px 2px;
+    color: @white;
+    margin: 3px 2px;
     padding: 0px 5px;
-    border-radius: 5px;
+    border-radius: 20px;
+    background: @background;
 }
 
 /* Center Modules */
 #power-profiles-daemon {
-    font-size: 18px;
+    font-size: 17px;
     padding: 0px 2px;
 }
 #power-profiles-daemon.performance {
@@ -123,7 +104,7 @@ tooltip label {
 
 /* Left Modules */
 #network {
-    color: @blue;
+    color: @cyan;
     padding: 0px 4px;
     border: 2px solid @cyan;
 }
@@ -156,7 +137,7 @@ tooltip label {
 }
 #clock {
     color: @green;
-    margin: 8px 10px 8px 2px;
+    margin: 3px 10px 3px 2px;
     border: 2px solid @green;
 }
 

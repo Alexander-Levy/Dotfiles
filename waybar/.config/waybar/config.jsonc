@@ -1,16 +1,16 @@
 {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  General
+// Levy's Waybar Config
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     "layer": "top",         // Waybar at top layer
     "position": "top",      // Waybar position (top|bottom|left|right)
     "spacing": 4,           // Gaps between modules (4px)
-    "height": 35,           // Waybar height (to be removed for auto height)
-    // Margins
-    "margin-top":    5,
+    "height": 36,           // Waybar height (to be removed for auto height)
+
+    "margin-top":    2,
     "margin-left":   5,
     "margin-right":  5,
-    "margin-bottom": 5,
+    "margin-bottom": 0,
     
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //   Module Order
@@ -119,25 +119,17 @@
         "icon-size": 24,
         "spacing": 8
     },
-// Clock
-    "clock": {
-        "format": "  {:%I:%M %p}",
-        "format-alt": "{:%A %d %B %Y}",
-        "tooltip-format": "<big><span color='#00f69b'>Calendar</span></big>\n<tt><small>{calendar}</small></tt>",
-        "calendar": {
-            "mode"          : "month",
-            "mode-mon-col"  : 3,
-            "on-scroll"     : 1,
-            "format": {
-                      "days":       "<span color='#00f69b'><b>{}</b></span>",
-                      "weeks":      "<span color='#ad8ee6'><b>W{}</b></span>",
-                      "months":     "<span color='#0db9d7'><b>{}</b></span>",
-                      "weekdays":   "<span color='#ad8ee6'><b>{}</b></span>",
-                      "today":      "<span color='#ff602b'><b>{}</b></span>"
-                      }
-        },
-        "actions":  {
-            "on-click-right": "mode"
+// Caps and NumLock Key Indicators
+    "keyboard-state": {
+        "device-path": "/dev/input/event4",
+        "numlock":      true,
+        "capslock":     false,
+        "scrolllock":   false,
+
+        "format":   " {name} {icon} ",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
         }
     },
 // Screen Brigthness settings 
@@ -150,7 +142,7 @@
 // Audio settings
     "pulseaudio": {
         "scroll-step": 5,          // %, can be a float
-        "max-volume": 150,
+        "max-volume": 100,
         "reverse-scrolling": true, // fix scrolling control on touchpad
         // Normal Look
         "format": " {volume}% {icon}{format_source} ",
@@ -168,18 +160,24 @@
         "tooltip-format": " SOUND SYSTEM:\n Volume: {volume}%\n Device: {desc}",
         "on-click": "kitty -e wiremix"
     },
-// Caps and NumLock Key Indicators
-   "keyboard-state": {
-        "device-path": "/dev/input/event4",
-        "numlock":      true,
-        "capslock":     false,
-        "scrolllock":   false,
-
-        "format":   " {name} {icon} ",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
-        }
+// Clock
+    "clock": {
+        "format": "   {:%I:%M %p} ",
+        "format-alt": " {:%A %d %B %Y} ",
+        "tooltip-format": "<big><span color='#00f69b'>Calendar</span></big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode"          : "month",
+            "mode-mon-col"  : 3,
+            "on-scroll"     : 1,
+            "format": {
+                "days":       "<span color='#00f69b'><b>{}</b></span>",
+                "weeks":      "<span color='#ad8ee6'><b>W{}</b></span>",
+                "months":     "<span color='#0db9d7'><b>{}</b></span>",
+                "weekdays":   "<span color='#ad8ee6'><b>{}</b></span>",
+                "today":      "<span color='#ff602b'><b>{}</b></span>"
+            }
+        },
+        "actions":  { "on-click-right": "mode" }
     }
 }
 
