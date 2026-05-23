@@ -4,50 +4,83 @@ The purpose of this repository is simply to keep track of my dotfiles, feel free
 ## System Overview
 Some context on what software is running on my system
 
-    Desktop Enviroment:
-        Window Manager:             hyprland
-        App Launcher:               wofi
-        Status bar:                 waybar
-        Lockscreen:                 hyprlock
-        Wallpaper{Image}:           hyprpaper
-        Wallpaper{Live}:            mpvpaper
-        Notifications:              swaync
-        Terminal emulator:          kitty
-        Command Line Shell:         fish
-    
-    Programs:
-        Disk Usage:             ncdu
-        Text editor:            nvim
-        File Manager:           yazi
-        Task Manager:           btop
-        Symlink Manager:        stow
-        System Information:     fastfetch
+| Program function | Program name |
+|-- | -- |
+| Window manager | hyprland |
+| Program launcher | vicinae |
+| Status bar | waybar |
+| Lockscreen | hyprlock |
+| Wallpaper backend (images) | hyprpaper |
+| Wallpaper backend (gifs, videos) | mpvpaper |
+| Notification center | swaync |
+| Terminal emulator | kitty |
+| Command Line Shell | fish |
+| Disk Usage | ncdu |
+| Text editor | nvim |
+| File Manager | yazi |
+| Task Manager | btop |
+| Symlink Manager | stow |
+| System Information | fastfetch |
 
 
-## Installation
+Short list of neovim plugins:
 
-Download the following packages to use custom desktop enviroment (my preferred window manager + desktop components) 
+| Plugin function | Plugin name  |
+| -- | --  |
+| Colorscheme | eldritch |
+| Powerbar | lualine |
+| Syntax highligthing | nvim-treesitter |
+| File explorer | neo-tree |
+| Autocomplete | nvim-cmp |
+| Dashboard | dashboard-nvim |
+| Language Servers | mason, mason-lspconfig, nvim-lspconfig  |
+| Preview md & css colors | markview, nvim-highligth-colors |
+| Quality of Life | autoclose, indentmini |
+
+
+## Installation Steps
+Install an AUR helper (pacman for aur)
 ```bash
-sudo pacman -Syu fish kitty wofi waybar hyprland hyprlock hyprpaper mpvpaper swaync
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
 ```
 
-Download the following packages to use my preferred programs
+Download hyprland and some related utilities 
 ```bash
-sudo pacman -Syu ncdu nvim yazi btop stow fastfetch
+sudo pacman -S hyprland hyprpaper hyprlock 
 ```
 
-Neovim dependencies:
+Download shell elements (status bar, terminal emulator, notifications, etc)
 ```bash
-sudo pacman -Syu git fzf curl ripgrep tree-sitter-cli  
+sudo pacman -S kitty waybar swaync bluetui wiremix
+paru -S wlctl-bin mpvpaper vicinae-bin 
 ```
 
+Download terminal programs (text editor, file manager, task manager, etc)
+```bash
+sudo pacman -S git fzf vim fish nvim yazi btop stow ncdu fastfetch
+```
+
+Download neovim dependencies 
+```bash
+sudo pacman -S curl ripgrep tree-sitter-cli unzip npm ruby 
+```
+
+Symlink the configuration files to local computer
+```bash
+git clone https://github.com/Alexander-Levy/Dotfiles.git
+cd Dotfiles
+stow <package>
+```
 
 ### TODO
 This repository was quickly thrown together out of need, will make it less worse in the future (maybe?). List is in no particular order.
+- [X] Make readme file not suck
+- [X] Make list of nvim plugins
+- [X] Clean up the configuration code
 - [ ] Add wallpapers to repo
-- [ ] Make list of nvim plugins
-- [ ] Make readme file not suck
-- [ ] Clean up the configuration code
 - [ ] Add a readme file for each program
 - [ ] Make a quick install script for programs
 
