@@ -1,7 +1,7 @@
-# Wofi Settings 
+# Levy's Wofi Config
 
 # Window Settings 
-width=400
+width=600
 location=center
 close_on_focus_loss=true
 

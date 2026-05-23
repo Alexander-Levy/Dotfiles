@@ -1,24 +1,21 @@
+/* Levy's Wofi Style */
+
 /* Colors */ 
-@define-color background    #1a1b26;
-@define-color foreground    #a9b1d6;
-
-@define-color black         #000000;
-@define-color white         #ffffff;
-
-@define-color red           #b00407;
-@define-color green         #00f69b;
-@define-color orange        #ff602b;
-
-@define-color blue          #00b1f5;
-@define-color cyan          #0db9d7;
-
-@define-color yellow        #e0af68;
-@define-color magenta       #ad8ee6;
+@define-color background    #212337;
+@define-color foreground    #ebfafa;
+@define-color black         #323449;
+@define-color white         #ebfafa;
+@define-color red           #f16c75;
+@define-color green         #37f499;
+@define-color blue          #7081d0;
+@define-color yellow        #f1fc79;
+@define-color magenta       #a48cf2;
+@define-color cyan          #04d1f9;
+@define-color orange        #f7c67f;
 
 * {
     font-family: "JetBrainsMono Nerd Font", monospace;
-    font-size: 20px;
-    /*font-weight: bold;*/
+    font-size: 18px;
 }
 
 window {
@@ -26,9 +23,9 @@ window {
     font-size: 16px;
     font-family: monospace;
     
-    border-radius: 8px;
-    border: 3px solid @green;
-    background-color: @black;
+    border-radius: 6px;
+    border: 3px solid @blue;
+    background-color: @background;
 }
 
 #input {
@@ -36,13 +33,13 @@ window {
     border: 1px solid @cyan; 
     
     color: @orange;
-    background-color: @black;
+    background-color: @background;
 }
 
 #inner-box {
     margin: 8px;
     border: none;
-    background-color: @black;
+    background-color: @background;
 }
 
 #outer-box {
@@ -59,7 +56,7 @@ window {
 #text {
     margin: 10px;
     border: none;
-    color: @orange;
+    color: @green;
 }
 
 #entry:selected {
