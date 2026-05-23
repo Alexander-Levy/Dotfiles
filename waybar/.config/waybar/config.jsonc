@@ -68,7 +68,7 @@
 
         "tooltip-format": " NETWORK STATUS:\n Name:\t\t{essid} \n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Local IP:\t\t{ipaddr}",
         "tooltip-format-wifi": " NETWORK STATUS:\n Name:\t\t\t{essid}\n Signal Strength:\t{signalStrength}%\n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Frecuency:\t\t{frequency} GHz\n Local IP:\t\t{ipaddr}",
-        "on-click": "kitty -e nmtui"
+        "on-click": "kitty -e wlctl"
     },
 // Bluetooth settings
     "bluetooth": {
