@@ -2,7 +2,7 @@
 The purpose of this repository is simply to keep track of my dotfiles, feel free to use anything that you find useful here :D
 
 ## System Overview
-Some context on what software is running on my system
+Im currently using Arch(btw), this has not been tested on other distros and may not work. Some context on what software is running on my system.
 
 | Program function | Program name |
 |-- | -- |
@@ -23,7 +23,7 @@ Some context on what software is running on my system
 | System Information | fastfetch |
 
 
-Short list of neovim plugins:
+List of neovim plugins:
 
 | Plugin function | Plugin name  |
 | -- | --  |
@@ -68,7 +68,7 @@ Download neovim dependencies
 sudo pacman -S curl ripgrep tree-sitter-cli unzip npm ruby 
 ```
 
-Symlink the configuration files to local computer
+Clone the repo & symlink the configuration files to local pc
 ```bash
 git clone https://github.com/Alexander-Levy/Dotfiles.git
 cd Dotfiles
@@ -76,11 +76,12 @@ stow <package>
 ```
 
 ### TODO
-This repository was quickly thrown together out of need, will make it less worse in the future (maybe?). List is in no particular order.
-- [X] Make readme file not suck
-- [X] Make list of nvim plugins
+List is in no particular order and with no promise of completion.
 - [X] Clean up the configuration code
-- [ ] Add wallpapers to repo
+- [X] Make list of nvim plugins
+- [X] Make readme file not suck
+- [X] Add wallpapers to repo
 - [ ] Add a readme file for each program
 - [ ] Make a quick install script for programs
-
+- [ ] Add hyprland keybinds
+- [ ] Add custom neovim keybinds
