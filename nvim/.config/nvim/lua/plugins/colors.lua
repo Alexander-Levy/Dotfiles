@@ -76,7 +76,36 @@ return{
         lazy = false,
         config = function()
             require("markview").setup({
-                preview = { enable = false }
+                preview = { enable = false },
+
+                tables = {
+                    enable = true,
+                    strict = false,
+                    block_decorator = true,
+                    use_virt_lines = false,
+                    parts = {
+                        top = { "╭", "─", "╮", "┬" },
+                        header = { "│", "│", "│" },
+                        separator = { "├", "─", "┤", "┼" },
+                        row = { "│", "│", "│" },
+                        bottom = { "╰", "─", "╯", "┴" },
+                        overlap = { "┝", "━", "┥", "┿" },
+                        align_left = "╼",
+                        align_right = "╾",
+                        align_center = { "╴", "╶" }
+                    },
+                    hl = {
+                        top = { "MarkviewTableHeader", "MarkviewTableHeader", "MarkviewTableHeader", "MarkviewTableHeader" },
+                        header = { "MarkviewTableHeader", "MarkviewTableHeader", "MarkviewTableHeader" },
+                        separator = { "MarkviewTableHeader", "MarkviewTableHeader", "MarkviewTableHeader", "MarkviewTableHeader" },
+                        row = { "MarkviewTableBorder", "MarkviewTableBorder", "MarkviewTableBorder" },
+                        bottom = { "MarkviewTableBorder", "MarkviewTableBorder", "MarkviewTableBorder", "MarkviewTableBorder" },
+                        overlap = { "MarkviewTableBorder", "MarkviewTableBorder", "MarkviewTableBorder", "MarkviewTableBorder" },
+                        align_left = "MarkviewTableAlignLeft",
+                        align_right = "MarkviewTableAlignRight",
+                        align_center = { "MarkviewTableAlignCenter", "MarkviewTableAlignCenter" }
+                    }
+                },
             })
         end,
     },
