@@ -2,7 +2,8 @@
 -- Levy's Hyprland Programs & Keybinds
 -- ===========================================================================
 -- Default Programs 
-local menu         = "wofi"
+-- local menu         = "wofi"
+local menu         = "vicinae toggle"
 local browser      = "firefox"
 local terminal     = "kitty"
 local gameLauncher = "steam"
@@ -18,7 +19,11 @@ local closeSession = "command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown ||
 -- Utilities
 local colorPicker = "hyprpicker -n -a"
 local screenSaver = terminal .. " -e cmatrix -sa -u 3 -C cyan"
-local clipBoard   = 'cliphist list | wofi --dmenu --pre-display-cmd "echo \'%s\' | cut -f 2" | cliphist decode | wl-copy'
+-- local clipBoard   = 'cliphist list | wofi --dmenu --pre-display-cmd "echo \'%s\' | cut -f 2" | cliphist decode | wl-copy'
+local clipBoard   = 'vicinae vicinae://launch/clipboard/history'
+
+-- Restart Shell
+local restartWaybar = "pkill waybar; waybar"
 
 -- ===========================================================================
 -- Keybinds
@@ -46,6 +51,9 @@ hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(screenSaver))
 -- Session binds (logout & exit Hyprland)
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lockScreen))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(closeSession))
+
+-- Reload shell
+hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(restartWaybar))
 
 -- Change window Mode: Tiled, Floating, Fullscreen
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))

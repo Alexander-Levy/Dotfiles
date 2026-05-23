@@ -53,6 +53,34 @@ hl.window_rule({
 })
 
 -- ===========================================================================
+-- Vicinae Rules
+-- ===========================================================================
+-- blur
+hl.layer_rule({
+  match = { namespace = "vicinae" },
+  name = "vicinae-blur",
+  blur = true,
+  ignore_alpha = 0,
+})
+
+-- disable animation for vicinae only
+hl.layer_rule({
+  match = { namespace = "vicinae" },
+  name = "vicinae-no-animation",
+  no_anim = true,
+})
+
+-- ===========================================================================
+-- Waybar Widgets
+-- ===========================================================================
+hl.window_rule({
+    name   = "wlctl-widget",
+    match  = { class = "kitty", title = "wlctl" },
+    float  = true,
+    size   = {930, 620},
+})
+
+-- ===========================================================================
 -- Workspace Rules
 -- ===========================================================================
 hl.workspace_rule({ workspace = "1", persistent = true })
