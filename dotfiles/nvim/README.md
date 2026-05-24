@@ -2,7 +2,7 @@
 
 ## List of neovim plugins:
 
-| Description | Plugin name  |
+| Description | Plugins |
 | -- | --  |
 | Colorscheme | eldritch |
 | Powerbar | lualine |
