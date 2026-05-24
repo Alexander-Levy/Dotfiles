@@ -20,13 +20,13 @@ hl.window_rule({
 })
 
 -- Launch steam in floating mode
-hl.window_rule({
-    name   = "steam-launcher",
-    match  = { class = "steam" },
-    float  = true,
-    center = true,
-    size   = {1270, 765},
-})
+-- hl.window_rule({
+--     name   = "steam-launcher",
+--     match  = { class = "steam" },
+--     float  = true,
+--     center = true,
+--     size   = {1270, 765},
+-- })
 
 -- Launch steam settings in floating mode but in a smaller window
 hl.window_rule({
@@ -73,12 +73,12 @@ hl.layer_rule({
 -- ===========================================================================
 -- Waybar Widgets
 -- ===========================================================================
-hl.window_rule({
-    name   = "wlctl-widget",
-    match  = { class = "kitty", title = "wlctl" },
-    float  = true,
-    size   = {930, 620},
-})
+-- hl.window_rule({
+--     name   = "wlctl-widget",
+--     match  = { class = "kitty", title = "wlctl" },
+--     float  = true,
+--     size   = {930, 620},
+-- })
 
 -- ===========================================================================
 -- Workspace Rules
