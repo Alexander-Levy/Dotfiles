@@ -45,7 +45,7 @@
             "default": "",
             "empty": ""
         },
-        "icon-size": 10,
+        "icon-size": 6,
         "sort-by-number": true,
         "persistent-workspaces": {
             "1": [],

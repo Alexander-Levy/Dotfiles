@@ -41,8 +41,8 @@ tooltip label {
 
 /* Workspace style */
 #workspaces {
-  padding: 0px 6px;
-  margin: 0px 2px 0px 10px;
+  padding: 0px 4px;
+  margin: 2px 3px 2px 10px;
   
   border-radius: 20px;
   border: 2px solid @blue;
@@ -124,8 +124,8 @@ tooltip label {
     border: 2px solid @blue;
 }
 #keyboard-state {
-    color: @green;
-    border: 2px solid @green;
+    color: @blue;
+    border: 2px solid @blue;
 }
 #backlight {
     color: @cyan;
