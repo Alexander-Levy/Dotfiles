@@ -33,6 +33,7 @@ chmod +x install.sh
 
 ### Manual 
 1 . Install an AUR helper (paru or yay) 
+
 2 . Make sure all dependencies are installed
 ```bash
 paru -S hyprland hyprpaper hyprlock kitty waybar swaync bluetui wiremix wlctl-bin mpvpaper vicinae-bin git fzf vim fish nvim yazi btop stow ncdu fastfetch curl ripgrep tree-sitter-cli wget unzip npm ruby 

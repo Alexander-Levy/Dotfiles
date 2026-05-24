@@ -1,24 +1,31 @@
 #!/usr/bin/env bash
 
 # Author:   Alexander Levy
-# Version:  v0.0
+# Version:  v0.1.2
 # Blob:     The purpose of this script is to install all necesary packages and create symlinks
 # with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
 # work with debian and fedora based systems.
 
-# Start program :D (idk how to make it pretty :( yet ;))
-echo "Levy's dotfiles installer..."
+# Variables
 failed=()
 missing=()
 packages=(
-    hyprland hyprpaper hyprlock # window manager
-    kitty waybar swaync bluetui wiremix # desktop shell 
-    bat eza git fzf vim fish neovim yazi btop stow ncdu fastfetch # cli
-    curl wget ripgrep unzip tree-sitter-cli npm #ruby # nvim deps
-    ruby #htop ranger # test
+    hyprland hyprpaper hyprlock             # window manager
+    kitty waybar swaync bluetui wiremix     # de shell / elements
+    mpvpaper wlctl-bin vicinae-bin          # aur de shell / elements
+    bat eza stow ncdu fastfetch             # qof tools
+    curl git fzf vim fish neovim yazi btop  # console tools 
+    npm wget unzip ripgrep tree-sitter-cli  # neovim deps
 )
+
+# Paths
 current_path="$(realpath "$(dirname "$0")")"
 dotfiles_path="$(realpath "$(dirname "$0")")/dotfiles"
+config_path="$HOME/.config"
+wallpaper_path="$HOME/Wallpapers"
+
+# Start program :D (idk how to make it pretty :( yet ;))
+echo "Levy's dotfiles installer..."
 
 # Install paru if not installed
 echo "Checking if paru is installed..."
@@ -77,18 +84,18 @@ fi
 echo "Symlinking dotfiles..."
 for dir in "$dotfiles_path"/*/; do
     name=$(basename "$dir")
-    if [[ ! -d "$HOME/.config/$name" ]]; then 
-        mkdir -p "$HOME/.config/$name" 
+    if [[ ! -d "$config_path/$name" ]]; then 
+        mkdir -p "$config_path/$name" 
         echo "Created ~/.config/$name"
     fi
-    stow --target="$HOME/.config/$name" --dir="$dotfiles_path" --restow "$name"
+    stow --target="$config_path/$name" --dir="$dotfiles_path" --restow "$name"
     echo "  [LINKED] $name"
 done
-if [[ ! -d "$HOME/Wallpapers" ]]; then
-    mkdir -p "$HOME/Wallpapers" 
+if [[ ! -d "$wallpaper_path" ]]; then
+    mkdir -p "$wallpaper_path" 
     echo "Created ~/Wallpapers"
 fi
-stow --target="$HOME/Wallpapers" --dir="$current_path" --restow Wallpapers
+stow --target="$wallpaper_path" --dir="$current_path" --restow Wallpapers
 echo "  [LINKED] Wallpapers"
 
 # Exit message (did you get the joke?xD)
