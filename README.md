@@ -2,86 +2,56 @@
 The purpose of this repository is simply to keep track of my dotfiles, feel free to use anything that you find useful here :D
 
 ## System Overview
-Im currently using Arch(btw), this has not been tested on other distros and may not work. Some context on what software is running on my system.
+Im currently using Arch (btw), this has not been tested on other distros and may not work. Some context on what software is running on my system.
 
-| Program function | Program name |
+| Program | Description |
 |-- | -- |
-| Window manager | hyprland |
-| Program launcher | vicinae |
-| Status bar | waybar |
-| Lockscreen | hyprlock |
-| Wallpaper backend (images) | hyprpaper |
-| Wallpaper backend (gifs, videos) | mpvpaper |
-| Notification center | swaync |
-| Terminal emulator | kitty |
-| Command Line Shell | fish |
-| Disk Usage | ncdu |
-| Text editor | nvim |
-| File Manager | yazi |
-| Task Manager | btop |
-| Symlink Manager | stow |
-| System Information | fastfetch |
-
-
-List of neovim plugins:
-
-| Plugin function | Plugin name  |
-| -- | --  |
-| Colorscheme | eldritch |
-| Powerbar | lualine |
-| Syntax highligthing | nvim-treesitter |
-| File explorer | neo-tree |
-| Autocomplete | nvim-cmp |
-| Dashboard | dashboard-nvim |
-| Language Servers | mason, mason-lspconfig, nvim-lspconfig  |
-| Preview md & css colors | markview, nvim-highligth-colors |
-| Quality of Life | autoclose, indentmini |
+| hyprland | Window manager |
+| vicinae | App launcher, calculator, file seacher, etc |
+| waybar | Status bar |
+| hyprlock | Lockscreen backend|
+| hyprpaper | Wallpaper backend (images) |
+| mpvpaper | Wallpaper backend (gifs, videos) |
+| swaync | Notification center & service |
+| kitty | Terminal emulator |
+| fish | Command Line Interpreter |
+| ncdu | Disk usage analysis tool |
+| nvim | Text editor |
+| yazi | Terminal File Manager |
+| btop | Task manager for the terminal |
+| stow | Symlink manager |
 
 
 ## Installation Steps
-Install an AUR helper (pacman for aur)
+
+### Automated
+Run the install script (runs the manual installation steps for you) {tested only on my machine, run at your own risk}. I recommend reading the script before running.
 ```bash
-sudo pacman -S --needed base-devel
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si
+chmod +x install.sh
+./install.sh
 ```
 
-Download hyprland and some related utilities 
+### Manual 
+1 . Install an AUR helper (paru or yay) 
+2 . Make sure all dependencies are installed
 ```bash
-sudo pacman -S hyprland hyprpaper hyprlock 
+paru -S hyprland hyprpaper hyprlock kitty waybar swaync bluetui wiremix wlctl-bin mpvpaper vicinae-bin git fzf vim fish nvim yazi btop stow ncdu fastfetch curl ripgrep tree-sitter-cli wget unzip npm ruby 
 ```
-
-Download shell elements (status bar, terminal emulator, notifications, etc)
-```bash
-sudo pacman -S kitty waybar swaync bluetui wiremix
-paru -S wlctl-bin mpvpaper vicinae-bin 
-```
-
-Download terminal programs (text editor, file manager, task manager, etc)
-```bash
-sudo pacman -S git fzf vim fish nvim yazi btop stow ncdu fastfetch
-```
-
-Download neovim dependencies 
-```bash
-sudo pacman -S curl ripgrep tree-sitter-cli unzip npm ruby 
-```
-
-Clone the repo & symlink the configuration files to local pc
+3 . Clone the repo & symlink the configuration files to local pc
 ```bash
 git clone https://github.com/Alexander-Levy/Dotfiles.git
 cd Dotfiles
 stow <package>
 ```
 
-### TODO
+## TODO
 List is in no particular order and with no promise of completion.
 - [X] Clean up the configuration code
 - [X] Make list of nvim plugins
 - [X] Make readme file not suck
 - [X] Add wallpapers to repo
+- [X] Make a quick install script for programs
 - [ ] Add a readme file for each program
-- [ ] Make a quick install script for programs
 - [ ] Add hyprland keybinds
 - [ ] Add custom neovim keybinds
+- [ ] Make readme even better
