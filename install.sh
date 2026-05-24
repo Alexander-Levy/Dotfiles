@@ -88,7 +88,7 @@ if [[ ! -d "$HOME/Wallpapers" ]]; then
     mkdir -p "$HOME/Wallpapers" 
     echo "Created ~/Wallpapers"
 fi
-stow --target="$HOME" --dir="$current_path" --restow Wallpapers
+stow --target="$HOME/Wallpapers" --dir="$current_path" --restow Wallpapers
 echo "  [LINKED] Wallpapers"
 
 # Exit message (did you get the joke?xD)
