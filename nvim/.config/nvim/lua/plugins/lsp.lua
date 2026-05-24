@@ -53,6 +53,7 @@ return{
                     "hyprls",
                     "fish_lsp",
                     -- Dev
+                    "bashls",
                     "pylsp",
                     "clangd",
                 }
