@@ -1,7 +1,5 @@
-# Fish configuration file.
-
 ######################################################################
-# General settings
+# Levy's Fish Shell
 ######################################################################
 # Remove the default fish greeting
 set fish_greeting
@@ -11,18 +9,22 @@ if status is-interactive
     fastfetch
 end
 
-######################################################################
-# Aliases
-######################################################################
 # Replace ls with eza 
 alias ls "eza --icons --group-directories-first --color=auto"
-# Common ls variants 
 alias la "eza -la --icons --group-directories-first --color=auto"
 alias lt "eza --tree --icons --color=auto"
 
-# Replace nano with nvim {most guides use nano for some reason}
+# Use bat instead of cat
+alias cat "bat --color always"
+
+# Replace nano with nvim
 function nano
     nvim $argv
+end
+
+# Replace yay with paru 
+function yay
+    paru $argv
 end
 
 # Fuzzy find file with preview & open with nvim
