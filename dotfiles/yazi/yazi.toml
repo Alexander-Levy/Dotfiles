@@ -1,7 +1,7 @@
 # Levy's Yazi
 
 [mgr]
-ratio          = [ 3, 6, 9 ] # ratios [back | current dir | preview] 0 disables
+ratio          = [ 3, 6, 6 ] # ratios [back | current dir | preview] 0 disables
 linemode       = "size"      # Options: none, size, btime, mtime, permissions, owner
 # sort_by        = ""
 sort_dir_first = true
