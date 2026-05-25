@@ -2,7 +2,6 @@
 -- Levy's Hyprland Programs & Keybinds
 -- ===========================================================================
 -- Default Programs 
--- local menu         = "wofi"
 local menu         = "vicinae toggle"
 local browser      = "firefox"
 local terminal     = "kitty"
@@ -10,19 +9,18 @@ local gameLauncher = "steam"
 
 -- Shell Elements
 local nitroSense   = "DAMX"
-local lockScreen   = "hyprlock"
 local notification = "swaync-client -t"
 local fileManager  = terminal .. " -e yazi"
 local taskManager  = terminal .. " -o font_size=14.0 -e btop"
-local closeSession = "command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"
 
--- Utilities
-local colorPicker = "hyprpicker -n -a"
-local screenSaver = terminal .. " -e cmatrix -sa -u 3 -C cyan"
--- local clipBoard   = 'cliphist list | wofi --dmenu --pre-display-cmd "echo \'%s\' | cut -f 2" | cliphist decode | wl-copy'
-local clipBoard   = 'vicinae vicinae://launch/clipboard/history'
+-- Desktop utilities
+local lockScreen   = "hyprlock"
+local screenshot   = "hyprshot -m region --clipboard-only"
+local colorPicker  = "hyprpicker -n -a"
+local clipBoard    = 'vicinae vicinae://launch/clipboard/history'
+local closeSession = "hyprshutdown"
 
--- Restart Shell
+-- Restart shell elements
 local restartWaybar = "pkill waybar; waybar"
 
 -- ===========================================================================
@@ -35,18 +33,22 @@ hl.bind("ALT  + SPACE", hl.dsp.exec_cmd(menu))
 hl.bind("CTRL + SPACE", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 
+-- App switcher
+hl.bind("ALT  + TAB", hl.dsp.exec_cmd('snappy-switcher next'))
+hl.bind("ALT  + SHIFT + TAB", hl.dsp.exec_cmd('snappy-switcher prev'))
+
 -- Programs
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + G", hl.dsp.exec_cmd(gameLauncher))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(nitroSense))
-hl.bind("SUPER + SHIFT + ESCAPE", hl.dsp.exec_cmd(taskManager))
 
 -- System Utilities 
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(clipBoard))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notification))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd(colorPicker))
-hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(screenSaver))
+hl.bind(mainMod .. " + SHIFT+ S", hl.dsp.exec_cmd(screenshot))
+hl.bind("SUPER + SHIFT + ESCAPE", hl.dsp.exec_cmd(taskManager))
 
 -- Session binds (logout & exit Hyprland)
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lockScreen))
@@ -55,15 +57,9 @@ hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(closeSession))
 -- Reload shell
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(restartWaybar))
 
--- Change window Mode: Tiled, Floating, Fullscreen
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
-hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }))
-
--- Rearrange tiled windows (scrolling)
-hl.bind(mainMod .. " + K", hl.dsp.layout("swapcol r"))
-hl.bind(mainMod .. " + J", hl.dsp.layout("swapcol l"))
-hl.bind(mainMod .. " + H", hl.dsp.layout("colresize +conf"))
-
+-- ===========================================================================
+-- Window binds
+-- ===========================================================================
 -- Move/resize windows
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
@@ -74,6 +70,77 @@ hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
 
+-- Change window mode:
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" })) -- toggle fullscreen
+hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }))      -- toggle tiled/floating mode
+
+-- ===========================================================================
+-- Layout binds
+-- ===========================================================================
+local currentLayout = "scrolling"
+
+-- Scrolling layout binds
+local function bind_scrolling()
+    hl.bind(mainMod .. " + K", hl.dsp.layout("swapcol r"))
+    hl.bind(mainMod .. " + J", hl.dsp.layout("swapcol l"))
+    hl.bind(mainMod .. " + H", hl.dsp.layout("colresize +conf"))
+end
+local function unbind_scrolling()
+    hl.unbind(mainMod .. " + K")
+    hl.unbind(mainMod .. " + J")
+    hl.unbind(mainMod .. " + H")
+end
+
+-- Dwindle layout binds
+local function bind_dwindle()
+    -- hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprctl dispatch pseudo"))
+    -- hl.bind(mainMod .. " + J", hl.dsp.exec_cmd("hyprctl dispatch togglesplit"))
+end
+local function unbind_dwindle()
+    -- hl.unbind(mainMod .. " + P")
+    -- hl.unbind(mainMod .. " + J")
+end
+
+-- Toggle between scrolling and dwindle
+local function toggle_layout()
+    if currentLayout == "scrolling" then
+        -- Change layout binds
+        hl.timer(function()
+            unbind_scrolling()
+            bind_dwindle()
+        end, { timeout = 50, type = "oneshot" })
+        hl.config({
+            general = {
+                layout = "dwindle",
+                col = { active_border = "rgba(37f499ff)" }, -- Change borders to green (dwindle)
+            }
+        })
+        currentLayout = "dwindle"
+    else
+        -- Change layout binds
+        hl.timer(function()
+            unbind_dwindle()
+            bind_scrolling()
+        end, { timeout = 50, type = "oneshot" })
+        hl.config({
+            general = {
+                layout = "scrolling",
+                col = { active_border = "rgba(04d1f9ff)" }, -- Change borders to blue (scrolling)
+            }
+        })
+        currentLayout = "scrolling"
+    end
+end
+
+-- Enable scrolling binds (default layout)
+bind_scrolling()
+
+-- Toggle between dwindle and scrolling layouts
+hl.bind(mainMod .. " + CTRL + T", toggle_layout)
+
+-- ===========================================================================
+-- Workspaces binds
+-- ===========================================================================
 -- Switch workspaces & move windows around workspaces 
 for i = 1, 5 do
     hl.bind(mainMod .. " + " .. i, hl.dsp.focus({ workspace = i}))
@@ -85,6 +152,9 @@ end
 hl.bind("CTRL + SUPER + left",  hl.dsp.focus({ workspace = "e-1" }))
 hl.bind("CTRL + SUPER + right", hl.dsp.focus({ workspace = "e+1" }))
 
+-- ===========================================================================
+-- Media binds
+-- ===========================================================================
 -- Laptop multimedia keys for play, pause, fowards and reverse
 hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })

@@ -1,13 +1,11 @@
 -- ===========================================================================
 -- Levy's Hyprland 
 -- ===========================================================================
-require("modules.input")        -- Input & Gestures settings
-require("modules.rules")        -- Window & Workspace rules
-require("modules.general")      -- Hyprland look and feel 
-require("modules.layouts")      -- Layout selection & settings
-require("modules.monitor")      -- Monitor & scaling
-require("modules.keybinds")     -- Default apps & keybinds
-require("modules.autostart")    -- Automatically start apps, services, etc
-require("modules.enviroment")   -- Hyprland enviroment variables
-require("modules.animations")   -- Hyprland animations (chaging this is scary lol)
+require("modules.start")   -- Automatically start programs, services, etc
+require("modules.input")   -- Input & Gestures settings
+require("modules.binds")   -- Default apps & keybinds
+require("modules.general") -- Hyprland's general options (look and feel) 
+require("modules.monitor") -- Monitor, scaling & enviroment variables
+require("modules.anims")   -- Animations timings
+require("modules.rules")   -- Window & workspace rules
 

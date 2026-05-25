@@ -1,48 +1,39 @@
-# Dotfiles
+# Levy's Dotfiles
 The purpose of this repository is simply to keep track of my dotfiles, feel free to use anything that you find useful here :D
 
+## Preview 
+![screenshot of desktop](./Wallpapers/dark-city.jpg)
+
 ## System Overview
-Im currently using Arch (btw), this has not been tested on other distros and may not work. Some context on what software is running on my system.
+This configuration was made using Arch, other distros have not been tested and may not work. Below is a list of the software configured
 
 | Program | Description |
 |-- | -- |
 | hyprland | Window manager |
-| vicinae | App launcher, calculator, file seacher, etc |
-| waybar | Status bar |
-| hyprlock | Lockscreen backend|
-| hyprpaper | Wallpaper backend (images) |
-| mpvpaper | Wallpaper backend (gifs, videos) |
-| swaync | Notification center & service |
+| waybar | Status bar & modules |
+| swaync | Notification daemon |
 | kitty | Terminal emulator |
-| fish | Command Line Interpreter |
-| ncdu | Disk usage analysis tool |
-| nvim | Text editor |
-| yazi | Terminal File Manager |
-| btop | Task manager for the terminal |
-| stow | Symlink manager |
-
+| neovim | Text editor |
+| yazi | File manager |
+| btop | System monitor |
+| fish | Command-line interpreter |
 
 ## Installation Steps
-
 ### Automated
-Run the install script (runs the manual installation steps for you) {tested only on my machine, run at your own risk}. I recommend reading the script before running.
+Clone the repo and run the installation script. It will detect and download all missing dependencies and then apply my configurations.
 ```bash
 chmod +x install.sh
 ./install.sh
 ```
 
 ### Manual 
-1 . Install an AUR helper (paru or yay) 
-
-2 . Make sure all dependencies are installed
-```bash
-paru -S hyprland hyprpaper hyprlock kitty waybar swaync bluetui wiremix wlctl-bin mpvpaper vicinae-bin git fzf vim fish nvim yazi btop stow ncdu fastfetch curl ripgrep tree-sitter-cli wget unzip npm ruby 
-```
-3 . Clone the repo & symlink the configuration files to local pc
+1. Install an AUR helper (paru or yay) 
+2. Make sure all dependencies are installed
+3. Clone the repo & symlink the desired configuration files to local pc
 ```bash
 git clone https://github.com/Alexander-Levy/Dotfiles.git
 cd Dotfiles
-stow <package>
+stow --target="<target-dir>" --dir="<source-dir>" --restow <package>
 ```
 
 ## TODO
