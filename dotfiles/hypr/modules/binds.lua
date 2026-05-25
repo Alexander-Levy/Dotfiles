@@ -14,11 +14,12 @@ local fileManager  = terminal .. " -e yazi"
 local taskManager  = terminal .. " -o font_size=14.0 -e btop"
 
 -- Desktop utilities
-local lockScreen   = "hyprlock"
-local screenshot   = "hyprshot -m region --clipboard-only"
-local colorPicker  = "hyprpicker -n -a"
-local clipBoard    = 'vicinae vicinae://launch/clipboard/history'
-local closeSession = "hyprshutdown"
+local lockScreen     = "hyprlock"
+local screenshot     = "hyprshot -m region --clipboard-only"
+local saveScreenshot = "hyprshot -m region"
+local colorPicker    = "hyprpicker -n -a"
+local clipBoard      = 'vicinae vicinae://launch/clipboard/history'
+local closeSession   = "hyprshutdown"
 
 -- Restart shell elements
 local restartWaybar = "pkill waybar; waybar"
@@ -48,6 +49,7 @@ hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(clipBoard))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notification))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd(colorPicker))
 hl.bind(mainMod .. " + SHIFT+ S", hl.dsp.exec_cmd(screenshot))
+hl.bind(mainMod .. " + CTRL + SHIFT+ S", hl.dsp.exec_cmd(saveScreenshot))
 hl.bind("SUPER + SHIFT + ESCAPE", hl.dsp.exec_cmd(taskManager))
 
 -- Session binds (logout & exit Hyprland)
