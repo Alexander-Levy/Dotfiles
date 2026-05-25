@@ -1,21 +1,25 @@
 #!/usr/bin/env bash
 
 # Author:   Alexander Levy
-# Version:  v0.1.2
+# Version:  v0.1.3
 # Blob:     The purpose of this script is to install all necesary packages and create symlinks
 # with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
 # work with debian and fedora based systems.
+#
+# ChangeLog: .2.3Added snappy-switcher and hyprshot to list of required pkgs
+#            .4 
+#
 
 # Variables
 failed=()
 missing=()
 packages=(
-    hyprland hyprpaper hyprlock             # window manager
-    kitty waybar swaync bluetui wiremix     # de shell / elements
-    mpvpaper wlctl-bin vicinae-bin          # aur de shell / elements
-    bat eza stow ncdu fastfetch             # qof tools
-    curl git fzf vim fish neovim yazi btop  # console tools 
-    npm wget unzip ripgrep tree-sitter-cli  # neovim deps
+    hyprland hyprpaper hyprlock hyprshot            # window manager
+    kitty waybar swaync bluetui wiremix             # de shell / elements
+    mpvpaper wlctl-bin vicinae-bin snappy-switcher  # aur de shell / elements
+    bat eza stow ncdu fastfetch                     # qof tools
+    curl git fzf vim fish neovim yazi btop          # console tools 
+    npm wget unzip ripgrep tree-sitter-cli          # neovim deps
 )
 
 # Paths
