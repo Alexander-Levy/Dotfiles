@@ -1,18 +1,12 @@
 #!/usr/bin/env bash
 
 # Author:   Alexander Levy
-# Version:  v0.1.9
+# Version:  v0.1.10
 # Blob:     The purpose of this script is to install all necesary packages and create symlinks
 # with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
 # work with debian and fedora based systems.
 #
-# ChangeLog: .1.4 If config already exists create a backup in $backup_path, 
-#            delete it and then symlink.
-#            .1.5 Removed stow dependency, now done manually thru ln's  
-#            .1.6 Fixed issue with backups
-#            .1.7 Internal change: cleaned up code (helper funcs)
-#            .1.8 No more exit message (It had to be done :'( )
-#            .1.9 Made script output prettier
+# ChangeLog: .1.10 Added brightnessctl to pkg list
 
 ##########################################################################################
 # Parameters
@@ -21,6 +15,7 @@
 failed=()
 missing=()
 packages=(
+    brightnessctl                                   # deps
     hyprland hyprpaper hyprlock hyprshot            # window manager
     kitty waybar swaync bluetui wiremix             # de shell / elements
     mpvpaper wlctl-bin vicinae-bin snappy-switcher  # aur de shell / elements
@@ -121,7 +116,7 @@ symlink() {
 # Script
 ##########################################################################################
 # Welcome message
-banner "Levy's dotfiles installer..." " v0.1.9 nice rigth? :D"
+banner "Levy's dotfiles installer..." " v0.1.10 nice rigth? :D"
 
 # Install paru if not Installed
 section "Checking if paru is installed..."
