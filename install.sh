@@ -5,18 +5,14 @@
 # with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
 # work with debian and fedora based systems.
 
-version="v0.2.10"
-# ChangeLog: .2.8  Updated install and log output
-#            .2.9  Script now ask to chose: paru or yay
-#            .2.10 Cleaned up the script section {easier to follow}
-
-# TODO:
-#      migrate hardcoded paru to generic $aur_helper variable
+version="v0.2.11"
+# ChangeLog: .2.11 Migrated hardcoded paru to $aur_helper variable
 
 ##########################################################################################
 # Parameters
 ##########################################################################################
 # Variables
+aur_helper=""
 failed=()
 missing=()
 packages=(
@@ -46,7 +42,6 @@ banner() {
     local title="$1" subtitle="$2"
     local width=75
     local border=$(printf '═%.0s' $(seq 1 $width))
-
     echo -e "\e[34m╔${border}╗"
     printf "║%*s%*s ║\n" $(( (width + ${#title})     / 2 )) "$title"     $(( (width - ${#title})     / 2 )) ""
     printf "║%*s%*s ║\n" $(( (width + ${#subtitle})  / 2 )) "$subtitle"  $(( (width - ${#subtitle})  / 2 )) ""
@@ -59,7 +54,6 @@ section() {
     local message="$1"
     local width=44
     local border=$(printf '─%.0s' $(seq 1 $width))
-
     echo -e "\e[34m┌${border}┐"
     printf "│%*s%*s│\n" $(( (width + ${#message}) / 2 )) "$message" $(( (width - ${#message}) / 2 )) ""
     echo -e "└${border}┘\e[0m"
@@ -84,7 +78,7 @@ log() {
 # Download and install an AUR helper
 # Supported options: paru or yay
 aur_helper_install() {
-    local aur_helper="$1"
+    aur_helper="$1"
     if [[ "$aur_helper" != "paru" && "$aur_helper" != "yay" ]]; then
         return 1
     fi
@@ -99,8 +93,10 @@ aur_helper_install() {
 aur_helper_check() {
     section "Checking if an AUR Helper is installed... "
     if command -v paru &>/dev/null; then
+        aur_helper="paru"
         log ok "[Success] paru found!\n"
     elif command -v yay &>/dev/null; then
+        aur_helper="yay"
         log ok "[Success] yay found!\n"
     else
         log warn "No AUR helper found."
@@ -109,7 +105,6 @@ aur_helper_check() {
         log info "2) yay"
         log info "3) Don't install AUR helper, exit script."
         read -rp "Enter your choice [1-3]: " choice
-
         case $choice in
             1) aur_helper_install paru && log ok "[Success] Installed paru!\n" ;;
             2) aur_helper_install yay  && log ok "[Success] Installed yay!\n" ;;
@@ -123,10 +118,9 @@ aur_helper_check() {
 # and symlink configuration.
 # Arguments: pkg:[name][../src][target]
 symlink() {
-    local pkg_name="$1"     # ie nvim
-    local pkg_src="$2"      # ie ./dotfiles (dir)
-    local pkg_target="$3"   # ie ~/.config/nvim (dir)
-
+    local pkg_name="$1"
+    local pkg_src="$2"
+    local pkg_target="$3"
     # Ensure target dir exists
     if [[ ! -d "$pkg_target" ]]; then
         log warn "  [$pkg_name] directory not found! Creating it..." 
@@ -145,7 +139,7 @@ symlink() {
             fi
         done
     fi
-    # Symlink files
+    # Symlink files one by one and handle special case
     local linked_counter=0
     find "$pkg_src/$pkg_name" -not -type d | while IFS= read -r file; do
         rel_file="${file#"$pkg_src/$pkg_name"/}"
@@ -163,6 +157,8 @@ symlink() {
     fi
 }
 
+# Installs all packages in $missing variable using $aur_helper as 
+# the package manager.
 install_missing_packages() {
     if [[ ${#missing[@]} -eq 0 ]]; then
         log ok "[Success] All dependencies already installed!\n"
@@ -172,7 +168,7 @@ install_missing_packages() {
     [[ "$answer" =~ ^[yY] ]] || exit 0
     for pkg in "${missing[@]}"; do
         log infono "Installing $pkg... "
-        if paru -S --noconfirm "$pkg" > /tmp/pkg_err 2>&1; then
+        if $aur_helper -S --noconfirm "$pkg" > /tmp/pkg_err 2>&1; then
             log ok "done!"
         else
             log warn "failed to install"
@@ -199,15 +195,14 @@ update_system() {
 ##########################################################################################
 # Script
 ##########################################################################################
-# Prepare system quietly 
 banner "Levy's dotfiles installer..." "$version Prototype model unit-01 "
 update_system # Update packages & database before starting the script 
+aur_helper_check # Install aur helper if one is not found
 
 # Verify that the necessary packages are installed 
-aur_helper_check # Install aur helper if one is not found
 section "Checking packages..."
 for pkg in "${packages[@]}"; do
-    if paru -Q "$pkg" &>/dev/null; then
+    if $aur_helper -Q "$pkg" &>/dev/null; then
         log ok   "  [OKAY] $pkg"
     else
         log warn "  [MISS] $pkg"
