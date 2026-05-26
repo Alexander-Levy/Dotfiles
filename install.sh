@@ -5,7 +5,9 @@
 # with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
 # work with debian and fedora based systems.
 
-version="v0.2.11"
+version="v0.2.13"
+# ChangeLog: .2.12 fixed output when installing aur helpers
+#            .2.13 added the option to install both (chaotic neutral ahh option)
 
 ##########################################################################################
 # Parameters
@@ -15,6 +17,7 @@ aur_helper=""
 failed=()
 missing=()
 packages=(
+    ttf-jetbrains-mono ttf-jetbrains-mono-nerd                                   # fonts
     brightnessctl power-profiles-daemon wl-clipboard xdg-desktop-portal-hyprland # system utils 
     pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse           # audio 
     hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown hyprpolkitagent # window manager & tools
@@ -79,13 +82,15 @@ log() {
 aur_helper_install() {
     aur_helper="$1"
     if [[ "$aur_helper" != "paru" && "$aur_helper" != "yay" ]]; then
+        log err "Unsupported AUR helper: $aur_helper"
         return 1
     fi
+    log info "Installing $aur_helper..."
     sudo pacman -S --needed base-devel git --noconfirm > /dev/null 2>&1
     git clone https://aur.archlinux.org/$aur_helper.git  /tmp/$aur_helper > /dev/null 2>&1
-    log err "Unsupported AUR helper: $aur_helper"
     (cd /tmp/$aur_helper && makepkg -si --noconfirm) > /dev/null 2>&1
     rm -rf /tmp/$aur_helper
+    log ok "[Success] Installed $aur_helper!\n" 
 }
 
 # Check if an AUR helper is installed, if not prompts to install helper.
@@ -102,13 +107,19 @@ aur_helper_check() {
         log info "Please select one to install:"
         log info "1) paru"
         log info "2) yay"
-        log info "3) Don't install AUR helper, exit script."
+        log info "3) Why not both?"
+        log info "4) Don't install an AUR helper, exit script."
         read -rp "Enter your choice [1-3]: " choice
         case $choice in
-            1) aur_helper_install paru && log ok "[Success] Installed paru!\n" ;;
-            2) aur_helper_install yay  && log ok "[Success] Installed yay!\n" ;;
-            3) log warn "Exiting..."; exit 0 ;;
-            *) log warn "Invalid option, exiting..."; exit 1 ;;
+            1)  aur_helper_install paru 
+                ;;
+            2)  aur_helper_install yay  
+                ;;
+            3)  aur_helper_install yay  
+                aur_helper_install paru 
+                ;;
+            4)  log warn "Exiting..."; exit 0 ;;
+            *)  log warn "Invalid option, exiting..."; exit 1 ;;
         esac
     fi
 }
