@@ -1,6 +1,6 @@
 # Levy's Dotfiles
 
-The purpose of this repository is simply to keep track of my dotfiles, feel free to use anything that you find useful here :D. This configuration was made using Arch, other distros have not been tested and may not work. Below is a list of the software configured
+The purpose of this repository is simply to keep track of my dotfiles, feel free to use anything that you find useful here :D. This configuration was made using Arch, other distros have not been tested and may not work.
 
 ## Preview 
 
@@ -18,10 +18,8 @@ chmod +x install.sh
 ```
 
 ### Manual 
-
-1. Install an AUR helper (paru or yay) 
-2. Make sure all dependencies are installed
-3. Clone the repo & symlink the desired configuration files to local pc
+1. Make sure all dependencies are installed
+2. Clone the repo & symlink the desired configuration files
 
 ```bash
 git clone https://github.com/Alexander-Levy/Dotfiles.git
@@ -30,8 +28,6 @@ stow --target="$HOME/.config/<package>" --dir="dotfiles" <package>
 ```
 
 ## TODO
-
-List is in no particular order and with no promise of completion.
 - [X] Add a readme file for each program
 - [ ] Add hyprland keybinds
 - [ ] Add custom neovim keybinds
