@@ -5,12 +5,10 @@
 # with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
 # work with debian and fedora based systems.
 
-version="v0.2.4 "
-# ChangeLog: .2.0 Update system at the start of script, first version to somewhat succesfully setup from minimal arch
-#            .2.1 Added missing dependencies to package list
-#            .2.2 Reformated pkg list
-#            .2.3 Cleaned up and organized code
-#            .2.4 Pacman & Paru now run silently!
+version="v0.2.7 "
+# ChangeLog: .2.5 Made paru installation silent and changed banner msg 
+#            .2.6 Add counter to checker and updated script output
+#            .2.7 Added output message in case nothing was done.
 
 ##########################################################################################
 # Parameters
@@ -76,13 +74,14 @@ log() {
     [[ "$1" == "err"  ]] && echo -e "${red}   $2${reset}"
     [[ "$1" == "info" ]] && echo -e "${blue}   $2${reset}"
     [[ "$1" == "warn" ]] && echo -e "${yellow}   $2${reset}"
+    [[ "$1" == "okno"   ]] && echo -e -n "${green}$2${reset}"
 }
 
 # Install paru AUR helper
 paru_install() {
-    sudo pacman -S --needed base-devel git --noconfirm
-    git clone https://aur.archlinux.org/paru.git /tmp/paru
-    (cd /tmp/paru && makepkg -si --noconfirm)
+    sudo pacman -S --needed base-devel git --noconfirm > /dev/null 2>&1
+    git clone https://aur.archlinux.org/paru.git /tmp/paru > /dev/null 2>&1
+    (cd /tmp/paru && makepkg -si --noconfirm) > /dev/null 2>&1
     rm -rf /tmp/paru
 }
 
@@ -96,10 +95,11 @@ symlink() {
 
     # Ensure target dir exists
     if [[ ! -d "$pkg_target" ]]; then
-        log err "  [$pkg_name] directory not found! Creating it..." 
+        log warn "  [$pkg_name] directory not found! Creating it..." 
         mkdir -p "$pkg_target"
+        log ok   "  Created directory for [$pkg_name]!" 
     else
-        log ok  "  [$pkg_name]" 
+        log okno "  [$pkg_name]" 
         for file in "$pkg_target"/*; do
             rel="${file#"$pkg_target"/}"
             # Create a backup of the existing config files
@@ -112,24 +112,28 @@ symlink() {
         done
     fi
     # Symlink files
+    local linked_counter=0
     find "$pkg_src/$pkg_name" -not -type d | while IFS= read -r file; do
         rel_file="${file#"$pkg_src/$pkg_name"/}"
         target_file="$pkg_target/$rel_file"
         # Symlink the files if they aren't already 
         if [[ ! -L "$target_file" ]]; then
-            log info "    Symlinking $rel_file..."
+            ((linked_counter++))
+            log info "    symlinking $rel_file..."
             mkdir -p "$pkg_target/$(dirname "$rel_file")"
             ln -sf "$file" "$pkg_target/$rel_file"
         fi
     done
+    if [ $linked_counter -eq 0 ]; then    
+        log info " files symlinked, nothing to do"
+    fi
 }
-
 
 ##########################################################################################
 # Script
 ##########################################################################################
 # Welcome message
-banner "Levy's dotfiles installer..." "$version nice rigth? :D"
+banner "Levy's dotfiles installer..." "$version Look at it go!"
 
 # Prepare system quietly 
 sudo pacman -Syu --noconfirm > /dev/null 2>&1
@@ -146,22 +150,23 @@ fi
 
 # Verify necesary pkgs
 section "Checking packages..."
+pkg_counter=0
 for pkg in "${packages[@]}"; do
     if paru -Q "$pkg" &>/dev/null; then
-        log ok   "[OK]      $pkg"
+        log ok   "[$pkg_counter/${#packages[@]}]  [OKAY] $pkg"
     else
-        log warn "[MISSING] $pkg"
+        log warn "[$pkg_counter/${#packages[@]}]  [MISS] $pkg"
         missing+=("$pkg")
     fi
+    ((pkg_counter++))
 done
 
-# Install missing packages
+# Install missing packages one by one, log if install fails and exit early
 if [[ ${#missing[@]} -eq 0 ]]; then
     log ok "[Success] All dependencies already installed!\n"
 else
     read -rp "Install ${#missing[@]} missing package(s)? [y/N] " answer
     [[ "$answer" =~ ^[yY] ]] || exit 0
-    # Install pks one by one
     for pkg in "${missing[@]}"; do
         log info "Installing $pkg... "
         if paru -S --noconfirm "$pkg" > /tmp/pkg_err 2>&1; then
@@ -172,7 +177,6 @@ else
             failed+=("$pkg")
         fi
     done
-    # If failed to install log and exit 
     if [[ ${#failed[@]} -eq 0 ]]; then
         log ok "Installed all packages succesfully!\n"
     else 
@@ -185,7 +189,7 @@ else
 fi
 
 # Symlink configurtations 
-section "Creating symlinks..."
+section "Syncing files..."
 for dir in "$dotfiles_path"/*/; do
     name=$(basename "$dir")
     symlink "$name" "$dotfiles_path" "$config_path/$name" 
