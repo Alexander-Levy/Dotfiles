@@ -10,7 +10,7 @@ The purpose of this repository is simply to keep track of my dotfiles, feel free
 
 ### Hyprland keybinds
 
-| Hyprland binds               | Keybind description                   |
+| Binds                        | Keybind description                   |
 |------------------------------|---------------------------------------|
 | Alt + Space                  | Open app launcher                     |
 | Ctrl + Space                 | Open terminal                         |
@@ -27,7 +27,7 @@ The purpose of this repository is simply to keep track of my dotfiles, feel free
 
 Only custom keybinds are shown here as all the usual keybindings from neovim (vimmotions, yanking, pasting, changing, etc) work as usual and have their default values.
 
-| Neovim binds                 | Keybind description                   |
+| Binds                        | Keybind description                   |
 |------------------------------|---------------------------------------|
 | Alt + w                      | Save file                             |
 | Alt + q                      | Close file                            |
@@ -40,7 +40,7 @@ Only custom keybinds are shown here as all the usual keybindings from neovim (vi
 | Alt + m                      | Toggle Markview                       |
 | Shift + k                    | Lsp hover on cursor                   |
 | Ctrl + c                     | Change colorscheme                    |
-| Alt + up, ALt + down         | Move current line up or down          |
+| Alt + up, Alt + down         | Move current line up or down          |
 
 ## Installation Steps
 

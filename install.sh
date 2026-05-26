@@ -6,7 +6,6 @@
 # work with debian and fedora based systems.
 
 version="v0.2.11"
-# ChangeLog: .2.11 Migrated hardcoded paru to $aur_helper variable
 
 ##########################################################################################
 # Parameters
@@ -16,13 +15,13 @@ aur_helper=""
 failed=()
 missing=()
 packages=(
-    brightnessctl power-profiles-daemon wl-clipboard xdg-desktop-portal-hyprland # system utils [monitor, power mode, clipboard]
-    pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse           # audio dependencies
-    hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown hyprpolkitagent # window manager & utils
-    kitty waybar swaync bluetui wiremix fastfetch                                # desktop shell / elements
+    brightnessctl power-profiles-daemon wl-clipboard xdg-desktop-portal-hyprland # system utils 
+    pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse           # audio 
+    hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown hyprpolkitagent # window manager & tools
+    kitty waybar swaync bluetui wiremix fastfetch                                # desktop shell & elements
     bat curl eza git fzf vim fish ncdu yazi btop                                 # console/terminal tools 
-    neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) dependencies
-    mpvpaper wlctl-bin vicinae-bin snappy-switcher                               # aur pkgs for desktop shell / elements
+    neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) deps
+    mpvpaper wlctl-bin vicinae-bin snappy-switcher                               # aur pkgs 
 )
 
 # Paths
@@ -195,7 +194,7 @@ update_system() {
 ##########################################################################################
 # Script
 ##########################################################################################
-banner "Levy's dotfiles installer..." "$version Prototype model unit-01 "
+banner "Levy's dotfiles installer..." "$version Testing release "
 update_system # Update packages & database before starting the script 
 aur_helper_check # Install aur helper if one is not found
 
