@@ -2,7 +2,7 @@
 
 The purpose of this repository is simply to keep track of my dotfiles, feel free to use anything that you find useful here :D. This configuration was made using Arch, other distros have not been tested and may not work.
 
-## Preview 
+### Preview 
 
 ![screenshot of desktop](./media/desktop.png)
 
