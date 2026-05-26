@@ -1,41 +1,10 @@
-#!/usr/bin/env bash
 
-# Author:   Alexander Levy
-# Blob:     The purpose of this script is to install all necesary packages and create symlinks
-# with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
-# work with debian and fedora based systems.
-
-version="v0.2.13"
-# ChangeLog: .2.12 fixed output when installing aur helpers
-#            .2.13 added the option to install both (chaotic neutral ahh option)
+# Author:  Alexander Levy
+# Blob:    Core helper functions used for managing dotfiles with symlinks
+# Version: v0.2
 
 ##########################################################################################
-# Parameters
-##########################################################################################
-# Variables
-aur_helper=""
-failed=()
-missing=()
-packages=(
-    ttf-jetbrains-mono ttf-jetbrains-mono-nerd                                   # fonts
-    brightnessctl power-profiles-daemon wl-clipboard xdg-desktop-portal-hyprland # system utils 
-    pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse           # audio 
-    hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown hyprpolkitagent # window manager & tools
-    kitty waybar swaync bluetui wiremix fastfetch                                # desktop shell & elements
-    bat curl eza git fzf vim fish ncdu yazi btop                                 # console/terminal tools 
-    neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) deps
-    mpvpaper wlctl-bin vicinae-bin snappy-switcher                               # aur pkgs 
-)
-
-# Paths
-current_path="$(realpath "$(dirname "$0")")"
-dotfiles_path="$(realpath "$(dirname "$0")")/dotfiles"
-config_path="$HOME/.config"
-wallpaper_path="$HOME/Wallpapers"
-backup_path="$HOME/.dotfiles-backup"
-
-##########################################################################################
-# Helper functions
+# Core functions
 ##########################################################################################
 
 # Prints message inside pretty banner
@@ -84,13 +53,45 @@ aur_helper_install() {
     if [[ "$aur_helper" != "paru" && "$aur_helper" != "yay" ]]; then
         log err "Unsupported AUR helper: $aur_helper"
         return 1
+    elif [[ $aur_helper == "yay" ]];then 
+        if command -v yay &>/dev/null; then
+            log info "yay is already installed!"
+            return 1
+        fi
+    elif [[ $aur_helper == "paru" ]];then 
+        if command -v paru &>/dev/null; then
+            log info "paru is already installed!"
+            return 1
+        fi
+    else
+        log info "Installing $aur_helper..."
+        sudo pacman -S --needed base-devel git --noconfirm > /dev/null 2>&1
+        git clone https://aur.archlinux.org/$aur_helper.git  /tmp/$aur_helper > /dev/null 2>&1
+        (cd /tmp/$aur_helper && makepkg -si --noconfirm) > /dev/null 2>&1
+        rm -rf /tmp/$aur_helper
+        log ok "[Success] Installed $aur_helper!\n"
     fi
-    log info "Installing $aur_helper..."
-    sudo pacman -S --needed base-devel git --noconfirm > /dev/null 2>&1
-    git clone https://aur.archlinux.org/$aur_helper.git  /tmp/$aur_helper > /dev/null 2>&1
-    (cd /tmp/$aur_helper && makepkg -si --noconfirm) > /dev/null 2>&1
-    rm -rf /tmp/$aur_helper
-    log ok "[Success] Installed $aur_helper!\n" 
+}
+
+# Helper funcs; shows all currently available aur helpers
+aur_helper_install_selection() {
+    log info "Please select one to install:"
+    log info "1) paru"
+    log info "2) yay"
+    log info "3) Why not both?"
+    log info "4) Don't install an AUR helper, exit script."
+    read -rp "Enter your choice [1-4]: " choice
+    case $choice in
+        1)  aur_helper_install paru 
+            ;;
+        2)  aur_helper_install yay  
+            ;;
+        3)  aur_helper_install yay  
+            aur_helper_install paru 
+            ;;
+        4)  log warn "Exiting..."; exit 0 ;;
+        *)  log warn "Invalid option, exiting..."; exit 1 ;;
+    esac
 }
 
 # Check if an AUR helper is installed, if not prompts to install helper.
@@ -104,23 +105,7 @@ aur_helper_check() {
         log ok "[Success] yay found!\n"
     else
         log warn "No AUR helper found."
-        log info "Please select one to install:"
-        log info "1) paru"
-        log info "2) yay"
-        log info "3) Why not both?"
-        log info "4) Don't install an AUR helper, exit script."
-        read -rp "Enter your choice [1-3]: " choice
-        case $choice in
-            1)  aur_helper_install paru 
-                ;;
-            2)  aur_helper_install yay  
-                ;;
-            3)  aur_helper_install yay  
-                aur_helper_install paru 
-                ;;
-            4)  log warn "Exiting..."; exit 0 ;;
-            *)  log warn "Invalid option, exiting..."; exit 1 ;;
-        esac
+        aur_helper_install_selection
     fi
 }
 
@@ -201,30 +186,3 @@ install_missing_packages() {
 update_system() {
     sudo pacman -Syu --noconfirm > /dev/null 2>&1
 }
-
-##########################################################################################
-# Script
-##########################################################################################
-banner "Levy's dotfiles installer..." "$version Testing release "
-update_system # Update packages & database before starting the script 
-aur_helper_check # Install aur helper if one is not found
-
-# Verify that the necessary packages are installed 
-section "Checking packages..."
-for pkg in "${packages[@]}"; do
-    if $aur_helper -Q "$pkg" &>/dev/null; then
-        log ok   "  [OKAY] $pkg"
-    else
-        log warn "  [MISS] $pkg"
-        missing+=("$pkg")
-    fi
-done
-install_missing_packages # Install missing packages, exit early if fails
-
-# Symlink configurtations 
-section "Syncing files..."
-for dir in "$dotfiles_path"/*/; do
-    symlink "$(basename "$dir")" "$dotfiles_path" "$config_path/$(basename "$dir")" 
-done
-symlink "Wallpapers" "$current_path" "$wallpaper_path" # symlink wallpapers
-
