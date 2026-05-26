@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
 
 # Author:   Alexander Levy
-# Version:  v0.1.3
+# Version:  v0.1.9
 # Blob:     The purpose of this script is to install all necesary packages and create symlinks
 # with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
 # work with debian and fedora based systems.
 #
-# ChangeLog: .2.3Added snappy-switcher and hyprshot to list of required pkgs
-#            .4 
-#
+# ChangeLog: .1.4 If config already exists create a backup in $backup_path, 
+#            delete it and then symlink.
+#            .1.5 Removed stow dependency, now done manually thru ln's  
+#            .1.6 Fixed issue with backups
+#            .1.7 Internal change: cleaned up code (helper funcs)
+#            .1.8 No more exit message (It had to be done :'( )
+#            .1.9 Made script output prettier
 
+##########################################################################################
+# Parameters
+##########################################################################################
 # Variables
 failed=()
 missing=()
@@ -27,81 +34,156 @@ current_path="$(realpath "$(dirname "$0")")"
 dotfiles_path="$(realpath "$(dirname "$0")")/dotfiles"
 config_path="$HOME/.config"
 wallpaper_path="$HOME/Wallpapers"
+backup_path="$HOME/.dotfiles-backup"
 
-# Start program :D (idk how to make it pretty :( yet ;))
-echo "Levy's dotfiles installer..."
+##########################################################################################
+# Helper functions
+##########################################################################################
 
-# Install paru if not installed
-echo "Checking if paru is installed..."
+# Prints message inside pretty banner
+# Arguments: [title] [subtitle]
+banner() {
+    local title="$1" subtitle="$2"
+    local width=75
+    local border=$(printf '═%.0s' $(seq 1 $width))
+
+    echo -e "\e[34m╔${border}╗"
+    printf "║%*s%*s ║\n" $(( (width + ${#title})     / 2 )) "$title"     $(( (width - ${#title})     / 2 )) ""
+    printf "║%*s%*s ║\n" $(( (width + ${#subtitle})  / 2 )) "$subtitle"  $(( (width - ${#subtitle})  / 2 )) ""
+    echo -e "╚${border}╝\e[0m"
+}
+
+# Prints message inside section 
+# Arguments: [message]
+section() {
+    local message="$1"
+    local width=34
+    local border=$(printf '─%.0s' $(seq 1 $width))
+
+    echo -e "\e[34m┌${border}┐"
+    printf "│%*s%*s│\n" $(( (width + ${#message}) / 2 )) "$message" $(( (width - ${#message}) / 2 )) ""
+    echo -e "└${border}┘\e[0m"
+}
+
+# Better logging
+# ok: green, err: red, info: blue, warn: yellow
+log() {
+    local green="\e[32m" 
+    local red="\e[31m" 
+    local blue="\e[34m" 
+    local yellow="\e[33m" 
+    local reset="\e[0m"
+    [[ "$1" == "ok"   ]] && echo -e "${green}   $2${reset}"
+    [[ "$1" == "err"  ]] && echo -e "${red}   $2${reset}"
+    [[ "$1" == "info" ]] && echo -e "${blue}   $2${reset}"
+    [[ "$1" == "warn" ]] && echo -e "${yellow}   $2${reset}"
+}
+
+# Verify that target dir exists, create backup of existing files
+# and symlink configuration.
+# Arguments: pkg:[name][../src][target]
+symlink() {
+    local pkg_name="$1"     # ie nvim
+    local pkg_src="$2"      # ie ./dotfiles (dir)
+    local pkg_target="$3"   # ie ~/.config/nvim (dir)
+
+    # Ensure target dir exists
+    if [[ ! -d "$pkg_target" ]]; then
+        log err "  [$pkg_name] directory not found! Creating it..." 
+        mkdir -p "$pkg_target"
+    else
+        log ok  "  [$pkg_name]" 
+        for file in "$pkg_target"/*; do
+            rel="${file#"$pkg_target"/}"
+            # Create a backup of the existing config files
+            if [[ -e "$file" && ! -L "$file" && ! -d "$file" ]]; then
+                mkdir -p "$backup_path/$pkg_name"
+                cp -r "$file" "$backup_path/$pkg_name/"
+                rm -rf "$file"
+                log info "    backing up $rel..."
+            fi
+        done
+    fi
+    # Symlink files
+    find "$pkg_src/$pkg_name" -not -type d | while IFS= read -r file; do
+        rel_file="${file#"$pkg_src/$pkg_name"/}"
+        target_file="$pkg_target/$rel_file"
+        # Symlink the files if they aren't already 
+        if [[ ! -L "$target_file" ]]; then
+            echo "    Symlinking $rel_file..."
+            mkdir -p "$pkg_target/$(dirname "$rel_file")"
+            ln -sf "$file" "$pkg_target/$rel_file"
+        fi
+    done
+}
+
+##########################################################################################
+# Script
+##########################################################################################
+# Welcome message
+banner "Levy's dotfiles installer..." " v0.1.9 nice rigth? :D"
+
+# Install paru if not Installed
+section "Checking if paru is installed..."
 if command -v paru &>/dev/null; then
-    echo "Success! paru is installed"
+    log ok "[Success] paru found!\n"
 else 
-    echo "Program was not found, installing..."
+    log warn "Program was not found, installing paru..."
     sudo pacman -S --needed base-devel git --noconfirm
     git clone https://aur.archlinux.org/paru.git /tmp/paru
     (cd /tmp/paru && makepkg -si --noconfirm)
     rm -rf /tmp/paru
-    echo "Succesfully installed paru!"
+    log ok "[Success] Installed paru!\n"
 fi
 
 # Verify necesary pkgs
-echo "Checking packages..."
+section "Checking packages..."
 for pkg in "${packages[@]}"; do
     if paru -Q "$pkg" &>/dev/null; then
-        echo "  [OK]        $pkg"
+        log ok   "[OK]      $pkg"
     else
-        echo "  [MISSING]   $pkg"
+        log warn "[MISSING] $pkg"
         missing+=("$pkg")
     fi
 done
 
 # Install missing packages
 if [[ ${#missing[@]} -eq 0 ]]; then
-    echo "All packages installed!"
+    log ok "[Success] All dependencies already installed!\n"
 else
     read -rp "Install ${#missing[@]} missing package(s)? [y/N] " answer
     [[ "$answer" =~ ^[yY] ]] || exit 0
     # Install pks one by one
     for pkg in "${missing[@]}"; do
-        echo -n "  Installing $pkg... "
+        log info "Installing $pkg... "
         if paru -S --noconfirm "$pkg" 2>/tmp/pkg_err; then
-            echo "done"
+            log ok "done"
         else
-            echo "FAILED"
-            echo "  Reason: $(cat /tmp/pkg_err | tail -1)"
+            log warn "FAILED"
+            log warn "  Reason: $(cat /tmp/pkg_err | tail -1)"
             failed+=("$pkg")
         fi
     done
+
+    # If failed to install log and exit 
     if [[ ${#failed[@]} -eq 0 ]]; then
-        echo "Installed all packages succesfully!"
+        log ok "Installed all packages succesfully!\n"
     else 
-        echo
-        echo "Failed to install:"
+        log err "Failed to install:"
         for pkg in "${failed[@]}"; do
-            echo "  - $pkg"
+            log warn "  - $pkg"
         done
         exit 1
     fi
 fi
 
-# Create symlinks
-echo "Symlinking dotfiles..."
+# Symlink configurtations 
+section "Creating symlinks..."
 for dir in "$dotfiles_path"/*/; do
     name=$(basename "$dir")
-    if [[ ! -d "$config_path/$name" ]]; then 
-        mkdir -p "$config_path/$name" 
-        echo "Created ~/.config/$name"
-    fi
-    stow --target="$config_path/$name" --dir="$dotfiles_path" --restow "$name"
-    echo "  [LINKED] $name"
+    symlink "$name" "$dotfiles_path" "$config_path/$name" 
 done
-if [[ ! -d "$wallpaper_path" ]]; then
-    mkdir -p "$wallpaper_path" 
-    echo "Created ~/Wallpapers"
-fi
-stow --target="$wallpaper_path" --dir="$current_path" --restow Wallpapers
-echo "  [LINKED] Wallpapers"
 
-# Exit message (did you get the joke?xD)
-echo "Done :D paru!"
+# Symlink wallpapers
+symlink "Wallpapers" "$current_path" "$wallpaper_path" 
 
