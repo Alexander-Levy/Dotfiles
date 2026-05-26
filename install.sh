@@ -5,10 +5,13 @@
 # with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
 # work with debian and fedora based systems.
 
-version="v0.2.7 "
-# ChangeLog: .2.5 Made paru installation silent and changed banner msg 
-#            .2.6 Add counter to checker and updated script output
-#            .2.7 Added output message in case nothing was done.
+version="v0.2.10"
+# ChangeLog: .2.8  Updated install and log output
+#            .2.9  Script now ask to chose: paru or yay
+#            .2.10 Cleaned up the script section {easier to follow}
+
+# TODO:
+#      migrate hardcoded paru to generic $aur_helper variable
 
 ##########################################################################################
 # Parameters
@@ -54,7 +57,7 @@ banner() {
 # Arguments: [message]
 section() {
     local message="$1"
-    local width=34
+    local width=44
     local border=$(printf '─%.0s' $(seq 1 $width))
 
     echo -e "\e[34m┌${border}┐"
@@ -62,7 +65,7 @@ section() {
     echo -e "└${border}┘\e[0m"
 }
 
-# Better logging
+# Better echo
 # ok: green, err: red, info: blue, warn: yellow
 log() {
     local green="\e[32m" 
@@ -70,19 +73,50 @@ log() {
     local blue="\e[34m" 
     local yellow="\e[33m" 
     local reset="\e[0m"
-    [[ "$1" == "ok"   ]] && echo -e "${green}   $2${reset}"
-    [[ "$1" == "err"  ]] && echo -e "${red}   $2${reset}"
-    [[ "$1" == "info" ]] && echo -e "${blue}   $2${reset}"
-    [[ "$1" == "warn" ]] && echo -e "${yellow}   $2${reset}"
+    [[ "$1" == "ok"     ]] && echo -e "${green} $2${reset}"
+    [[ "$1" == "err"    ]] && echo -e "${red} $2${reset}"
+    [[ "$1" == "info"   ]] && echo -e "${blue} $2${reset}"
+    [[ "$1" == "warn"   ]] && echo -e "${yellow} $2${reset}"
     [[ "$1" == "okno"   ]] && echo -e -n "${green}$2${reset}"
+    [[ "$1" == "infono" ]] && echo -e -n "${blue}$2${reset}"
 }
 
-# Install paru AUR helper
-paru_install() {
+# Download and install an AUR helper
+# Supported options: paru or yay
+aur_helper_install() {
+    local aur_helper="$1"
+    if [[ "$aur_helper" != "paru" && "$aur_helper" != "yay" ]]; then
+        return 1
+    fi
     sudo pacman -S --needed base-devel git --noconfirm > /dev/null 2>&1
-    git clone https://aur.archlinux.org/paru.git /tmp/paru > /dev/null 2>&1
-    (cd /tmp/paru && makepkg -si --noconfirm) > /dev/null 2>&1
-    rm -rf /tmp/paru
+    git clone https://aur.archlinux.org/$aur_helper.git  /tmp/$aur_helper > /dev/null 2>&1
+    log err "Unsupported AUR helper: $aur_helper"
+    (cd /tmp/$aur_helper && makepkg -si --noconfirm) > /dev/null 2>&1
+    rm -rf /tmp/$aur_helper
+}
+
+# Check if an AUR helper is installed, if not prompts to install helper.
+aur_helper_check() {
+    section "Checking if an AUR Helper is installed... "
+    if command -v paru &>/dev/null; then
+        log ok "[Success] paru found!\n"
+    elif command -v yay &>/dev/null; then
+        log ok "[Success] yay found!\n"
+    else
+        log warn "No AUR helper found."
+        log info "Please select one to install:"
+        log info "1) paru"
+        log info "2) yay"
+        log info "3) Don't install AUR helper, exit script."
+        read -rp "Enter your choice [1-3]: " choice
+
+        case $choice in
+            1) aur_helper_install paru && log ok "[Success] Installed paru!\n" ;;
+            2) aur_helper_install yay  && log ok "[Success] Installed yay!\n" ;;
+            3) log warn "Exiting..."; exit 0 ;;
+            *) log warn "Invalid option, exiting..."; exit 1 ;;
+        esac
+    fi
 }
 
 # Verify that target dir exists, create backup of existing files
@@ -125,74 +159,67 @@ symlink() {
         fi
     done
     if [ $linked_counter -eq 0 ]; then    
-        log info " files symlinked, nothing to do"
+        log info "files symlinked, nothing to do"
     fi
 }
 
-##########################################################################################
-# Script
-##########################################################################################
-# Welcome message
-banner "Levy's dotfiles installer..." "$version Look at it go!"
-
-# Prepare system quietly 
-sudo pacman -Syu --noconfirm > /dev/null 2>&1
-
-# Install paru if not Installed
-section "Checking if paru is installed..."
-if command -v paru &>/dev/null; then
-    log ok "[Success] paru found!\n"
-else 
-    log warn "Program was not found, installing paru..."
-    paru_install
-    log ok "[Success] Installed paru!\n"
-fi
-
-# Verify necesary pkgs
-section "Checking packages..."
-pkg_counter=0
-for pkg in "${packages[@]}"; do
-    if paru -Q "$pkg" &>/dev/null; then
-        log ok   "[$pkg_counter/${#packages[@]}]  [OKAY] $pkg"
-    else
-        log warn "[$pkg_counter/${#packages[@]}]  [MISS] $pkg"
-        missing+=("$pkg")
+install_missing_packages() {
+    if [[ ${#missing[@]} -eq 0 ]]; then
+        log ok "[Success] All dependencies already installed!\n"
+        return 0
     fi
-    ((pkg_counter++))
-done
-
-# Install missing packages one by one, log if install fails and exit early
-if [[ ${#missing[@]} -eq 0 ]]; then
-    log ok "[Success] All dependencies already installed!\n"
-else
     read -rp "Install ${#missing[@]} missing package(s)? [y/N] " answer
     [[ "$answer" =~ ^[yY] ]] || exit 0
     for pkg in "${missing[@]}"; do
-        log info "Installing $pkg... "
+        log infono "Installing $pkg... "
         if paru -S --noconfirm "$pkg" > /tmp/pkg_err 2>&1; then
-            log ok "done"
+            log ok "done!"
         else
-            log warn "FAILED"
-            log warn "  Reason: $(cat /tmp/pkg_err | tail -1)"
+            log warn "failed to install"
+            log warn "  Reason: $(tail -1 /tmp/pkg_err)"
             failed+=("$pkg")
         fi
     done
     if [[ ${#failed[@]} -eq 0 ]]; then
-        log ok "Installed all packages succesfully!\n"
-    else 
+        log ok "Installed all packages successfully!\n"
+    else
         log err "Failed to install:"
         for pkg in "${failed[@]}"; do
             log warn "  - $pkg"
         done
         exit 1
     fi
-fi
+}
+
+# Alias to update system database and packages
+update_system() {
+    sudo pacman -Syu --noconfirm > /dev/null 2>&1
+}
+
+##########################################################################################
+# Script
+##########################################################################################
+# Prepare system quietly 
+banner "Levy's dotfiles installer..." "$version Prototype model unit-01 "
+update_system # Update packages & database before starting the script 
+
+# Verify that the necessary packages are installed 
+aur_helper_check # Install aur helper if one is not found
+section "Checking packages..."
+for pkg in "${packages[@]}"; do
+    if paru -Q "$pkg" &>/dev/null; then
+        log ok   "  [OKAY] $pkg"
+    else
+        log warn "  [MISS] $pkg"
+        missing+=("$pkg")
+    fi
+done
+install_missing_packages # Install missing packages, exit early if fails
 
 # Symlink configurtations 
 section "Syncing files..."
 for dir in "$dotfiles_path"/*/; do
-    name=$(basename "$dir")
-    symlink "$name" "$dotfiles_path" "$config_path/$name" 
+    symlink "$(basename "$dir")" "$dotfiles_path" "$config_path/$(basename "$dir")" 
 done
 symlink "Wallpapers" "$current_path" "$wallpaper_path" # symlink wallpapers
 
