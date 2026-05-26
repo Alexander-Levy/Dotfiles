@@ -22,11 +22,6 @@ function nano
     nvim $argv
 end
 
-# Replace yay with paru 
-function yay
-    paru $argv
-end
-
 # Fuzzy find file with preview & open with nvim
 function fzvi
     nvim $(fzf --preview='bat --color always {}')
