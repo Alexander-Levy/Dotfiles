@@ -28,7 +28,6 @@ stow --target="$HOME/.config/<package>" --dir="dotfiles" <package>
 ```
 
 ## TODO
-- [X] Add a readme file for each program
 - [ ] Add hyprland keybinds
 - [ ] Add custom neovim keybinds
 

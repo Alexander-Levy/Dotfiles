@@ -5,9 +5,12 @@
 # with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
 # work with debian and fedora based systems.
 
-version="v0.1.12"
-# ChangeLog: .1.11 Turned version into a variable
-#            .1.12 Prettier output when symlinking files
+version="v0.2.4 "
+# ChangeLog: .2.0 Update system at the start of script, first version to somewhat succesfully setup from minimal arch
+#            .2.1 Added missing dependencies to package list
+#            .2.2 Reformated pkg list
+#            .2.3 Cleaned up and organized code
+#            .2.4 Pacman & Paru now run silently!
 
 ##########################################################################################
 # Parameters
@@ -16,13 +19,13 @@ version="v0.1.12"
 failed=()
 missing=()
 packages=(
-    brightnessctl                                   # deps
-    hyprland hyprpaper hyprlock hyprshot            # window manager
-    kitty waybar swaync bluetui wiremix             # de shell / elements
-    mpvpaper wlctl-bin vicinae-bin snappy-switcher  # aur de shell / elements
-    bat eza stow ncdu fastfetch                     # qof tools
-    curl git fzf vim fish neovim yazi btop          # console tools 
-    npm wget unzip ripgrep tree-sitter-cli          # neovim deps
+    brightnessctl power-profiles-daemon wl-clipboard xdg-desktop-portal-hyprland # system utils [monitor, power mode, clipboard]
+    pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse           # audio dependencies
+    hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown hyprpolkitagent # window manager & utils
+    kitty waybar swaync bluetui wiremix fastfetch                                # desktop shell / elements
+    bat curl eza git fzf vim fish ncdu yazi btop                                 # console/terminal tools 
+    neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) dependencies
+    mpvpaper wlctl-bin vicinae-bin snappy-switcher                               # aur pkgs for desktop shell / elements
 )
 
 # Paths
@@ -75,6 +78,14 @@ log() {
     [[ "$1" == "warn" ]] && echo -e "${yellow}   $2${reset}"
 }
 
+# Install paru AUR helper
+paru_install() {
+    sudo pacman -S --needed base-devel git --noconfirm
+    git clone https://aur.archlinux.org/paru.git /tmp/paru
+    (cd /tmp/paru && makepkg -si --noconfirm)
+    rm -rf /tmp/paru
+}
+
 # Verify that target dir exists, create backup of existing files
 # and symlink configuration.
 # Arguments: pkg:[name][../src][target]
@@ -113,11 +124,15 @@ symlink() {
     done
 }
 
+
 ##########################################################################################
 # Script
 ##########################################################################################
 # Welcome message
 banner "Levy's dotfiles installer..." "$version nice rigth? :D"
+
+# Prepare system quietly 
+sudo pacman -Syu --noconfirm > /dev/null 2>&1
 
 # Install paru if not Installed
 section "Checking if paru is installed..."
@@ -125,10 +140,7 @@ if command -v paru &>/dev/null; then
     log ok "[Success] paru found!\n"
 else 
     log warn "Program was not found, installing paru..."
-    sudo pacman -S --needed base-devel git --noconfirm
-    git clone https://aur.archlinux.org/paru.git /tmp/paru
-    (cd /tmp/paru && makepkg -si --noconfirm)
-    rm -rf /tmp/paru
+    paru_install
     log ok "[Success] Installed paru!\n"
 fi
 
@@ -152,7 +164,7 @@ else
     # Install pks one by one
     for pkg in "${missing[@]}"; do
         log info "Installing $pkg... "
-        if paru -S --noconfirm "$pkg" 2>/tmp/pkg_err; then
+        if paru -S --noconfirm "$pkg" > /tmp/pkg_err 2>&1; then
             log ok "done"
         else
             log warn "FAILED"
@@ -178,7 +190,5 @@ for dir in "$dotfiles_path"/*/; do
     name=$(basename "$dir")
     symlink "$name" "$dotfiles_path" "$config_path/$name" 
 done
-
-# Symlink wallpapers
-symlink "Wallpapers" "$current_path" "$wallpaper_path" 
+symlink "Wallpapers" "$current_path" "$wallpaper_path" # symlink wallpapers
 
