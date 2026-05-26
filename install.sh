@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
 # Author:   Alexander Levy
-# Version:  v0.1.10
 # Blob:     The purpose of this script is to install all necesary packages and create symlinks
 # with configuration files to the correct dir (~/.config/ for most). Asumes arch linux, will not
 # work with debian and fedora based systems.
-#
-# ChangeLog: .1.10 Added brightnessctl to pkg list
+
+version="v0.1.12"
+# ChangeLog: .1.11 Turned version into a variable
+#            .1.12 Prettier output when symlinking files
 
 ##########################################################################################
 # Parameters
@@ -105,7 +106,7 @@ symlink() {
         target_file="$pkg_target/$rel_file"
         # Symlink the files if they aren't already 
         if [[ ! -L "$target_file" ]]; then
-            echo "    Symlinking $rel_file..."
+            log info "    Symlinking $rel_file..."
             mkdir -p "$pkg_target/$(dirname "$rel_file")"
             ln -sf "$file" "$pkg_target/$rel_file"
         fi
@@ -116,7 +117,7 @@ symlink() {
 # Script
 ##########################################################################################
 # Welcome message
-banner "Levy's dotfiles installer..." " v0.1.10 nice rigth? :D"
+banner "Levy's dotfiles installer..." "$version nice rigth? :D"
 
 # Install paru if not Installed
 section "Checking if paru is installed..."
@@ -159,7 +160,6 @@ else
             failed+=("$pkg")
         fi
     done
-
     # If failed to install log and exit 
     if [[ ${#failed[@]} -eq 0 ]]; then
         log ok "Installed all packages succesfully!\n"
