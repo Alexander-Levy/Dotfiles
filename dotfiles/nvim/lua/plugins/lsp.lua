@@ -67,31 +67,33 @@ return{
 
         config = function()
             vim.diagnostic.config({
+                signs = true,            -- letters at left side
+                underline = true,        -- underline problematic code
+                update_in_insert = true, -- update when in insert mode
+                severity_sort = true,    -- errors first, then warnings, etc.
+                virtual_lines = { current_line = true }, -- only show for the line under cursor
                 virtual_text = {
                     -- prefix = "●",
                     suffix = "",        -- text after message
                     spacing = 2,        -- spaces between code and diagnostic
                     source = "if_many", -- show LSP source: true | false | "if_many" (only when multiple LSPs)
                 },
-                signs = true,
-                underline = true,                       -- underline problematic code
-                update_in_insert = true,                -- update when in insert mode
-                severity_sort = true,                   -- errors first, then warnings, etc.
-                virtual_lines = { current_line = true } -- only show for the line under cursor
+                float = {
+                    border = "rounded",
+                    source = "if_many",
+                    focusable = false,
+                },
             })
-
             vim.lsp.config('lua_ls', {
                 settings = {
                     Lua = {
                         runtime = { version = 'LuaJIT' }, -- Neovim uses LuaJIT
+                        telemetry = { enable = false },
+                        diagnostics = { globals = 'vim' }, -- Stops "undefined global vim" warnings
                         workspace = {
                             checkThirdParty = false,
                             library = vim.api.nvim_get_runtime_file("", true), -- Loads all nvim runtime files
                         },
-                        diagnostics = {
-                            globals = { 'vim' },  -- Stops "undefined global vim" warnings
-                        },
-                        telemetry = { enable = false },
                     },
                 },
             })
