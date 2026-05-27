@@ -25,9 +25,10 @@ return{
                         treesitter = true,  -- Syntax highlights in preview 
                         filesize_limit = 2, -- Don't preview files larger
                     },
-                    winblend = 10,                  -- Makes the telescope semi-transparent (0 = solid, 20 = fairly transparent)
-                    prompt_position = "top",        -- Moves the search bar to the top to match ascending sort
-                    sorting_strategy = "ascending", -- Shows results top-to-bottom instead of bottom-to-top
+                    winblend = 10,                       -- Makes the telescope semi-transparent (0 = solid, 20 = fairly transparent)
+                    prompt_position = "top",             -- Moves the search bar to the top to match ascending sort
+                    sorting_strategy = "ascending",      -- Shows results top-to-bottom instead of bottom-to-top
+                    file_ignore_patterns = { "%.git/" }, -- Don't preview file pattern in picker
                 },
                 pickers = {
                     find_files = { hidden = true },
