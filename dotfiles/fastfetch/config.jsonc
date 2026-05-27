@@ -4,7 +4,7 @@
     
     "logo": {
         "type": "kitty-icat",
-        "source": "~/Wallpapers/hornet.png",
+        "source": "~/.config/fastfetch/logo/hornet.png",
         "width": 24,
         "height": 18
     },
