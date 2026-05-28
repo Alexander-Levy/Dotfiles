@@ -50,7 +50,7 @@ Clone the repo and run the installation script. It will detect and download all 
 
 ```bash
 git clone https://github.com/Alexander-Levy/Dotfiles.git
-cd Dotfiles
+cd Dotfiles/scripts
 ./install.sh
 ```
 ### Manual 
