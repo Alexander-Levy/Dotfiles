@@ -5,7 +5,8 @@
 # with configuration files to the correct dir. Asumes arch linux, will not work with debian and 
 # fedora based systems.
 
-version="v0.3.0"
+version="v0.3.1"
+# ChangeLog: .3.1 Added lazygit to dependencies
 
 # Variables
 aur_helper=""
@@ -13,11 +14,11 @@ failed=()
 missing=()
 packages=(
     ttf-jetbrains-mono ttf-jetbrains-mono-nerd                                   # fonts
-    brightnessctl power-profiles-daemon wl-clipboard xdg-desktop-portal-hyprland # system utils 
+    brightnessctl power-profiles-daemon xdg-desktop-portal-hyprland              # system utils 
     pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse           # audio 
     hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown hyprpolkitagent # window manager & tools
-    kitty waybar swaync bluetui wiremix fastfetch                                # desktop shell & elements
-    bat curl eza git fzf vim fish ncdu yazi btop                                 # console/terminal tools 
+    kitty waybar swaync bluetui wiremix fastfetch wl-clipboard                   # desktop shell & elements
+    bat curl eza git lazygit fzf vim fish ncdu yazi btop                         # console/terminal tools 
     neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) deps
     mpvpaper wlctl-bin vicinae-bin snappy-switcher                               # aur pkgs 
 )
