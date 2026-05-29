@@ -22,12 +22,13 @@ local clipBoard      = 'vicinae vicinae://launch/clipboard/history'
 local closeSession   = "hyprshutdown"
 
 -- Animated Wallpaper
+StartMpvpaper     = "mpvpaper -s -o '--hwdec=auto --vd-lavc-threads=2 --profile=fast no-audio loop' ALL "
 AnimatedWallpaper = "~/Wallpapers/Smoking-girl-city.mp4"
 
 -- Restart shell elements
 local restartWaybar    = "pkill waybar; waybar"
 local changeToHyprpaper = "pkill mpvpaper; hyprpaper"
-local changeToMpvpaper  = "pkill hyprpaper; mpvpaper -p -o 'loop' ALL " .. AnimatedWallpaper
+local changeToMpvpaper  = "pkill hyprpaper; " .. StartMpvpaper .. AnimatedWallpaper
 local killWallpapers    = "pkill mpvpaper; pkill hyprpaper"
 
 -- ===========================================================================
