@@ -157,6 +157,35 @@ end
 hl.bind(mainMod .. " + CTRL + T", toggle_layout)
 
 -- ===========================================================================
+-- Floating Mode
+-- ===========================================================================
+local floating_workspaces = {}
+local function toggle_workspace_float()
+    local ws = hl.get_active_workspace()
+    if not ws then return end
+    local ws_id = ws.id
+
+    floating_workspaces[ws_id] = not (floating_workspaces[ws_id] or false)
+    local should_float = floating_workspaces[ws_id]
+    -- Toggle all existing windows on this workspace
+    for _, win in ipairs(hl.get_windows()) do
+        if win.workspace.id == ws_id and win.floating ~= should_float then
+            -- Pass the window object directly as the selector
+            hl.dispatch(hl.dsp.window.float({ action = "toggle", window = win }))
+        end
+    end
+    -- Add/remove a window rule so new windows on this workspace open floating
+    local rule_name = "ws-float-" .. ws_id
+    local rule = hl.window_rule({
+        name = rule_name,
+        match = { workspace = tostring(ws_id) },
+        float = true,
+    })
+    rule:set_enabled(should_float)
+end
+hl.bind(mainMod .. " + CTRL + SHIFT + T", toggle_workspace_float)
+
+-- ===========================================================================
 -- Workspaces binds
 -- ===========================================================================
 -- Switch workspaces & move windows around workspaces 
