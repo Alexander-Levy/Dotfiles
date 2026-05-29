@@ -11,7 +11,7 @@ local gameLauncher = "steam"
 local nitroSense   = "DAMX"
 local notification = "swaync-client -t"
 local fileManager  = terminal .. " -e yazi"
-local taskManager  = terminal .. " -o font_size=14.0 -e btop"
+local taskManager  = terminal .. " -o font_size=13.0 -e btop"
 
 -- Desktop utilities
 local lockScreen     = "hyprlock"
@@ -21,8 +21,14 @@ local colorPicker    = "hyprpicker -n -a"
 local clipBoard      = 'vicinae vicinae://launch/clipboard/history'
 local closeSession   = "hyprshutdown"
 
+-- Animated Wallpaper
+AnimatedWallpaper = "~/Wallpapers/Smoking-girl-city.mp4"
+
 -- Restart shell elements
-local restartWaybar = "pkill waybar; waybar"
+local restartWaybar    = "pkill waybar; waybar"
+local changeToHyprpaper = "pkill mpvpaper; hyprpaper"
+local changeToMpvpaper  = "pkill hyprpaper; mpvpaper -p -o 'loop' ALL " .. AnimatedWallpaper
+local killWallpapers    = "pkill mpvpaper; pkill hyprpaper"
 
 -- ===========================================================================
 -- Keybinds
@@ -57,7 +63,19 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lockScreen))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(closeSession))
 
 -- Reload shell
+local wallpaperBackend = "animated" -- Options: image or animated
+local function toggle_wallpaper()
+    if wallpaperBackend == "image" then
+        hl.exec_cmd(changeToMpvpaper)
+        wallpaperBackend = "animated"
+    else
+        hl.exec_cmd(changeToHyprpaper)
+        wallpaperBackend = "image"
+    end
+end
+hl.bind(mainMod .. " + CTRL + W", toggle_wallpaper)
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(restartWaybar))
+hl.bind(mainMod .. " + CTRL + SHIFT + W", hl.dsp.exec_cmd(killWallpapers))
 
 -- ===========================================================================
 -- Window binds
@@ -92,15 +110,16 @@ local function unbind_scrolling()
     hl.unbind(mainMod .. " + J")
     hl.unbind(mainMod .. " + H")
 end
+bind_scrolling() -- Enable scrolling binds (default layout)
 
 -- Dwindle layout binds
 local function bind_dwindle()
-    -- hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprctl dispatch pseudo"))
-    -- hl.bind(mainMod .. " + J", hl.dsp.exec_cmd("hyprctl dispatch togglesplit"))
+    hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
+    hl.bind(mainMod .. " + K", hl.dsp.layout("swapsplit"))
 end
 local function unbind_dwindle()
-    -- hl.unbind(mainMod .. " + P")
-    -- hl.unbind(mainMod .. " + J")
+    hl.unbind(mainMod .. " + J")
+    hl.unbind(mainMod .. " + K")
 end
 
 -- Toggle between scrolling and dwindle
@@ -133,9 +152,6 @@ local function toggle_layout()
         currentLayout = "scrolling"
     end
 end
-
--- Enable scrolling binds (default layout)
-bind_scrolling()
 
 -- Toggle between dwindle and scrolling layouts
 hl.bind(mainMod .. " + CTRL + T", toggle_layout)
