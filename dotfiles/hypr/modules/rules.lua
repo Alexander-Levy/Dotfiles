@@ -19,15 +19,6 @@ hl.window_rule({
     no_focus = true,
 })
 
--- Launch steam in floating mode
--- hl.window_rule({
---     name   = "steam-launcher",
---     match  = { class = "steam" },
---     float  = true,
---     center = true,
---     size   = {1270, 765},
--- })
-
 -- Launch steam settings in floating mode but in a smaller window
 hl.window_rule({
     name   = "steam-settings",
@@ -50,6 +41,33 @@ hl.window_rule({
     match  = { class = "DivAcerManagerMax" },
     float  = true,
     center = true,
+})
+
+-- ===========================================================================
+-- Waybay widgets
+-- ===========================================================================
+-- Launch network manager floating 
+hl.window_rule({
+    name       = "nm-widget",
+    match      = { title = "kitty-nmmgr" },
+    float = true,
+    move  = { 11 , 50 },
+})
+
+-- Launch bluetooth manager floating 
+hl.window_rule({
+    name       = "bl-widget",
+    match      = { title = "kitty-blmgr" },
+    float = true,
+    move  = { 11 , 50 },
+})
+
+-- Launch network manager floating 
+hl.window_rule({
+    name       = "pw-widget",
+    match      = { title = "kitty-pwmgr" },
+    float = true,
+    move  = { 630 , 50 },
 })
 
 -- ===========================================================================

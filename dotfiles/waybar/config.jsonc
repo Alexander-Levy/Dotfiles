@@ -68,7 +68,7 @@
 
         "tooltip-format": " NETWORK STATUS:\n Name:\t\t{essid} \n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Local IP:\t\t{ipaddr}",
         "tooltip-format-wifi": " NETWORK STATUS:\n Name:\t\t\t{essid}\n Signal Strength:\t{signalStrength}%\n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Frecuency:\t\t{frequency} GHz\n Local IP:\t\t{ipaddr}",
-        "on-click": "kitty -e wlctl"
+        "on-click": "kitty --title kitty-nmmgr -e wlctl"
     },
 // Bluetooth settings
     "bluetooth": {
@@ -78,7 +78,7 @@
         "format-connected": " ({num_connections}) ",
         "tooltip-format": " COMMUNICATION STATUS:\n Controller:\t{controller_alias}\n Status:\t{status}\n Devices:\t{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}",
-        "on-click": "kitty -e bluetui"
+        "on-click": "kitty --title kitty-blmgr -e bluetui"
     },
 // Battery Life settings
 "battery": {
@@ -158,7 +158,7 @@
             "default": [" ", " ", "  "]
         },
         "tooltip-format": " SOUND SYSTEM:\n Volume: {volume}%\n Device: {desc}",
-        "on-click": "kitty -e wiremix"
+        "on-click": "kitty --title kitty-pwmgr -e wiremix"
     },
 // Clock
     "clock": {
