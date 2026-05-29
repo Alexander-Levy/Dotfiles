@@ -3,7 +3,6 @@
 -- ===========================================================================
 return{
     -- Colorscheme
-    { "Mofiqul/vscode.nvim" },
     { "folke/tokyonight.nvim" },
     { "bluz71/vim-moonfly-colors" },
     {
