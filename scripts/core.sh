@@ -1,7 +1,6 @@
-
 # Author:  Alexander Levy
 # Blob:    Core helper functions used for managing dotfiles with symlinks
-# Version: v0.2
+# Version: v0.2.2
 
 ##########################################################################################
 # Core functions
@@ -53,16 +52,6 @@ aur_helper_install() {
     if [[ "$aur_helper" != "paru" && "$aur_helper" != "yay" ]]; then
         log err "Unsupported AUR helper: $aur_helper"
         return 1
-    elif [[ $aur_helper == "yay" ]];then 
-        if command -v yay &>/dev/null; then
-            log info "yay is already installed!"
-            return 1
-        fi
-    elif [[ $aur_helper == "paru" ]];then 
-        if command -v paru &>/dev/null; then
-            log info "paru is already installed!"
-            return 1
-        fi
     else
         log info "Installing $aur_helper..."
         sudo pacman -S --needed base-devel git --noconfirm > /dev/null 2>&1
@@ -82,13 +71,10 @@ aur_helper_install_selection() {
     log info "4) Don't install an AUR helper, exit script."
     read -rp "Enter your choice [1-4]: " choice
     case $choice in
-        1)  aur_helper_install paru 
-            ;;
-        2)  aur_helper_install yay  
-            ;;
-        3)  aur_helper_install yay  
-            aur_helper_install paru 
-            ;;
+        1)  aur_helper_install paru ;;
+        2)  aur_helper_install yay  ;;
+        3)  aur_helper_install yay  ;  
+            aur_helper_install paru ;;
         4)  log warn "Exiting..."; exit 0 ;;
         *)  log warn "Invalid option, exiting..."; exit 1 ;;
     esac
@@ -96,14 +82,36 @@ aur_helper_install_selection() {
 
 # Check if an AUR helper is installed, if not prompts to install helper.
 aur_helper_check() {
+    local yay_installed=0
+    local paru_installed=0
+
     section "Checking if an AUR Helper is installed... "
     if command -v paru &>/dev/null; then
-        aur_helper="paru"
+        paru_installed=1
         log ok "[Success] paru found!\n"
-    elif command -v yay &>/dev/null; then
-        aur_helper="yay"
+    fi
+    if command -v yay &>/dev/null; then
+        yay_installed=1
         log ok "[Success] yay found!\n"
-    else
+    fi
+
+    # If both are installed choose which one to use
+    if [[ $yay_installed -eq 1 && $paru_installed -eq 1 ]]; then    
+        log info "Both paru and yay are installed, please select which one to use:"
+        log info "1) paru"
+        log info "2) yay"
+        read -rp "Enter your choice [1-2]: " choice
+        case $choice in
+            1)  aur_helper="paru" ;;
+            2)  aur_helper="yay"  ;;
+            *)  aur_helper="paru" ;;
+        esac
+    elif [[ $yay_installed -eq 0 && $paru_installed -eq 1 ]]; then
+        aur_helper="paru"
+    elif [[ $yay_installed -eq 1 && $paru_installed -eq 0 ]]; then
+        aur_helper="yay"
+    # If no aur helpers are found, go to install 
+    elif [[ $yay_installed -eq 0 && $paru_installed -eq 0 ]]; then    
         log warn "No AUR helper found."
         aur_helper_install_selection
     fi
@@ -135,19 +143,19 @@ symlink() {
         done
     fi
     # Symlink files one by one and handle special case
-    local linked_counter=0
-    find "$pkg_src/$pkg_name" -not -type d | while IFS= read -r file; do
+    linked_counter=0
+    while IFS= read -r file; do
         rel_file="${file#"$pkg_src/$pkg_name"/}"
         target_file="$pkg_target/$rel_file"
         # Symlink the files if they aren't already 
         if [[ ! -L "$target_file" ]]; then
-            ((linked_counter++))
-            log info "    symlinking $rel_file..."
+            linked_counter=1
+            log info "symlinking $rel_file..."
             mkdir -p "$pkg_target/$(dirname "$rel_file")"
             ln -sf "$file" "$pkg_target/$rel_file"
         fi
-    done
-    if [ $linked_counter -eq 0 ]; then    
+    done< <(find "$pkg_src/$pkg_name" -not -type d)
+    if (( linked_counter == 0 )); then    
         log info "files symlinked, nothing to do"
     fi
 }
