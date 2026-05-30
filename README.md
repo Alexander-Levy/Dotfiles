@@ -22,45 +22,59 @@ The purpose of this repository is simply to keep track of my dotfiles, feel free
 | Super + N                    | Toggle notification center            |
 | Super + P                    | Use colorpicker and copy to clipboard |
 | Alt + Tab, Alt + Shift + Tab | Cycle througth opened windows         |
+| More                         | TODO                                  |
 
 ### Neovim keybinds
 
 Only custom keybinds are shown here as all the usual keybindings from neovim (vimmotions, yanking, pasting, changing, etc) work as usual and have their default values.
 
-| Binds                        | Keybind description                   |
-|------------------------------|---------------------------------------|
-| Alt + w                      | Save file                             |
-| Alt + q                      | Close file                            |
-| Alt + r                      | Source file                           |
-| Alt + t                      | Open new tab                          |
-| Alt + e                      | Open file tree                        |
-| Alt + m                      | Toggle Markview                       |
-| Alt + f                      | Find files using telescope            |
-| Alt + g                      | Fuzzy find using telescope            |
-| Alt + m                      | Toggle Markview                       |
-| Shift + k                    | Lsp hover on cursor                   |
-| Ctrl + c                     | Change colorscheme                    |
-| Alt + up, Alt + down         | Move current line up or down          |
+| Binds                        | Keybind description                       |
+|------------------------------|-------------------------------------------|
+| Alt + w                      | Save file                                 |
+| Alt + q                      | Close file                                |
+| Alt + r                      | Source file                               |
+| Alt + t                      | Open new tab                              |
+| Alt + up, Alt + down         | Move current line up or down              |
+| Alt + e                      | Open file tree                            |
+| Alt + m                      | Toggle Markview                           |
+| Alt + v                      | Browse recent files using telescope       |
+| Alt + f                      | Find files in current dir using telescope |
+| Alt + g                      | Fuzzy find in current dir using telescope |
+| Ctrl + c                     | Change colorscheme                        |
+| Ctrl + g                     | Git status of current dir                 |
+| Shift + k                    | Language Server: Hover on cursor          |
+| r + n                        | Language Server: Rename buffer            |
+| g + d                        | Language Server: Go to definition         |
+| g + r                        | Language Server: Go to reference          |
+| g + c + a                    | Language Server: Display code actions     |
 
 ## Installation Steps
 
+### Manual 
+
+1. Ensure that all dependencies are installed.
+
+```bash
+sudo pacman -Syu <deps> 
+```
+
+2. Clone the repository and symlink the desired configuration files 
+
+```bash
+git clone https://github.com/Alexander-Levy/Dotfiles.git
+stow --target="<target_dir>" --dir="<../source_dir>" <package>
+```
+
 ### Automated 
 
-Clone the repo and run the installation script. It will detect and download all missing dependencies and sync the configuration files.
+Clone the repo and run the installation script. It will detect & download all missing dependencies, install an AUR helper if one is not present in the system, and sync the configuration files.
 
 ```bash
 git clone https://github.com/Alexander-Levy/Dotfiles.git
 cd Dotfiles/scripts
 ./install.sh
 ```
-### Manual 
-
- 1. Ensure that all dependencies are installed.
- 2. Clone the repository and symlink the desired configuration files 
-
-```bash
-stow --target="<target_dir>" --dir="<../source_dir>" <package>
-```
 
 ## TODO
-- [ ] Complete list of hyprland & neovim binds
+- [ ] Complete list of hyprland
+
