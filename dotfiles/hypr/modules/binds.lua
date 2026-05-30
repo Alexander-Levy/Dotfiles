@@ -15,115 +15,35 @@ local taskManager  = terminal .. " -o font_size=13.0 -e btop"
 
 -- Desktop utilities
 local lockScreen     = "hyprlock"
-local closeSession   = "hyprshutdown"
-local colorPicker    = "hyprpicker -n -a"
-local saveScreenshot = "hyprshot -m region"
 local screenshot     = "hyprshot -m region --clipboard-only"
+local saveScreenshot = "hyprshot -m region"
+local colorPicker    = "hyprpicker -n -a"
 local clipBoard      = 'vicinae vicinae://launch/clipboard/history'
+local closeSession   = "hyprshutdown"
 
 -- Animated Wallpaper
-AnimatedWallpaper = "~/Wallpapers/Highlands-tower.mp4"
 StartMpvpaper     = "mpvpaper -s -o '--hwdec=auto --vd-lavc-threads=2 --profile=fast no-audio loop' ALL "
+AnimatedWallpaper = "~/Wallpapers/Smoking-girl-city.mp4"
 
 -- Restart shell elements
-local restartWaybar     = "pkill waybar; waybar"
+local restartWaybar    = "pkill waybar; waybar"
 local changeToHyprpaper = "pkill mpvpaper; hyprpaper"
 local changeToMpvpaper  = "pkill hyprpaper; " .. StartMpvpaper .. AnimatedWallpaper
 local killWallpapers    = "pkill mpvpaper; pkill hyprpaper"
 
--- Modifier key
+-- ===========================================================================
+-- Keybinds
+-- ===========================================================================
 local mainMod = "SUPER"
 
--- ===========================================================================
--- Functions
--- ===========================================================================
--- Toggle between hyprpaper and mpvpaper as wallpapers backend
-local wallpaperBackend = "animated"
-local function toggle_wallpaper()
-    if wallpaperBackend == "image" then
-        hl.exec_cmd(changeToMpvpaper)
-        wallpaperBackend = "animated"
-    else
-        hl.exec_cmd(changeToHyprpaper)
-        wallpaperBackend = "image"
-    end
-end
-
--- Keybinds for scrolling layout
-local function bind_scrolling()
-    hl.bind(mainMod .. " + K", hl.dsp.layout("swapcol r"))
-    hl.bind(mainMod .. " + J", hl.dsp.layout("swapcol l"))
-    hl.bind(mainMod .. " + H", hl.dsp.layout("colresize +conf"))
-end
-local function unbind_scrolling()
-    hl.unbind(mainMod .. " + K")
-    hl.unbind(mainMod .. " + J")
-    hl.unbind(mainMod .. " + H")
-end
-bind_scrolling() -- Enable scrolling binds (default layout)
-
--- Keybinds for dwindle layout 
-local function bind_dwindle()
-    hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
-    hl.bind(mainMod .. " + K", hl.dsp.layout("swapsplit"))
-end
-local function unbind_dwindle()
-    hl.unbind(mainMod .. " + J")
-    hl.unbind(mainMod .. " + K")
-end
-
--- Toggle between scrolling & dwindle layouts
-local currentLayout    = "scrolling"
-local function toggle_layout()
-    if currentLayout == "scrolling" then
-        hl.timer(function()
-            unbind_scrolling()
-            bind_dwindle()
-        end, { timeout = 50, type = "oneshot" })
-        hl.config({
-            general = { layout = "dwindle", col = { active_border = "rgba(37f499ff)" } }
-        })
-        currentLayout = "dwindle"
-    else
-        hl.timer(function()
-            unbind_dwindle()
-            bind_scrolling()
-        end, { timeout = 50, type = "oneshot" })
-        hl.config({
-            general = { layout = "scrolling", col = { active_border = "rgba(04d1f9ff)" } }
-        })
-        currentLayout = "scrolling"
-    end
-end
-
--- Make all windows in a workspace float 
-local floating_workspaces = {}
-local function toggle_workspace_float()
-    local ws = hl.get_active_workspace()
-    if not ws then return end
-    local ws_id = ws.id
-    floating_workspaces[ws_id] = not (floating_workspaces[ws_id] or false)
-    local should_float = floating_workspaces[ws_id]
-    for _, win in ipairs(hl.get_windows()) do
-        if win.workspace.id == ws_id and win.floating ~= should_float then
-            hl.dispatch(hl.dsp.window.float({ action = "toggle", window = win }))
-        end
-    end
-    local rule = hl.window_rule({
-        name = "ws-float-" .. ws_id,
-        match = { workspace = tostring(ws_id) },
-        float = true,
-    })
-    rule:set_enabled(should_float)
-end
-
--- ===========================================================================
--- General binds
--- ===========================================================================
 -- App launcher, terminal & close windows
 hl.bind("ALT  + SPACE", hl.dsp.exec_cmd(menu))
 hl.bind("CTRL + SPACE", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
+
+-- App switcher
+hl.bind("ALT  + TAB", hl.dsp.exec_cmd('snappy-switcher next'))
+hl.bind("ALT  + SHIFT + TAB", hl.dsp.exec_cmd('snappy-switcher prev'))
 
 -- Programs
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
@@ -137,41 +57,134 @@ hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notification))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd(colorPicker))
 hl.bind(mainMod .. " + SHIFT+ S", hl.dsp.exec_cmd(screenshot))
 hl.bind(mainMod .. " + CTRL + SHIFT+ S", hl.dsp.exec_cmd(saveScreenshot))
-hl.bind("CTRL + SHIFT + ESCAPE", hl.dsp.exec_cmd(taskManager))
-
--- Shell elements (Status bar & Wallpaper backend)
-hl.bind(mainMod .. " + CTRL + W", toggle_wallpaper)
-hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(restartWaybar))
-hl.bind(mainMod .. " + CTRL + SHIFT + W", hl.dsp.exec_cmd(killWallpapers))
-
--- App switcher
-hl.bind("ALT  + TAB", hl.dsp.exec_cmd('snappy-switcher next'))
-hl.bind("ALT  + SHIFT + TAB", hl.dsp.exec_cmd('snappy-switcher prev'))
+hl.bind("SUPER + SHIFT + ESCAPE", hl.dsp.exec_cmd(taskManager))
 
 -- Session binds (logout & exit Hyprland)
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lockScreen))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(closeSession))
 
+-- Reload shell
+local wallpaperBackend = "animated" -- Options: image or animated
+local function toggle_wallpaper()
+    if wallpaperBackend == "image" then
+        hl.exec_cmd(changeToMpvpaper)
+        wallpaperBackend = "animated"
+    else
+        hl.exec_cmd(changeToHyprpaper)
+        wallpaperBackend = "image"
+    end
+end
+hl.bind(mainMod .. " + CTRL + W", toggle_wallpaper)
+hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(restartWaybar))
+hl.bind(mainMod .. " + CTRL + SHIFT + W", hl.dsp.exec_cmd(killWallpapers))
+
 -- ===========================================================================
 -- Window binds
 -- ===========================================================================
+-- Move/resize windows
+hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
+hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+
 -- Move window focus 
 hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
 
--- Move/resize windows
-hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true }) -- Move windows
-hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true }) -- Resize windows
-
--- Change window mode
-hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" })) -- toggle tiled/floating mode
+-- Change window mode:
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" })) -- toggle fullscreen
+hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }))      -- toggle tiled/floating mode
 
+-- ===========================================================================
 -- Layout binds
-hl.bind(mainMod .. " + CTRL + T", toggle_layout) -- Toggle between dwindle and scrolling layouts
-hl.bind(mainMod .. " + CTRL + SHIFT + T", toggle_workspace_float) -- Toggle per workspace floating mode
+-- ===========================================================================
+local currentLayout = "scrolling"
+
+-- Scrolling layout binds
+local function bind_scrolling()
+    hl.bind(mainMod .. " + K", hl.dsp.layout("swapcol r"))
+    hl.bind(mainMod .. " + J", hl.dsp.layout("swapcol l"))
+    hl.bind(mainMod .. " + H", hl.dsp.layout("colresize +conf"))
+end
+local function unbind_scrolling()
+    hl.unbind(mainMod .. " + K")
+    hl.unbind(mainMod .. " + J")
+    hl.unbind(mainMod .. " + H")
+end
+bind_scrolling() -- Enable scrolling binds (default layout)
+
+-- Dwindle layout binds
+local function bind_dwindle()
+    hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
+    hl.bind(mainMod .. " + K", hl.dsp.layout("swapsplit"))
+end
+local function unbind_dwindle()
+    hl.unbind(mainMod .. " + J")
+    hl.unbind(mainMod .. " + K")
+end
+
+-- Toggle between scrolling and dwindle
+local function toggle_layout()
+    if currentLayout == "scrolling" then
+        -- Change layout binds
+        hl.timer(function()
+            unbind_scrolling()
+            bind_dwindle()
+        end, { timeout = 50, type = "oneshot" })
+        hl.config({
+            general = {
+                layout = "dwindle",
+                col = { active_border = "rgba(37f499ff)" }, -- Change borders to green (dwindle)
+            }
+        })
+        currentLayout = "dwindle"
+    else
+        -- Change layout binds
+        hl.timer(function()
+            unbind_dwindle()
+            bind_scrolling()
+        end, { timeout = 50, type = "oneshot" })
+        hl.config({
+            general = {
+                layout = "scrolling",
+                col = { active_border = "rgba(04d1f9ff)" }, -- Change borders to blue (scrolling)
+            }
+        })
+        currentLayout = "scrolling"
+    end
+end
+
+-- Toggle between dwindle and scrolling layouts
+hl.bind(mainMod .. " + CTRL + T", toggle_layout)
+
+-- ===========================================================================
+-- Floating Mode
+-- ===========================================================================
+local floating_workspaces = {}
+local function toggle_workspace_float()
+    local ws = hl.get_active_workspace()
+    if not ws then return end
+    local ws_id = ws.id
+
+    floating_workspaces[ws_id] = not (floating_workspaces[ws_id] or false)
+    local should_float = floating_workspaces[ws_id]
+    -- Toggle all existing windows on this workspace
+    for _, win in ipairs(hl.get_windows()) do
+        if win.workspace.id == ws_id and win.floating ~= should_float then
+            -- Pass the window object directly as the selector
+            hl.dispatch(hl.dsp.window.float({ action = "toggle", window = win }))
+        end
+    end
+    -- Add/remove a window rule so new windows on this workspace open floating
+    local rule_name = "ws-float-" .. ws_id
+    local rule = hl.window_rule({
+        name = rule_name,
+        match = { workspace = tostring(ws_id) },
+        float = true,
+    })
+    rule:set_enabled(should_float)
+end
+hl.bind(mainMod .. " + CTRL + SHIFT + T", toggle_workspace_float)
 
 -- ===========================================================================
 -- Workspaces binds
