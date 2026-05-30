@@ -18,8 +18,8 @@ return{
 
     -- Language Server
     vim.keymap.set("n", "K", vim.lsp.buf.hover),         -- K: Show documentation
+    vim.keymap.set("n", "rn", vim.lsp.buf.rename),       -- r + n: Rename buffer
     vim.keymap.set("n", "gd", vim.lsp.buf.definition),   -- g + d: Go to definition
     vim.keymap.set("n", "gr", vim.lsp.buf.references),   -- g + r: Find references
-    vim.keymap.set("n", "gca", vim.lsp.buf.code_action),  -- c + a: Code actions (How did i live without this?) 
-    -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename) -- Rename
+    vim.keymap.set("n", "gca", vim.lsp.buf.code_action), -- c + a: Code actions (How did i live without this?) 
 }
