@@ -69,6 +69,7 @@ tooltip label {
 #network,
 #bluetooth,
 #battery,
+#custom-cava,
 
 #power-profiles-daemon,
 
@@ -116,6 +117,10 @@ tooltip label {
 #battery {
     color: @green;
     border: 2px solid @green;
+}
+#custom-cava {
+    color: @blue;
+    border: 2px solid @blue;
 }
 
 /* Rigth Modules */
