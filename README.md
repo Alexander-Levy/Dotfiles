@@ -52,13 +52,28 @@ Only custom keybinds are shown here as all the usual keybindings from neovim (vi
 
 ### Manual 
 
-1. Ensure that all dependencies are installed.
+1. Install an AUR helper if you don't have one installed already. 
 
 ```bash
-sudo pacman -Syu <deps> 
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
 ```
 
-2. Clone the repository and symlink the desired configuration files 
+2. Ensure that all dependencies are installed.
+
+```bash
+# Download dependencies
+sudo pacman -S btop fish yazi kitty swaync waybar fastfetch \
+               neovim npm wget unzip ripgrep tree-sitter-cli \
+               hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown \
+
+# Download AUR packages
+paru -S mpvpaper wlctl-bin vicinae-bin snappy-switcher 
+```
+
+3. Clone the repository and symlink the desired configuration files 
 
 ```bash
 git clone https://github.com/Alexander-Levy/Dotfiles.git
@@ -76,5 +91,5 @@ cd Dotfiles/scripts
 ```
 
 ## TODO
-- [ ] Complete list of hyprland
+- [ ] Complete list of hyprland binds
 
