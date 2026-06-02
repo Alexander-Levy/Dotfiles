@@ -192,5 +192,7 @@ install_missing_packages() {
 
 # Alias to update system database and packages
 update_system() {
+    section "Updating operating system..."
     sudo pacman -Syu --noconfirm > /dev/null 2>&1
+    log ok "Update completed!"
 }
