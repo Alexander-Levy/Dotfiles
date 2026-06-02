@@ -1,5 +1,8 @@
 /* Levy's Waybar Style */
+
+/* ============================================================================ */
 /* Colors */
+/* ============================================================================ */
 @define-color background    #212337;
 @define-color foreground    #ebfafa;
 @define-color black         #323449;
@@ -12,7 +15,9 @@
 @define-color cyan          #04d1f9;
 @define-color orange        #f7c67f;
 
+/* ============================================================================ */
 /* Global settings*/ 
+/* ============================================================================ */
 * {
     font-family: "JetBrainsMono Nerd Font", monospace; 
     font-size: 16px;
@@ -29,7 +34,9 @@ window#waybar.hidden {
     opacity: 0.2;
 }
 
-/* Tooltips settings*/
+/* ============================================================================ */
+/* Tooltips settings */
+/* ============================================================================ */
 tooltip {
   margin: 30px 0px;
   background: @background;
@@ -39,40 +46,15 @@ tooltip label {
   color: @green;
 }
 
-/* Workspace style */
-#workspaces {
-  padding: 0px 4px;
-  margin: 2px 3px 2px 10px;
-  
-  border-radius: 20px;
-  border: 2px solid @blue;
-  background: @background;
-}
-
-/* Workspace buttons */
-/* Workspace that has something open but not active */
-#workspaces button {
-    color: @green;
-}
-/* Active Workspace */
-#workspaces button.active {
-    color: @magenta;
-    padding: 0px 15px;
-}
-#workspaces button.empty.active {
-    color: @magenta;
-}
-/* Background workspace thats empty*/
-#workspaces button.empty {}
-
-/* Set all the modules as white by default*/
+/* ============================================================================ */
+/* Default Modules Style */
+/* ============================================================================ */
+#workspaces,
 #network,
 #bluetooth,
 #battery,
 #custom-cava,
-
 #power-profiles-daemon,
-
 #tray,
 #keyboard-state,
 #backlight,
@@ -85,25 +67,27 @@ tooltip label {
     background: @background;
 }
 
-/* Center Modules */
-#power-profiles-daemon {
-    font-size: 17px;
-    padding: 0px 2px;
-}
-#power-profiles-daemon.performance {
-    color: @red;
-    border: 2px solid @red;
-}
-#power-profiles-daemon.balanced {
-    color: @orange;
-    border: 2px solid @orange;
-}
-#power-profiles-daemon.power-saver {
-    color: @cyan;
-    border: 2px solid @cyan;
-}
-
+/* ============================================================================ */
 /* Left Modules */
+/* ============================================================================ */
+#workspaces {
+  margin: 3px 2px 3px 10px;
+  border: 2px solid @blue;
+  background: @background;
+}
+/* Workspace that has something open but not active */
+#workspaces button {
+    color: @green;
+    min-height: 0;    /* prevent default minimums */
+    padding: 0px 8px;
+}
+#workspaces button.empty {} /* Background workspace that's empty */
+/* Active Workspace */
+#workspaces button.active {
+    color: @magenta;
+    padding: 0px 15px;
+}
+#workspaces button.empty.active { color: @magenta; } /* Active workspace that's empty */
 #network {
     color: @cyan;
     padding: 0px 4px;
@@ -123,7 +107,29 @@ tooltip label {
     border: 2px solid @blue;
 }
 
-/* Rigth Modules */
+/* ============================================================================ */
+/* Center Modules */
+/* ============================================================================ */
+#power-profiles-daemon {
+    font-size: 17px;
+    padding: 0px 2px;
+}
+#power-profiles-daemon.performance {
+    color: @red;
+    border: 2px solid @red;
+}
+#power-profiles-daemon.balanced {
+    color: @orange;
+    border: 2px solid @orange;
+}
+#power-profiles-daemon.power-saver {
+    color: @cyan;
+    border: 2px solid @cyan;
+}
+
+/* ============================================================================ */
+/* Right Modules */
+/* ============================================================================ */
 #tray {
     padding: 0px 8px;
     border: 2px solid @blue;

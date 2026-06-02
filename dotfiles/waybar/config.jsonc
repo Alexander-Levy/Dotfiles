@@ -7,7 +7,7 @@
     "spacing": 4,           // Gaps between modules (4px)
     "height": 36,           // Waybar height (to be removed for auto height)
 
-    "margin-top":    2,
+    "margin-top":    0,
     "margin-left":   5,
     "margin-right":  5,
     "margin-bottom": 0,
@@ -47,7 +47,7 @@
             "default": "",
             "empty": ""
         },
-        "icon-size": 6,
+        "icon-size": 1,
         "sort-by-number": true,
         "persistent-workspaces": {
             "1": [],
@@ -63,7 +63,6 @@
         "format-ethernet": "󰀂 ",
         "format-disconnected": "OFFLINE",
         "format-disabled": " DOWN⚠ ",
-
         "tooltip-format": " NETWORK STATUS:\n Name:\t\t{essid} \n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Local IP:\t\t{ipaddr}",
         "tooltip-format-wifi": " NETWORK STATUS:\n Name:\t\t\t{essid}\n Signal Strength:\t{signalStrength}%\n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Frecuency:\t\t{frequency} GHz\n Local IP:\t\t{ipaddr}",
         "on-click": "kitty --title kitty-nmmgr -e wlctl"
@@ -98,8 +97,6 @@
     "exec": "~/.config/waybar/modules/cava.sh",
     "tooltip": false,
     "on-click": "playerctl play-pause"
-    // "return-type": "json",
-    // "format": "{}",
 },
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
