@@ -16,9 +16,8 @@
 //   Module Order
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     "modules-left": [
-        "group/island",
-        "hyprland/workspaces"
-        // "custom/cava"
+        "hyprland/workspaces",
+        "group/island"
     ],
     
     "modules-center": [
@@ -128,6 +127,25 @@
             "unlocked": ""
         }
     },
+// Audio Visualizer
+    "group/media": {
+      "orientation": "horizontal",
+      "modules": [
+        "custom/media-animation",
+        "custom/media-time"
+      ]
+    },
+    "custom/media-animation": {
+      "exec": "~/.config/waybar/modules/media-animation.sh",
+      "tooltip": false
+    },
+    "custom/media-time": {
+      "exec": "~/.config/waybar/modules/media-time.sh",
+      "escape": true,
+      "interval": 1,
+      "tooltip": false
+    },
+
 // Applet 
     "group/island": {
         "orientation": "horizontal",
@@ -137,16 +155,10 @@
             "bluetooth",
             "pulseaudio",
             "keyboard-state",
-            "battery"
+            "battery",
+            "group/media"
         ]
     },
-
-// Audio Visualizer
-    "custom/cava": {
-    "exec": "~/.config/waybar/modules/cava.sh",
-    "tooltip": false,
-    "on-click": "playerctl play-pause"
-},
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Middle modules

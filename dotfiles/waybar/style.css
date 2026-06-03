@@ -48,7 +48,7 @@ tooltip label {
 /* ============================================================================ */
 #workspaces,
 #island,
-#custom-cava,
+#media,
 
 #power-profiles-daemon,
 
@@ -59,7 +59,7 @@ tooltip label {
     margin: 2px 0px;
     padding: 0px;
     border-radius: 20px;
-    border: 1px solid @white;
+    /* border: 1px solid @white; */
     background: @background;
 }
 
@@ -104,9 +104,9 @@ tooltip label {
 #clock {
     color: @green;
 }
-#custom-cava {
-    color: @cyan;
-    border: 2px solid @cyan;
+#media {
+    color: @blue;
+    background: transparent;
 }
 
 /* ============================================================================ */
