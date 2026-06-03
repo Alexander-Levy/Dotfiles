@@ -4,7 +4,7 @@ The purpose of this repository is simply to keep track of my dotfiles, feel free
 
 ### Preview 
 
-![screenshot of desktop](./media/desktop.png)
+![screenshot of desktop](./assets/desktop.png)
 
 ## Usage
 
