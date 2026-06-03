@@ -17,9 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     "modules-left": [
         "hyprland/workspaces",
-        "network",
-        "bluetooth",
-        "battery",
+        "group/island",
         "custom/cava"
     ],
     
@@ -30,8 +28,8 @@
     "modules-right": [
         "tray",
         "keyboard-state",
-        "backlight",
-        "pulseaudio",
+        "group/screen",
+        "custom/audio",
         "clock"
     ],
 
@@ -59,7 +57,7 @@
 // Network settings
     "network": {
         "interval": 2,
-        "format-wifi": "   ",
+        "format-wifi": "  ",
         "format-ethernet": "󰀂 ",
         "format-disconnected": "OFFLINE",
         "format-disabled": " DOWN⚠ ",
@@ -77,23 +75,42 @@
         "tooltip-format-enumerate-connected": "{device_alias}",
         "on-click": "kitty --title kitty-blmgr -e bluetui"
     },
-// Battery Life settings
-"battery": {
-    "interval": 2,
-    "tooltip": true,
-    "states": {
-        "good": 80,
-        "warning": 50,
-        "critical": 30
+// Microphone
+    "pulseaudio": {
+        "max-volume": 100,
+        "format": "{format_source}",
+        "format-source": "",
+        "format-source-muted": " ",
+        "tooltip-format": " SOUND SYSTEM:\n Volume: {volume}%\n Device: {desc}"
     },
-    "format":          " {capacity}% {icon} ",
-    "format-full":     " {icon} ",
-    "format-charging": "{capacity}%  ",
-    "format-icons": [" ", " ", " ", " ", " "],
-    "tooltip-format": " BATTERY STATUS:\n Capacity:\t\t{capacity}%\n Power Draw:\t\t{power:0.2f} Watts\n Battery Health:\t{health}%\n Time:\t\t\t{timeTo}" 
-},
+// Battery Life settings
+    "battery": {
+        "interval": 2,
+        "tooltip": true,
+        "states": {
+            "good": 80,
+            "warning": 50,
+            "critical": 30
+        },
+        "format":          " {capacity}% {icon} ",
+        "format-full":     " {icon} ",
+        "format-charging": " {capacity}%   ",
+        "format-icons": [" ", " ", " ", " ", " "],
+        "tooltip-format": " BATTERY STATUS:\n Capacity:\t\t{capacity}%\n Power Draw:\t\t{power:0.2f} Watts\n Battery Health:\t{health}%\n Time:\t\t\t{timeTo}" 
+    },
+// Applet 
+    "group/island": {
+        "orientation": "horizontal",
+        "modules": [
+            "network",
+            "bluetooth",
+            "pulseaudio",
+            "battery"
+        ]
+    },
+
 // Audio Visualizer
-"custom/cava": {
+    "custom/cava": {
     "exec": "~/.config/waybar/modules/cava.sh",
     "tooltip": false,
     "on-click": "playerctl play-pause"
@@ -143,25 +160,23 @@
         "tooltip-format": " MAGI SCREEN:\n Brigthness: {percent}% {icon}",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
+    "custom/brightness": {
+        "exec": "~/.config/waybar/modules/brightness.sh",
+        "return-type": "json",
+        "interval": 1
+    },
+    "group/screen": {
+        "orientation": "horizontal",
+        "modules": [
+            "backlight",
+            "custom/brightness"
+        ]
+    },
 // Audio settings
-    "pulseaudio": {
-        "scroll-step": 5,          // %, can be a float
-        "max-volume": 100,
-        "reverse-scrolling": true, // fix scrolling control on touchpad
-        // Normal Look
-        "format": " {volume}% {icon}{format_source} ",
-        "format-muted": " MUTED {format_source}",
-        // Mic format
-        "format-source": "",
-        "format-source-muted": " ",
-        "format-icons": {
-            "headphone": " ",
-            "phone": " ",
-            "portable": " ",
-            "car": " ",
-            "default": [" ", " ", "  "]
-        },
-        "tooltip-format": " SOUND SYSTEM:\n Volume: {volume}%\n Device: {desc}",
+    "custom/audio": {
+        "exec": "~/.config/waybar/modules/volume.sh",
+        "return-type": "json",
+        "interval": 1,
         "on-click": "kitty --title kitty-pwmgr -e wiremix"
     },
 // Clock

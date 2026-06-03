@@ -4,7 +4,6 @@
 /* Colors */
 /* ============================================================================ */
 @define-color background    #212337;
-@define-color foreground    #ebfafa;
 @define-color black         #323449;
 @define-color white         #ebfafa;
 @define-color red           #f16c75;
@@ -27,8 +26,6 @@
 window#waybar {
     color: @green;
     background: transparent;
-    /* border-radius: 20px; */
-    /* border: 2px solid @green; */
 }
 window#waybar.hidden {
     opacity: 0.2;
@@ -50,20 +47,21 @@ tooltip label {
 /* Default Modules Style */
 /* ============================================================================ */
 #workspaces,
-#network,
-#bluetooth,
-#battery,
+#island,
 #custom-cava,
+
 #power-profiles-daemon,
+
 #tray,
 #keyboard-state,
-#backlight,
-#pulseaudio,
+#screen,
+#custom-audio,
 #clock { 
     color: @white;
-    margin: 3px 2px;
-    padding: 0px 5px;
+    margin: 2px 2px;
+    padding: 0px;
     border-radius: 20px;
+    /* border: 1px solid @white; */
     background: @background;
 }
 
@@ -71,9 +69,8 @@ tooltip label {
 /* Left Modules */
 /* ============================================================================ */
 #workspaces {
-  margin: 3px 2px 3px 10px;
-  border: 2px solid @blue;
-  background: @background;
+  margin: 2px 2px 2px 10px;
+  border: 2px solid @green;
 }
 /* Workspace that has something open but not active */
 #workspaces button {
@@ -87,24 +84,26 @@ tooltip label {
     color: @magenta;
     padding: 0px 15px;
 }
-#workspaces button.empty.active { color: @magenta; } /* Active workspace that's empty */
+/* Active workspace that's empty */
+#workspaces button.empty.active { color: @magenta; }
+#island {
+    border: 2px solid @blue;
+}
 #network {
     color: @cyan;
-    padding: 0px 4px;
-    border: 2px solid @cyan;
 }
 #bluetooth {
-    color: @magenta;
-    padding: 0px 8px;
-    border: 2px solid @magenta;
+    color: @blue;
+}
+#pulseaudio {
+    color: @red;
 }
 #battery {
     color: @green;
-    border: 2px solid @green;
 }
 #custom-cava {
-    color: @blue;
-    border: 2px solid @blue;
+    color: @cyan;
+    /* border: 2px solid @cyan; */
 }
 
 /* ============================================================================ */
@@ -138,11 +137,11 @@ tooltip label {
     color: @blue;
     border: 2px solid @blue;
 }
-#backlight {
+#screen {
     color: @cyan;
     border: 2px solid @cyan;
 }
-#pulseaudio {
+#custom-audio {
     color: @magenta;
     border: 2px solid @magenta;
 }

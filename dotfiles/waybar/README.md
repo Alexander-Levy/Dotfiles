@@ -7,4 +7,4 @@ Status bar configuration with custom modules and styling.
 - Custom scripts for modules
 
 ## Dependencies
-- `waybar`
+- `waybar`, `bc`, `cava`, `wpctl`, `wlctl`, `bluetui`
