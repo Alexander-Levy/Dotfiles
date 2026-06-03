@@ -16,9 +16,9 @@
 //   Module Order
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     "modules-left": [
-        "hyprland/workspaces",
         "group/island",
-        "custom/cava"
+        "hyprland/workspaces"
+        // "custom/cava"
     ],
     
     "modules-center": [
@@ -27,10 +27,8 @@
     
     "modules-right": [
         "tray",
-        "keyboard-state",
         "group/screen",
-        "custom/audio",
-        "clock"
+        "custom/audio"
     ],
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +51,25 @@
             "3": [],
             "4": []
         }
+    },
+// Clock
+    "clock": {
+        "format": "   {:%I:%M %p}",
+        "format-alt": " {:%A %d %B %Y}",
+        "tooltip-format": "<big><span color='#00f69b'>Calendar</span></big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode"          : "month",
+            "mode-mon-col"  : 3,
+            "on-scroll"     : 1,
+            "format": {
+                "days":       "<span color='#00f69b'><b>{}</b></span>",
+                "weeks":      "<span color='#ad8ee6'><b>W{}</b></span>",
+                "months":     "<span color='#0db9d7'><b>{}</b></span>",
+                "weekdays":   "<span color='#ad8ee6'><b>{}</b></span>",
+                "today":      "<span color='#ff602b'><b>{}</b></span>"
+            }
+        },
+        "actions":  { "on-click-right": "mode" }
     },
 // Network settings
     "network": {
@@ -98,13 +115,28 @@
         "format-icons": [" ", " ", " ", " ", " "],
         "tooltip-format": " BATTERY STATUS:\n Capacity:\t\t{capacity}%\n Power Draw:\t\t{power:0.2f} Watts\n Battery Health:\t{health}%\n Time:\t\t\t{timeTo}" 
     },
+// Caps and NumLock Key Indicators
+    "keyboard-state": {
+        "device-path": "/dev/input/event4",
+        "numlock":      true,
+        "capslock":     false,
+        "scrolllock":   false,
+
+        "format": " {name} {icon} ",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
 // Applet 
     "group/island": {
         "orientation": "horizontal",
         "modules": [
+            "clock",
             "network",
             "bluetooth",
             "pulseaudio",
+            "keyboard-state",
             "battery"
         ]
     },
@@ -140,19 +172,6 @@
         "icon-size": 24,
         "spacing": 8
     },
-// Caps and NumLock Key Indicators
-    "keyboard-state": {
-        "device-path": "/dev/input/event4",
-        "numlock":      true,
-        "capslock":     false,
-        "scrolllock":   false,
-
-        "format":   " {name} {icon} ",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
-        }
-    },
 // Screen Brigthness settings 
     "backlight": {
         "tooltip": true,
@@ -178,25 +197,6 @@
         "return-type": "json",
         "interval": 1,
         "on-click": "kitty --title kitty-pwmgr -e wiremix"
-    },
-// Clock
-    "clock": {
-        "format": "   {:%I:%M %p} ",
-        "format-alt": " {:%A %d %B %Y} ",
-        "tooltip-format": "<big><span color='#00f69b'>Calendar</span></big>\n<tt><small>{calendar}</small></tt>",
-        "calendar": {
-            "mode"          : "month",
-            "mode-mon-col"  : 3,
-            "on-scroll"     : 1,
-            "format": {
-                "days":       "<span color='#00f69b'><b>{}</b></span>",
-                "weeks":      "<span color='#ad8ee6'><b>W{}</b></span>",
-                "months":     "<span color='#0db9d7'><b>{}</b></span>",
-                "weekdays":   "<span color='#ad8ee6'><b>{}</b></span>",
-                "today":      "<span color='#ff602b'><b>{}</b></span>"
-            }
-        },
-        "actions":  { "on-click-right": "mode" }
     }
 }
 
