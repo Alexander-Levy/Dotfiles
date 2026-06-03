@@ -5,7 +5,7 @@ hl.config({
     input = {
         -- Keyboard
         kb_layout    = "us",
-        repeat_rate  = 35,
+        -- repeat_rate  = 35,
         repeat_delay = 200,
 
         -- Mouse & Touchpad
