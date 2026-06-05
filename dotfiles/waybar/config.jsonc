@@ -74,9 +74,9 @@
     "network": {
         "interval": 2,
         "format-wifi": "  ",
-        "format-ethernet": "󰀂 ",
-        "format-disconnected": "OFFLINE",
-        "format-disabled": " DOWN⚠ ",
+        "format-ethernet": " 󰈁",
+        "format-disconnected": " 󰖪 ",
+        "format-disabled": " 󱚼 ",
         "tooltip-format": " NETWORK STATUS:\n Name:\t\t{essid} \n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Local IP:\t\t{ipaddr}",
         "tooltip-format-wifi": " NETWORK STATUS:\n Name:\t\t\t{essid}\n Signal Strength:\t{signalStrength}%\n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Frecuency:\t\t{frequency} GHz\n Local IP:\t\t{ipaddr}",
         "on-click": "kitty --title kitty-nmmgr -e wlctl"
@@ -131,18 +131,11 @@
     "group/media": {
       "orientation": "horizontal",
       "modules": [
-        "custom/media-animation",
-        "custom/media-time"
+        "custom/media-animation"
       ]
     },
     "custom/media-animation": {
       "exec": "~/.config/waybar/modules/media-animation.sh",
-      "tooltip": false
-    },
-    "custom/media-time": {
-      "exec": "~/.config/waybar/modules/media-time.sh",
-      "escape": true,
-      "interval": 1,
       "tooltip": false
     },
 
