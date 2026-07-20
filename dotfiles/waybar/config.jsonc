@@ -16,7 +16,6 @@
 //   Module Order
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     "modules-left": [
-        "hyprland/workspaces",
         "group/island"
     ],
     
@@ -25,7 +24,6 @@
     ],
     
     "modules-right": [
-        "tray",
         "group/screen",
         "custom/audio"
     ],
@@ -127,14 +125,13 @@
             "unlocked": ""
         }
     },
-// Audio Visualizer
-    "group/media": {
-      "orientation": "horizontal",
-      "modules": [
-        "custom/media-animation"
-      ]
+// Tray settings
+    "tray": {
+        "icon-size": 22,
+        "spacing": 8
     },
-    "custom/media-animation": {
+// Audio Visualizer
+    "custom/media": {
       "exec": "~/.config/waybar/modules/media-animation.sh",
       "tooltip": false
     },
@@ -143,13 +140,15 @@
     "group/island": {
         "orientation": "horizontal",
         "modules": [
+            "hyprland/workspaces",
             "clock",
             "network",
             "bluetooth",
             "pulseaudio",
             "keyboard-state",
             "battery",
-            "group/media"
+            "tray",
+            "custom/media"
         ]
     },
 
@@ -172,11 +171,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rigth side modules
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Tray settings
-    "tray": {
-        "icon-size": 24,
-        "spacing": 8
-    },
 // Screen Brigthness settings 
     "backlight": {
         "tooltip": true,

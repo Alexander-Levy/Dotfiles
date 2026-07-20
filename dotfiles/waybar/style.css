@@ -66,9 +66,6 @@ tooltip label {
 /* ============================================================================ */
 /* Left Modules */
 /* ============================================================================ */
-#workspaces {
-  border: 2px solid @blue;
-}
 /* Workspace that has something open but not active */
 #workspaces button {
     color: @green;
@@ -104,9 +101,12 @@ tooltip label {
 #clock {
     color: @green;
 }
-#media {
+#custom-media {
     color: @blue;
     background: transparent;
+}
+#tray {
+    padding: 0px 10px 0px 1px;
 }
 
 /* ============================================================================ */
@@ -132,10 +132,6 @@ tooltip label {
 /* ============================================================================ */
 /* Right Modules */
 /* ============================================================================ */
-#tray {
-    padding: 0px 8px;
-    border: 2px solid @blue;
-}
 #screen {
     color: @cyan;
     border: 2px solid @cyan;
