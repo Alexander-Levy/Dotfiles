@@ -53,8 +53,10 @@ tooltip label {
 #power-profiles-daemon,
 
 #tray,
-#screen,
-#custom-audio { 
+#backlight,
+#custom-brightness,
+#custom-audio, 
+#output { 
     color: @white;
     margin: 2px 0px;
     padding: 0px;
@@ -80,6 +82,8 @@ tooltip label {
 }
 /* Active workspace that's empty */
 #workspaces button.empty.active { color: @magenta; }
+
+
 #island {
     border: 2px solid @green;
 }
@@ -132,12 +136,16 @@ tooltip label {
 /* ============================================================================ */
 /* Right Modules */
 /* ============================================================================ */
-#screen {
+#output {
+    border: 2px solid @blue;
+}
+#backlight {
     color: @cyan;
-    border: 2px solid @cyan;
+}
+#custom-brightness {
+    color: @cyan;
 }
 #custom-audio {
     color: @magenta;
-    border: 2px solid @magenta;
 }
 

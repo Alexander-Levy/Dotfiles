@@ -24,8 +24,7 @@
     ],
     
     "modules-right": [
-        "group/screen",
-        "custom/audio"
+        "group/output"
     ],
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,19 +182,22 @@
         "return-type": "json",
         "interval": 1
     },
-    "group/screen": {
-        "orientation": "horizontal",
-        "modules": [
-            "backlight",
-            "custom/brightness"
-        ]
-    },
 // Audio settings
     "custom/audio": {
         "exec": "~/.config/waybar/modules/volume.sh",
         "return-type": "json",
         "interval": 1,
         "on-click": "kitty --title kitty-pwmgr -e wiremix"
+    },
+
+// Modules screen + audio
+    "group/output": {
+        "orientation": "horizontal",
+        "modules": [
+            "backlight",
+            "custom/brightness",
+            "custom/audio"
+        ]
     }
 }
 
