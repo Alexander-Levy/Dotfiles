@@ -5,8 +5,8 @@
 # with configuration files to the correct dir. Asumes arch linux, will not work with debian and 
 # fedora based systems.
 
-version="v0.3.2"
-# ChangeLog: .3.1 Added bc to dependencies
+version="v0.3.3"
+# ChangeLog: .3.3 Reduced dependencies from AUR. 
 
 # Variables
 aur_helper=""
@@ -20,7 +20,7 @@ packages=(
     kitty waybar swaync bluetui wiremix fastfetch wl-clipboard                   # desktop shell & elements
     bat bc curl eza git lazygit fzf vim fish ncdu yazi btop                      # console/terminal tools 
     neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) deps
-    mpvpaper wlctl-bin vicinae-bin snappy-switcher                               # aur pkgs 
+    mpvpaper wlctl-bin                                                           # aur pkgs 
 )
 
 # Paths

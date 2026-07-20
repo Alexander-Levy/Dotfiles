@@ -2,8 +2,8 @@
 -- Levy's Hyprland Programs & Keybinds
 -- ===========================================================================
 -- Default Programs 
-local menu         = "vicinae toggle"
-local browser      = "firefox"
+local menu         = "wofi"
+local browser      = "zen-browser"
 local terminal     = "kitty"
 local gameLauncher = "steam"
 
@@ -19,7 +19,7 @@ local closeSession   = "hyprshutdown"
 local colorPicker    = "hyprpicker -n -a"
 local saveScreenshot = "hyprshot -m region"
 local screenshot     = "hyprshot -m region --clipboard-only"
-local clipBoard      = 'vicinae vicinae://launch/clipboard/history'
+local clipBoard      = ''
 
 -- Animated Wallpaper
 AnimatedWallpaper = "~/Wallpapers/Highlands-tower.mp4"
@@ -143,10 +143,6 @@ hl.bind("CTRL + SHIFT + ESCAPE", hl.dsp.exec_cmd(taskManager))
 hl.bind(mainMod .. " + CTRL + W", toggle_wallpaper)
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(restartWaybar))
 hl.bind(mainMod .. " + CTRL + SHIFT + W", hl.dsp.exec_cmd(killWallpapers))
-
--- App switcher
-hl.bind("ALT  + TAB", hl.dsp.exec_cmd('snappy-switcher next'))
-hl.bind("ALT  + SHIFT + TAB", hl.dsp.exec_cmd('snappy-switcher prev'))
 
 -- Session binds (logout & exit Hyprland)
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lockScreen))
