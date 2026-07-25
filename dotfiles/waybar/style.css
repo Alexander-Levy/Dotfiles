@@ -46,17 +46,9 @@ tooltip label {
 /* ============================================================================ */
 /* Default Modules Style */
 /* ============================================================================ */
-#workspaces,
 #island,
-#media,
-
 #power-profiles-daemon,
-
-#tray,
-#backlight,
-#custom-brightness,
-#custom-audio, 
-#output { 
+#status { 
     color: @white;
     margin: 2px 0px;
     padding: 0px;
@@ -83,7 +75,6 @@ tooltip label {
 /* Active workspace that's empty */
 #workspaces button.empty.active { color: @magenta; }
 
-
 #island {
     border: 2px solid @green;
 }
@@ -91,26 +82,20 @@ tooltip label {
     color: @cyan;
 }
 #bluetooth {
-    color: @cyan;
-}
-#pulseaudio {
-    color: @red;
+    color: @blue;
 }
 #battery {
     color: @green;
 }
-#keyboard-state {
-    color: @magenta;
+#pulseaudio.microphone {
+    color: @red;
 }
-#clock {
-    color: @green;
+#tray {
+    padding: 0px 10px 0px 1px;
 }
 #custom-media {
     color: @blue;
     background: transparent;
-}
-#tray {
-    padding: 0px 10px 0px 1px;
 }
 
 /* ============================================================================ */
@@ -136,16 +121,18 @@ tooltip label {
 /* ============================================================================ */
 /* Right Modules */
 /* ============================================================================ */
-#output {
+#status {
     border: 2px solid @blue;
+}
+#keyboard-state {
+    color: @red;
 }
 #backlight {
     color: @cyan;
 }
-#custom-brightness {
-    color: @cyan;
-}
-#custom-audio {
+#pulseaudio {
     color: @magenta;
 }
-
+#clock {
+    color: @green;
+}

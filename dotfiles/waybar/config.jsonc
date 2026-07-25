@@ -4,28 +4,19 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     "layer": "top",         // Waybar at top layer
     "position": "top",      // Waybar position (top|bottom|left|right)
-    "spacing": 4,           // Gaps between modules (4px)
-    "height": 36,           // Waybar height (to be removed for auto height)
+    "spacing": 4,           // Gaps between modules (value in px)
+    "height": 36,           // Waybar height (remove for auto height)
 
+// Margins
     "margin-top":    0,
     "margin-left":   5,
     "margin-right":  5,
     "margin-bottom": 0,
     
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//   Module Order
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    "modules-left": [
-        "group/island"
-    ],
-    
-    "modules-center": [
-        "power-profiles-daemon"
-    ],
-    
-    "modules-right": [
-        "group/output"
-    ],
+// Modules 
+    "modules-left":   ["group/island"],
+    "modules-center": ["power-profiles-daemon"],
+    "modules-right":  ["group/status"],
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Left side modules
@@ -48,26 +39,7 @@
             "4": []
         }
     },
-// Clock
-    "clock": {
-        "format": "   {:%I:%M %p}",
-        "format-alt": " {:%A %d %B %Y}",
-        "tooltip-format": "<big><span color='#00f69b'>Calendar</span></big>\n<tt><small>{calendar}</small></tt>",
-        "calendar": {
-            "mode"          : "month",
-            "mode-mon-col"  : 3,
-            "on-scroll"     : 1,
-            "format": {
-                "days":       "<span color='#00f69b'><b>{}</b></span>",
-                "weeks":      "<span color='#ad8ee6'><b>W{}</b></span>",
-                "months":     "<span color='#0db9d7'><b>{}</b></span>",
-                "weekdays":   "<span color='#ad8ee6'><b>{}</b></span>",
-                "today":      "<span color='#ff602b'><b>{}</b></span>"
-            }
-        },
-        "actions":  { "on-click-right": "mode" }
-    },
-// Network settings
+// Network 
     "network": {
         "interval": 2,
         "format-wifi": "  ",
@@ -78,7 +50,7 @@
         "tooltip-format-wifi": " NETWORK STATUS:\n Name:\t\t\t{essid}\n Signal Strength:\t{signalStrength}%\n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Frecuency:\t\t{frequency} GHz\n Local IP:\t\t{ipaddr}",
         "on-click": "kitty --title kitty-nmmgr -e wlctl"
     },
-// Bluetooth settings
+// Bluetooth
     "bluetooth": {
         "interval": 2,
         "format": "  ",
@@ -89,14 +61,14 @@
         "on-click": "kitty --title kitty-blmgr -e bluetui"
     },
 // Microphone
-    "pulseaudio": {
+    "pulseaudio#microphone": {
         "max-volume": 100,
-        "format": "{format_source}",
+        "format": "{format_source} ",
         "format-source": "",
-        "format-source-muted": " ",
+        "format-source-muted": "",
         "tooltip-format": " SOUND SYSTEM:\n Volume: {volume}%\n Device: {desc}"
     },
-// Battery Life settings
+// Battery 
     "battery": {
         "interval": 2,
         "tooltip": true,
@@ -105,26 +77,13 @@
             "warning": 50,
             "critical": 30
         },
-        "format":          " {capacity}% {icon} ",
-        "format-full":     " {icon} ",
-        "format-charging": " {capacity}%   ",
+        "format":          "{capacity}% {icon} ",
+        "format-full":     "{icon} ",
+        "format-charging": "{capacity}%   ",
         "format-icons": [" ", " ", " ", " ", " "],
         "tooltip-format": " BATTERY STATUS:\n Capacity:\t\t{capacity}%\n Power Draw:\t\t{power:0.2f} Watts\n Battery Health:\t{health}%\n Time:\t\t\t{timeTo}" 
     },
-// Caps and NumLock Key Indicators
-    "keyboard-state": {
-        "device-path": "/dev/input/event4",
-        "numlock":      true,
-        "capslock":     false,
-        "scrolllock":   false,
-
-        "format": " {name} {icon} ",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
-        }
-    },
-// Tray settings
+// Tray 
     "tray": {
         "icon-size": 22,
         "spacing": 8
@@ -140,11 +99,9 @@
         "orientation": "horizontal",
         "modules": [
             "hyprland/workspaces",
-            "clock",
             "network",
             "bluetooth",
-            "pulseaudio",
-            "keyboard-state",
+            "pulseaudio#microphone",
             "battery",
             "tray",
             "custom/media"
@@ -170,34 +127,66 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rigth side modules
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Caps and NumLock Key Indicators
+    "keyboard-state": {
+        "device-path": "/dev/input/event4",
+        "numlock":      true,
+        "capslock":     false,
+        "scrolllock":   false,
+        "format": " {name} {icon} ",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
 // Screen Brigthness settings 
     "backlight": {
         "tooltip": true,
-        "format": " {icon} ",
+        "format": "{icon} {percent}% ",
         "tooltip-format": " MAGI SCREEN:\n Brigthness: {percent}% {icon}",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
-    "custom/brightness": {
-        "exec": "~/.config/waybar/modules/brightness.sh",
-        "return-type": "json",
-        "interval": 1
+// Volume Indicator
+    "pulseaudio": {
+        "format": "{icon} {volume}% ",
+        "format-muted": "󰖁 ",
+        "format-icons": {
+            "headphone": "󰋋",
+            "headset": "󰋎",
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "scroll-step": 5,
+        "on-click": "kitty --title kitty-pwmgr -e wiremix",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "tooltip-format": "{desc}: {volume}%"
     },
-// Audio settings
-    "custom/audio": {
-        "exec": "~/.config/waybar/modules/volume.sh",
-        "return-type": "json",
-        "interval": 1,
-        "on-click": "kitty --title kitty-pwmgr -e wiremix"
+// Clock
+    "clock": {
+        "format": "{:%I:%M %p} ",
+        "format-alt": "{:%A %d %B %Y} ",
+        "tooltip-format": "<big><span color='#00f69b'>Calendar</span></big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode"          : "month",
+            "mode-mon-col"  : 3,
+            "on-scroll"     : 1,
+            "format": {
+                "days":       "<span color='#00f69b'><b>{}</b></span>",
+                "weeks":      "<span color='#ad8ee6'><b>W{}</b></span>",
+                "months":     "<span color='#0db9d7'><b>{}</b></span>",
+                "weekdays":   "<span color='#ad8ee6'><b>{}</b></span>",
+                "today":      "<span color='#ff602b'><b>{}</b></span>"
+            }
+        },
+        "actions":  { "on-click-right": "mode" }
     },
-
-// Modules screen + audio
-    "group/output": {
+// Device Hardware Status Modules  
+    "group/status": {
         "orientation": "horizontal",
         "modules": [
+            "keyboard-state",
             "backlight",
-            "custom/brightness",
-            "custom/audio"
+            "pulseaudio",
+            "clock"
         ]
     }
 }
-
