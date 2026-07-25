@@ -51,7 +51,8 @@ hl.window_rule({
     name       = "nm-widget",
     match      = { title = "kitty-nmmgr" },
     float = true,
-    move  = { 11 , 50 },
+    size =  { 880, 500 },
+    move  = { 5, 42 },
 })
 
 -- Launch bluetooth manager floating 
@@ -59,7 +60,8 @@ hl.window_rule({
     name       = "bl-widget",
     match      = { title = "kitty-blmgr" },
     float = true,
-    move  = { 11 , 50 },
+    size =  { 880, 500 },
+    move  = { 5, 42 },
 })
 
 -- Launch network manager floating 
@@ -67,7 +69,8 @@ hl.window_rule({
     name       = "pw-widget",
     match      = { title = "kitty-pwmgr" },
     float = true,
-    move  = { 630 , 50 },
+    size =  { 800, 350 },
+    move  = { 793, 42 },
 })
 
 -- ===========================================================================
