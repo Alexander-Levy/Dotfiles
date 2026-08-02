@@ -19,7 +19,7 @@ local closeSession   = "hyprshutdown"
 local colorPicker    = "hyprpicker -n -a"
 local saveScreenshot = "hyprshot -m region"
 local screenshot     = "hyprshot -m region --clipboard-only"
-local clipBoard      = ''
+local clipBoard      = "cliphist list | wofi --dmenu | cliphist decode | wl-copy"
 
 -- Animated Wallpaper
 AnimatedWallpaper = "~/Wallpapers/Smoking-girl-city.mp4"
