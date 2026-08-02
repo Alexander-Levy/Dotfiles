@@ -51,7 +51,7 @@ hl.window_rule({
     name       = "nm-widget",
     match      = { title = "kitty-nmmgr" },
     float = true,
-    size =  { 880, 500 },
+    size =  { 880, 600 },
     move  = { 5, 42 },
 })
 

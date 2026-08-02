@@ -16,6 +16,7 @@ gtk_dark=true
 image_size=32
 allow_images=true
 prompt=SEARCHING MAGI DATABASE...
+pre_display_exec=true
 
 # Search
 matching=strict-contains

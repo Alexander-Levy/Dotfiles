@@ -76,7 +76,7 @@ tooltip label {
 #workspaces button.empty.active { color: @magenta; }
 
 #island {
-    border: 2px solid @green;
+    border: 2px solid @magenta;
 }
 #network {
     color: @cyan;
