@@ -1,14 +1,13 @@
 # Author:  Alexander Levy
-# Blob:    Core helper functions used for managing dotfiles with symlinks
-# Version: v0.2.2
+# Blob:    Helper functions used for managing dotfiles with symlinks
+# Version: v0.3.1
 
 ##########################################################################################
-# Core functions
+# Logging functions
 ##########################################################################################
-
+banner() {
 # Prints message inside pretty banner
 # Arguments: [title] [subtitle]
-banner() {
     local title="$1" subtitle="$2"
     local width=75
     local border=$(printf '═%.0s' $(seq 1 $width))
@@ -18,9 +17,9 @@ banner() {
     echo -e "╚${border}╝\e[0m"
 }
 
-# Prints message inside section 
-# Arguments: [message]
 section() {
+# Prints message inside section box 
+# Arguments: [message]
     local message="$1"
     local width=44
     local border=$(printf '─%.0s' $(seq 1 $width))
@@ -29,9 +28,9 @@ section() {
     echo -e "└${border}┘\e[0m"
 }
 
+log() {
 # Better echo
 # ok: green, err: red, info: blue, warn: yellow
-log() {
     local green="\e[32m" 
     local red="\e[31m" 
     local blue="\e[34m" 
@@ -45,9 +44,12 @@ log() {
     [[ "$1" == "infono" ]] && echo -e -n "${blue}$2${reset}"
 }
 
+##########################################################################################
+# AUR related functions
+##########################################################################################
+aur_helper_install() {
 # Download and install an AUR helper
 # Supported options: paru or yay
-aur_helper_install() {
     aur_helper="$1"
     if [[ "$aur_helper" != "paru" && "$aur_helper" != "yay" ]]; then
         log err "Unsupported AUR helper: $aur_helper"
@@ -62,8 +64,8 @@ aur_helper_install() {
     fi
 }
 
-# Helper funcs; shows all currently available aur helpers
 aur_helper_install_selection() {
+# Helper funcs; shows all currently available aur helpers
     log info "Please select one to install:"
     log info "1) paru"
     log info "2) yay"
@@ -80,8 +82,8 @@ aur_helper_install_selection() {
     esac
 }
 
-# Check if an AUR helper is installed, if not prompts to install helper.
 aur_helper_check() {
+# Check if an AUR helper is installed, if not prompts to install helper.
     local yay_installed=0
     local paru_installed=0
 
@@ -117,52 +119,105 @@ aur_helper_check() {
     fi
 }
 
-# Verify that target dir exists, create backup of existing files
-# and symlink configuration.
-# Arguments: pkg:[name][../src][target]
+##########################################################################################
+# Core functions
+##########################################################################################
 symlink() {
+# I HATE this function, need to rewrite it, but im too lazy to do it now so whatever :P
+# Sync the configuration files from a source directory to a target directory using symlinks
+# while preserving directory structure. If the target directory already exist the files inside
+# are saved to a backup location.
+# Arguments: pkg:[name][../src][target] opt:[ask|force|skip]
+    # Local variables
     local pkg_name="$1"
     local pkg_src="$2"
     local pkg_target="$3"
-    # Ensure target dir exists
+    local orphan_mode="${4:-ask}" # ask | force | skip
+    
+    local linked_counter=0
+    local backed_up_counter=0
+
+    # Verify that the target directory exists 
     if [[ ! -d "$pkg_target" ]]; then
-        log warn "  [$pkg_name] directory not found! Creating it..." 
+        log warn "  [$pkg_name] directory not found! Creating it..."
         mkdir -p "$pkg_target"
-        log ok   "  Created directory for [$pkg_name]!" 
+        log ok   "  Created directory for [$pkg_name]!"
     else
-        log okno "  [$pkg_name]" 
-        for file in "$pkg_target"/*; do
+        log okno "  [$pkg_name]"
+        # Build a lookup of every relative path that *should* exist per src
+        local -A expected=()
+        local rel
+        while IFS= read -r file; do
+            rel="${file#"$pkg_src/$pkg_name"/}"
+            expected["$rel"]=1
+        done < <(find "$pkg_src/$pkg_name" -not -type d)
+
+        # First pass: find orphans and ask about them up front (not one prompt per file)
+        local -a orphans=()
+        while IFS= read -r file; do
             rel="${file#"$pkg_target"/}"
-            # Create a backup of the existing config files
-            if [[ -e "$file" && ! -L "$file" && ! -d "$file" ]]; then
-                mkdir -p "$backup_path/$pkg_name"
-                cp -r "$file" "$backup_path/$pkg_name/"
-                rm -rf "$file"
-                log info "    backing up $rel..."
+            [[ -z "${expected[$rel]:-}" ]] && orphans+=("$rel")
+        done < <(find "$pkg_target" -not -type d)
+        local remove_orphans=true
+        if (( ${#orphans[@]} > 0 )); then
+            if [[ "$orphan_mode" == "skip" ]]; then
+                remove_orphans=false
+            elif [[ "$orphan_mode" == "ask" ]]; then
+                log warn "  [$pkg_name] found ${#orphans[@]} file(s) not present in src:"
+                printf '    - %s\n' "${orphans[@]}"
+                read -r -p "  Back up and remove these? [y/N] " reply
+                [[ "$reply" =~ ^[Yy]$ ]] || remove_orphans=false
             fi
-        done
+            # orphan_mode == "force" falls through with remove_orphans=true
+        fi
+
+        # Second pass: back up/remove existing files and orphans
+        while IFS= read -r file; do
+            rel="${file#"$pkg_target"/}"
+            if [[ -n "${expected[$rel]:-}" ]]; then
+                # Belongs to this pkg: back it up only if it's a real file
+                if [[ ! -L "$file" ]]; then
+                    mkdir -p "$backup_path/$pkg_name/$(dirname "$rel")"
+                    cp -a "$file" "$backup_path/$pkg_name/$rel"
+                    rm -rf "$file"
+                    backed_up_counter=1
+                    log info "    backing up $rel..."
+                fi
+            else
+                # Orphan: not part of src anymore
+                if $remove_orphans; then
+                    mkdir -p "$backup_path/$pkg_name/$(dirname "$rel")"
+                    cp -a "$file" "$backup_path/$pkg_name/$rel"
+                    rm -rf "$file"
+                    backed_up_counter=1
+                    log info "    removing $rel (backed up)..."
+                else
+                    log warn "    skipping $rel (left in place)"
+                fi
+            fi
+        done < <(find "$pkg_target" -not -type d)
     fi
+
     # Symlink files one by one and handle special case
-    linked_counter=0
+    local file rel_file target_file
     while IFS= read -r file; do
         rel_file="${file#"$pkg_src/$pkg_name"/}"
         target_file="$pkg_target/$rel_file"
-        # Symlink the files if they aren't already 
         if [[ ! -L "$target_file" ]]; then
             linked_counter=1
             log info "symlinking $rel_file..."
             mkdir -p "$pkg_target/$(dirname "$rel_file")"
             ln -sf "$file" "$pkg_target/$rel_file"
         fi
-    done< <(find "$pkg_src/$pkg_name" -not -type d)
-    if (( linked_counter == 0 )); then    
-        log info "files symlinked, nothing to do"
+    done < <(find "$pkg_src/$pkg_name" -not -type d)
+    if (( linked_counter == 0 && backed_up_counter == 0 )); then
+        log info "nothing to do"
     fi
 }
 
+install_missing_packages() {
 # Installs all packages in $missing variable using $aur_helper as 
 # the package manager.
-install_missing_packages() {
     if [[ ${#missing[@]} -eq 0 ]]; then
         log ok "[Success] All dependencies already installed!\n"
         return 0
@@ -190,9 +245,10 @@ install_missing_packages() {
     fi
 }
 
-# Alias to update system database and packages
 update_system() {
+# Alias to update system database and packages
     section "Updating operating system..."
     sudo pacman -Syu --noconfirm > /dev/null 2>&1
     log ok "Update completed!"
 }
+
