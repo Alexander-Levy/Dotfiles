@@ -1,6 +1,6 @@
 # Levy's Dotfiles
 
-The purpose of this repository is simply to keep track of my dotfiles, feel free to grab anything that you find useful here :D. This configuration was made using Arch, other distros will not work.
+The purpose of this repository is simply to keep track of my dotfiles, feel free to grab anything that you find useful here :D. This configuration was made using Arch, other distros will not work. It includes configuration files for the packages i use, some wallpapers and few scripts to act as a sorts of dotfile installer/manager. 
 
 ### Preview 
 
@@ -53,26 +53,7 @@ Only custom keybinds are shown here as all the usual keybindings from neovim (vi
 ### Manual 
 
 1. Install an AUR helper if you don't have one installed already. 
-
-```bash
-sudo pacman -S --needed base-devel
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si
-```
-
 2. Ensure that all dependencies are installed.
-
-```bash
-# Download dependencies
-sudo pacman -S btop fish yazi kitty swaync waybar fastfetch \
-               neovim npm wget unzip ripgrep tree-sitter-cli \
-               hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown \
-
-# Download AUR packages
-paru -S mpvpaper wlctl-bin vicinae-bin snappy-switcher 
-```
-
 3. Clone the repository and symlink the desired configuration files 
 
 ```bash
@@ -82,7 +63,7 @@ stow --target="<target_dir>" --dir="<../source_dir>" <package>
 
 ### Automated 
 
-Clone the repo and run the installation script. It will detect & download all missing dependencies, install an AUR helper if one is not present in the system, and sync the configuration files.
+Clone the repo and run the installation script. It will detect & download all missing dependencies, install an AUR helper if one is not installed already, and sync the configuration files. If you already installed and want something new that was added simply run the update script, no need to resintall :D.
 
 ```bash
 git clone https://github.com/Alexander-Levy/Dotfiles.git
