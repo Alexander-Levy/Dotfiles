@@ -8,4 +8,5 @@ require("modules.general") -- Hyprland's general options (look and feel)
 require("modules.monitor") -- Monitor, scaling & enviroment variables
 require("modules.anims")   -- Animations timings
 require("modules.rules")   -- Window & workspace rules
+require("modules.plugins") -- Plugins config & binds
 
