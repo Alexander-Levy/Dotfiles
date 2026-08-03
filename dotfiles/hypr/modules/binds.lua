@@ -22,7 +22,7 @@ local screenshot     = "hyprshot -m region --clipboard-only"
 local clipBoard      = "cliphist list | wofi --dmenu | cliphist decode | wl-copy"
 
 -- Animated Wallpaper
-AnimatedWallpaper = "~/Wallpapers/Smoking-girl-city.mp4"
+AnimatedWallpaper = "~/Wallpapers/rain-coffee.mp4"
 StartMpvpaper     = "mpvpaper -s -o '--hwdec=auto --vd-lavc-threads=2 --profile=fast no-audio loop' ALL "
 
 -- Restart shell elements
