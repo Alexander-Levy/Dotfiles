@@ -2,12 +2,12 @@
 -- Levy's Hyprland Autostart 
 -- ===========================================================================
 hl.on("hyprland.start", function ()
-    hl.exec_cmd("waybar")         -- Status Bar 
-    hl.exec_cmd("swaync")         -- Notification center
-    hl.dispatch(hl.dsp.exec_raw("wl-paste --type text --watch cliphist store"))  -- Clipboard
-    hl.dispatch(hl.dsp.exec_raw("wl-paste --type image --watch cliphist store")) -- Clipboard
-    -- hl.exec_cmd("hyprpaper")      -- Wallpaper 
+    hl.exec_cmd("waybar") -- Status Bar 
+    hl.exec_cmd("swaync") -- Notification center
+    hl.exec_cmd("hyprpm reload") -- Start plugins
     hl.exec_cmd(StartMpvpaper .. AnimatedWallpaper) -- Animated wallpaper 
     hl.exec_cmd("systemctl --user start hyprpolkitagent") -- Authorization engine
+    hl.dispatch(hl.dsp.exec_raw("wl-paste --type text --watch cliphist store"))  -- Clipboard
+    hl.dispatch(hl.dsp.exec_raw("wl-paste --type image --watch cliphist store")) -- Clipboard
 end)
 
