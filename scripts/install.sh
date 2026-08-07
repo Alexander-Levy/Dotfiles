@@ -5,30 +5,9 @@
 # with configuration files to the correct dir. Asumes arch linux, will not work with debian and 
 # fedora based systems.
 
-version="v0.3.3"
-# ChangeLog: .3.3 Reduced dependencies from AUR. 
-
-# Variables
-aur_helper=""
-failed=()
-missing=()
-packages=(
-    ttf-jetbrains-mono ttf-jetbrains-mono-nerd                                   # fonts
-    brightnessctl power-profiles-daemon xdg-desktop-portal-hyprland              # system utils 
-    pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse           # audio 
-    hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown hyprpolkitagent # window manager & tools
-    kitty waybar swaync bluetui wiremix fastfetch wl-clipboard                   # desktop shell & elements
-    bat bc curl eza git lazygit fzf vim fish ncdu yazi btop                      # console/terminal tools 
-    neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) deps
-    mpvpaper wlctl-bin                                                           # aur pkgs 
-)
-
-# Paths
-current_path="$(realpath "../$(dirname "$0")")"
-dotfiles_path="$current_path/dotfiles"
-config_path="$HOME/.config"
-wallpaper_path="$HOME/Wallpapers"
-backup_path="$HOME/.dotfiles-backup"
+version="v0.4.1"
+# ChangeLog: .4.0 Added hyprland overview plugin install bit 
+#            .4.1 reformated code for core change
 
 # Include core utils
 script_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -53,8 +32,13 @@ install_missing_packages # Install missing packages, exit early if fails
 
 # Symlink configurtations 
 section "Syncing files..."
+symlink "Wallpapers" "$current_path" "$wallpaper_path"
 for dir in "$dotfiles_path"/*/; do
     symlink "$(basename "$dir")" "$dotfiles_path" "$config_path/$(basename "$dir")" 
 done
-symlink "Wallpapers" "$current_path" "$wallpaper_path" # symlink wallpapers
+
+# Setup Hyprland overview plugin
+hyprpm add https://github.com/yayuuu/hyprland-scroll-overview.git
+hyprpm update
+hyprpm enable scrolloverview
 
