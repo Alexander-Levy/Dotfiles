@@ -16,6 +16,7 @@ source "$script_path/core.sh"
 
 # Script #################################################################
 banner "Levy's dotfiles installer..." "$version Experimental release"
+prime # Cache user password 
 update_system # Update packages & database before starting the script 
 aur_helper_check # Install aur helper if one is not found
 
