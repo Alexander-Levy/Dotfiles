@@ -1,20 +1,18 @@
 # Author:  Alexander Levy
 # Blob:    Helper functions used for managing dotfiles with symlinks
-# Version: v0.4.0 Added variables and path to core
-#           0.4.1 Added prime and sync functions 
+# Version: v0.4.3 Better  
 
 # Variables
 aur_helper=""
 failed=()
 missing=()
 packages=(
-    cmake 
     ttf-jetbrains-mono ttf-jetbrains-mono-nerd                                   # fonts
     brightnessctl power-profiles-daemon xdg-desktop-portal-hyprland              # system utils 
     pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse           # audio 
     hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown hyprpolkitagent # window manager & tools
     kitty waybar swaync bluetui wiremix fastfetch wl-clipboard                   # desktop shell & elements
-    bat bc curl eza git lazygit fzf vim fish ncdu yazi btop                      # console/terminal tools 
+    bat bc btop cmake curl eza git lazygit fzf vim fish ncdu yazi                # console/terminal tools 
     neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) deps
     mpvpaper wlctl-bin                                                           # aur pkgs 
 )
@@ -257,6 +255,7 @@ sync_config() {
 install_missing_packages() {
 # Installs all packages in $missing variable using $aur_helper as 
 # the package manager.
+    section "Checking packages..."
     for pkg in "${packages[@]}"; do
         if $aur_helper -Q "$pkg" &>/dev/null; then
             log ok   "  [OKAY] $pkg"

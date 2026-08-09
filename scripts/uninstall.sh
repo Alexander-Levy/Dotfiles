@@ -11,29 +11,19 @@ source "$script_path/core.sh"
 # Variables
 packages=(
     ttf-jetbrains-mono-nerd ttf-jetbrains-mono                                   # fonts
-    brightnessctl power-profiles-daemon xdg-desktop-portal-hyprland              # system utils 
-    pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse pipewire           # audio 
+    brightnessctl xdg-desktop-portal-hyprland                                    # system utils 
     hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown hyprpolkitagent # window manager & tools
     kitty waybar swaync bluetui wiremix fastfetch wl-clipboard                   # desktop shell & elements
     bat curl eza lazygit fzf ncdu yazi btop                                      # console/terminal tools 
     neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) deps
-    mpvpaper wlctl-bin vicinae-bin snappy-switcher                               # aur pkgs 
+    mpvpaper wlctl-bin
 )
 
 # Script #################################################################
 banner "Levy's dotfiles Uninstaller..." ""
 update_system # Update packages & database before starting the script 
 
-# Find AUR helper
-if command -v paru &>/dev/null; then
-    paru_installed=1
-    aur_helper="paru"
-    log info "Using paru"
-elif command -v yay &>/dev/null; then
-    yay_installed=1
-    aur_helper="yay"
-    log info "Using yay"
-fi
+aur_helper_check # Find AUR helper
 
 # Remove all installed packages
 section "Uninstalling packages..."
