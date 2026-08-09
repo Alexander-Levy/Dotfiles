@@ -2,10 +2,13 @@
 
 # Author:  Alexander Levy
 # Blob:    The purpose of this script is to completely remove all packages added by the installer.
-# Version: v0.0.1
+# Version: v0.0.2
+
+# Include core utils
+script_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$script_path/core.sh"
 
 # Variables
-aur_helper=""
 packages=(
     ttf-jetbrains-mono-nerd ttf-jetbrains-mono                                   # fonts
     brightnessctl power-profiles-daemon xdg-desktop-portal-hyprland              # system utils 
@@ -16,16 +19,6 @@ packages=(
     neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) deps
     mpvpaper wlctl-bin vicinae-bin snappy-switcher                               # aur pkgs 
 )
-
-# Paths
-current_path="$(realpath "../$(dirname "$0")")"
-dotfiles_path="$current_path/dotfiles"
-config_path="$HOME/.config"
-wallpaper_path="$HOME/Wallpapers"
-
-# Include core utils
-script_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$script_path/core.sh"
 
 # Script #################################################################
 banner "Levy's dotfiles Uninstaller..." ""
