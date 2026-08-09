@@ -1,12 +1,14 @@
 # Author:  Alexander Levy
 # Blob:    Helper functions used for managing dotfiles with symlinks
-# Version: v0.4 Added variables and path to core
+# Version: v0.4.0 Added variables and path to core
+#           0.4.1 Added prime and sync functions 
 
 # Variables
 aur_helper=""
 failed=()
 missing=()
 packages=(
+    cmake 
     ttf-jetbrains-mono ttf-jetbrains-mono-nerd                                   # fonts
     brightnessctl power-profiles-daemon xdg-desktop-portal-hyprland              # system utils 
     pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse           # audio 
@@ -144,6 +146,12 @@ aur_helper_check() {
 ##########################################################################################
 # Core functions
 ##########################################################################################
+prime() {
+# Cache password so that its only asked once to the user
+    sudo -v
+    while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+}
+
 symlink() {
 # I HATE this function, need to rewrite it, but im too lazy to do it now so whatever :P
 # Sync the configuration files from a source directory to a target directory using symlinks
@@ -185,9 +193,9 @@ symlink() {
             if [[ "$orphan_mode" == "skip" ]]; then
                 remove_orphans=false
             elif [[ "$orphan_mode" == "ask" ]]; then
-                log warn "  [$pkg_name] found ${#orphans[@]} file(s) not present in src:"
-                printf '    - %s\n' "${orphans[@]}"
-                read -r -p "  Back up and remove these? [y/N] " reply
+                log warn "found ${#orphans[@]} file(s) not present in src:"
+                printf '       - %s\n' "${orphans[@]}"
+                read -r -p "     Back up and remove these? [y/N] " reply
                 [[ "$reply" =~ ^[Yy]$ ]] || remove_orphans=false
             fi
             # orphan_mode == "force" falls through with remove_orphans=true
@@ -212,9 +220,9 @@ symlink() {
                     cp -a "$file" "$backup_path/$pkg_name/$rel"
                     rm -rf "$file"
                     backed_up_counter=1
-                    log info "    removing $rel (backed up)..."
+                    log info "      removing $rel, backup in $backup_path."
                 else
-                    log warn "    skipping $rel (left in place)"
+                    log warn "      skipped $rel."
                 fi
             fi
         done < <(find "$pkg_target" -not -type d)
@@ -237,9 +245,26 @@ symlink() {
     fi
 }
 
+sync_config() {
+# Helper func; syncs all dotfiles and wallpapers
+    section "Syncing files..."
+    for dir in "$dotfiles_path"/*/; do
+        symlink "$(basename "$dir")" "$dotfiles_path" "$config_path/$(basename "$dir")" 
+    done
+    symlink "Wallpapers" "$current_path" "$wallpaper_path"
+}
+
 install_missing_packages() {
 # Installs all packages in $missing variable using $aur_helper as 
 # the package manager.
+    for pkg in "${packages[@]}"; do
+        if $aur_helper -Q "$pkg" &>/dev/null; then
+            log ok   "  [OKAY] $pkg"
+        else
+            log warn "  [MISS] $pkg"
+            missing+=("$pkg")
+        fi
+    done
     if [[ ${#missing[@]} -eq 0 ]]; then
         log ok "[Success] All dependencies already installed!\n"
         return 0
