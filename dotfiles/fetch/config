@@ -1,0 +1,19 @@
+# Levy's fetch config
+# Data settings
+os
+kernel
+shell
+terminal
+packages
+memory
+colors
+
+# Logo settings
+# light=top-left      # (top-left, top-right, top, left, right, front, bottom-left, bottom-right)
+spin=y
+speed=0.8
+size=0.65
+depth=2.5
+#height=36           # (override render height in rows)
+#Options: ascii, blocks, sextants
+shading_mode=blocks 
