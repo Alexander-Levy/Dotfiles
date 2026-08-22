@@ -1,20 +1,28 @@
 # Author:  Alexander Levy
 # Blob:    Helper functions used for managing dotfiles with symlinks
-# Version: v0.4.3 Better  
+# Version: v0.4.4 Reformated packages & added osd and blue ligth filter 
 
 # Variables
 aur_helper=""
 failed=()
 missing=()
 packages=(
-    ttf-jetbrains-mono ttf-jetbrains-mono-nerd                                   # fonts
-    brightnessctl power-profiles-daemon xdg-desktop-portal-hyprland              # system utils 
-    pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse           # audio 
-    hyprland hyprpaper hyprlock hyprshot hyprpicker hyprshutdown hyprpolkitagent # window manager & tools
-    kitty waybar swaync bluetui wiremix fastfetch wl-clipboard                   # desktop shell & elements
-    bat bc btop cmake curl eza git lazygit fzf vim fish ncdu yazi                # console/terminal tools 
-    neovim npm wget unzip ripgrep tree-sitter-cli                                # neovim(+ plugins) deps
-    mpvpaper wlctl-bin                                                           # aur pkgs 
+    # Fonts
+    ttf-jetbrains-mono ttf-jetbrains-mono-nerd
+    # System utils 
+    brightnessctl power-profiles-daemon xdg-desktop-portal-hyprland
+    # Audio 
+    pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse
+    # Hyprland & related pkgs 
+    hyprland hyprpaper hyprlock hyprshot hyprpicker hyprsunset hyprshutdown hyprpolkitagent 
+    # Desktop shell & elements
+    kitty waybar swaync bluetui wiremix fastfetch wl-clipboard swayosd
+    # Terminal tools 
+    bat bc btop cmake curl eza git lazygit fzf vim fish ncdu yazi
+    # Neovim(+ plugins) deps
+    neovim npm wget unzip ripgrep tree-sitter-cli
+    # Aur pkgs 
+    mpvpaper wlctl-bin
 )
 
 # Paths
