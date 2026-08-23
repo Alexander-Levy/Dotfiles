@@ -122,7 +122,7 @@ end
 -- ===========================================================================
 -- App launcher, terminal & close windows
 hl.bind("ALT  + SPACE", hl.dsp.exec_cmd(menu))
-hl.bind("CTRL + SPACE", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 
 -- Programs
