@@ -14,9 +14,9 @@
     "margin-bottom": 0,
     
 // Modules 
-    "modules-left":   ["group/island"],
+    "modules-left":   ["group/right-island"],
     "modules-center": ["power-profiles-daemon"],
-    "modules-right":  ["group/status"],
+    "modules-right":  ["group/left-island"],
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Left side modules
@@ -93,9 +93,8 @@
       "exec": "~/.config/waybar/modules/media-animation.sh",
       "tooltip": false
     },
-
 // Applet 
-    "group/island": {
+    "group/right-island": {
         "orientation": "horizontal",
         "modules": [
             "hyprland/workspaces",
@@ -127,13 +126,27 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rigth side modules
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Do not Disturb [mako]
+    "custom/dnd": {
+        "return-type": "json",
+        "exec": "~/.config/waybar/modules/mako-dnd.sh",
+        "interval": "once",
+        "signal": 11,
+        "on-click": "makoctl mode -t do-not-disturb; pkill -RTMIN+11 waybar"
+    },
+// Notification History
+    "custom/notification-history": {
+        "format": "󰍩",
+        "tooltip-format": "Notification history",
+        "on-click": "~/.config/waybar/modules/mako-history.sh"
+    },
 // Caps and NumLock Key Indicators
     "keyboard-state": {
         "device-path": "/dev/input/event4",
         "numlock":      true,
         "capslock":     false,
         "scrolllock":   false,
-        "format": " {name} {icon} ",
+        "format": "{name} {icon} ",
         "format-icons": {
             "locked": "",
             "unlocked": ""
@@ -180,9 +193,11 @@
         "actions":  { "on-click-right": "mode" }
     },
 // Device Hardware Status Modules  
-    "group/status": {
+    "group/left-island": {
         "orientation": "horizontal",
         "modules": [
+            "custom/dnd",
+            "custom/notification-history",
             "keyboard-state",
             "backlight",
             "pulseaudio",

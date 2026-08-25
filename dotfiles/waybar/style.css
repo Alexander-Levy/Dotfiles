@@ -35,20 +35,21 @@ window#waybar.hidden {
 /* Tooltips settings */
 /* ============================================================================ */
 tooltip {
-  margin: 30px 0px;
-  background: @background;
-  border: 2px solid @magenta;
+    margin: 30px 0px;
+    background: @background;
+    border: 2px solid @magenta;
+    border-radius: 5px;
 }
 tooltip label {
-  color: @green;
+    color: @green;
 }
 
 /* ============================================================================ */
 /* Default Modules Style */
 /* ============================================================================ */
-#island,
+#right-island,
 #power-profiles-daemon,
-#status { 
+#left-island { 
     color: @white;
     margin: 2px 0px;
     padding: 0px;
@@ -75,7 +76,7 @@ tooltip label {
 /* Active workspace that's empty */
 #workspaces button.empty.active { color: @magenta; }
 
-#island {
+#right-island {
     border: 2px solid @magenta;
 }
 #network {
@@ -121,7 +122,7 @@ tooltip label {
 /* ============================================================================ */
 /* Right Modules */
 /* ============================================================================ */
-#status {
+#left-island {
     border: 2px solid @blue;
 }
 #keyboard-state {
@@ -135,4 +136,17 @@ tooltip label {
 }
 #clock {
     color: @green;
+}
+#custom-dnd {
+    padding: 0px 6px 0px 10px;
+}
+#custom-dnd.dnd {
+    color: @red;
+}
+#custom-dnd.normal {
+    color: @green;
+}
+#custom-notification-history {
+    color: @yellow;
+    padding: 0px 8px 0px 4px;
 }
