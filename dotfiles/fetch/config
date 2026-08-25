@@ -13,7 +13,7 @@ colors
 spin=y
 speed=0.8
 size=0.65
-depth=2.5
+depth=2.0
 #height=36           # (override render height in rows)
 #Options: ascii, blocks, sextants
-shading_mode=blocks 
+shading_mode=sextants 

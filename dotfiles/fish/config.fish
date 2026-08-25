@@ -6,7 +6,7 @@ set fish_greeting
 
 # Run fetch when you open a terminal.
 if status is-interactive
-    fetch
+    fetch --infinite
 end
 
 # Replace ls with eza 
