@@ -14,6 +14,6 @@ hl.curve("quick",          { type = "bezier", points = { {0.15, 0},    {0.1, 1} 
 hl.animation({ leaf = "global",     enabled = true, speed = 10,   bezier = "default" })
 hl.animation({ leaf = "border",     enabled = true, speed = 5.39, bezier = "easeOutQuint" })
 hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7,    bezier = "quick" })
-hl.animation({ leaf = "windows",    enabled = true, speed = 1.5,  bezier = "quick",   style = "slide" })
+hl.animation({ leaf = "windows",    enabled = true, speed = 1.5,  bezier = "quick",   style = "slide bottom" })
 hl.animation({ leaf = "windowsOut", enabled = true, speed = 1.27, bezier = "linear",  style = "popin" })
 hl.animation({ leaf = "workspaces", enabled = true, speed = 2.5,  bezier = "default", style = "slidevert" })

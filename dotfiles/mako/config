@@ -1,0 +1,48 @@
+# Levy's Mako configuration
+
+# [ Global Config ]
+max-history=100
+sort=+time
+
+# [ STYLE OPTIONS ]
+font=JetBrainsMono Nerd Font 11
+background-color=#1e1e2e
+text-color=#cdd6f4
+border-color=#37f499
+progress-color=over #0b1c1c
+
+border-size=2
+border-radius=4
+
+width=300
+height=100
+
+margin=5
+outer-margin=1
+padding=10
+
+icons=1
+actions=1
+history=1
+
+max-visible=5
+ignore-timeout=0
+default-timeout=5000
+
+layer=top
+anchor=top-right
+text-alignment=center
+icon-location=left
+max-icon-size=34
+
+format= <b>%s</b>\n%b
+
+[urgency=low]
+border-color=#04d1f9
+
+[urgency=normal]
+border-color=#37f499
+
+[urgency=high]
+border-color=#bf616a
+default-timeout=0
