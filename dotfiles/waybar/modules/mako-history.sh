@@ -18,16 +18,19 @@ makoctl history -j |
         # Keep the notification compact
         if [ -n "$body" ]; then
             printf '%s\t%s — %s: %s\n' \
-                "$id" "$app" "$summary" "$body"
+                "$app" "$summary" "$body"
         else
             printf '%s\t%s — %s\n' \
-                "$id" "$app" "$summary"
+                "$app" "$summary"
         fi
     done |
     wofi \
         --dmenu \
+        --allow-images \
+        --parse-search \
         --prompt "Notifications" \
         --width 1500 \
         --height 1000 \
+        --image-size 48 \
         --cache-file /dev/null \
-        --no-actions
+        # --no-actions

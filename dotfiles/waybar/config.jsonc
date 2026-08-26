@@ -155,18 +155,18 @@
 // Screen Brigthness settings 
     "backlight": {
         "tooltip": true,
-        "format": "{icon} {percent}% ",
+        "format": "{icon} ",
         "tooltip-format": " MAGI SCREEN:\n Brigthness: {percent}% {icon}",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
 // Volume Indicator
     "pulseaudio": {
-        "format": "{icon} {volume}% ",
-        "format-muted": "󰖁 ",
+        "format": "{icon} ",
+        "format-muted": " ",
         "format-icons": {
             "headphone": "󰋋",
             "headset": "󰋎",
-            "default": ["󰕿", "󰖀", "󰕾"]
+            "default": ["", "", "", ""]
         },
         "scroll-step": 5,
         "on-click": "kitty --title kitty-pwmgr -e wiremix",

@@ -133,6 +133,7 @@ tooltip label {
 }
 #pulseaudio {
     color: @magenta;
+    padding: 0px 2px;
 }
 #clock {
     color: @green;
