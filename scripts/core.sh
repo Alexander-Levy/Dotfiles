@@ -1,6 +1,6 @@
 # Author:  Alexander Levy
 # Blob:    Helper functions used for managing dotfiles with symlinks
-# Version: v0.4.4 Reformated packages & added osd and blue ligth filter 
+# Version: v0.5.2 Added uninstalling & config deletion functions
 
 # Variables
 aur_helper=""
@@ -10,20 +10,21 @@ packages=(
     # Fonts
     ttf-jetbrains-mono ttf-jetbrains-mono-nerd
     # System utils 
-    brightnessctl power-profiles-daemon xdg-desktop-portal-hyprland
+    bc brightnessctl eza power-profiles-daemon xdg-desktop-portal-hyprland wl-clipboard cliphist jq 
     # Audio 
     pipewire pipewire-alsa pipewire-jack pipewire-audio pipewire-pulse
     # Hyprland & related pkgs 
     hyprland hyprpaper hyprlock hyprshot hyprpicker hyprsunset hyprshutdown hyprpolkitagent 
     # Desktop shell & elements
-    kitty waybar swaync bluetui wiremix fastfetch wl-clipboard swayosd
+    kitty waybar mako bluetui wiremix fastfetch swayosd 
     # Terminal tools 
-    bat bc btop cmake curl eza git lazygit fzf vim fish ncdu yazi
+    bat btop cmake curl git lazygit fzf vim fish ncdu yazi
     # Neovim(+ plugins) deps
     neovim npm wget unzip ripgrep tree-sitter-cli
     # Aur pkgs 
     mpvpaper wlctl-bin
 )
+protected_packages=( vim power-profiles-daemon brightnessctl )
 
 # Paths
 current_path="$(realpath "../$(dirname "$0")")"
@@ -116,7 +117,6 @@ aur_helper_check() {
 # Check if an AUR helper is installed, if not prompts to install helper.
     local yay_installed=0
     local paru_installed=0
-
     section "Checking if an AUR Helper is installed... "
     if command -v paru &>/dev/null; then
         paru_installed=1
@@ -126,7 +126,6 @@ aur_helper_check() {
         yay_installed=1
         log ok "[Success] yay found!\n"
     fi
-
     # If both are installed choose which one to use
     if [[ $yay_installed -eq 1 && $paru_installed -eq 1 ]]; then    
         log info "Both paru and yay are installed, please select which one to use:"
@@ -169,10 +168,8 @@ symlink() {
     local pkg_src="$2"
     local pkg_target="$3"
     local orphan_mode="${4:-ask}" # ask | force | skip
-    
     local linked_counter=0
     local backed_up_counter=0
-
     # Verify that the target directory exists 
     if [[ ! -d "$pkg_target" ]]; then
         log warn "  [$pkg_name] directory not found! Creating it..."
@@ -187,7 +184,6 @@ symlink() {
             rel="${file#"$pkg_src/$pkg_name"/}"
             expected["$rel"]=1
         done < <(find "$pkg_src/$pkg_name" -not -type d)
-
         # First pass: find orphans and ask about them up front (not one prompt per file)
         local -a orphans=()
         while IFS= read -r file; do
@@ -206,7 +202,6 @@ symlink() {
             fi
             # orphan_mode == "force" falls through with remove_orphans=true
         fi
-
         # Second pass: back up/remove existing files and orphans
         while IFS= read -r file; do
             rel="${file#"$pkg_target"/}"
@@ -233,7 +228,6 @@ symlink() {
             fi
         done < <(find "$pkg_target" -not -type d)
     fi
-
     # Symlink files one by one and handle special case
     local file rel_file target_file
     while IFS= read -r file; do
@@ -258,6 +252,17 @@ sync_config() {
         symlink "$(basename "$dir")" "$dotfiles_path" "$config_path/$(basename "$dir")" 
     done
     symlink "Wallpapers" "$current_path" "$wallpaper_path"
+}
+
+del_config() {
+# Helper func; deletes all configurtations and wallpapers
+    section "Removing configurtation files..."
+    for dir in "$dotfiles_path"/*/; do
+        log info "  deleting $config_path/$(basename "$dir")..." 
+        rm -rf "$config_path/$(basename "$dir")" 
+    done
+    log info "  deleting $wallpaper_path..." 
+    rm -rf "$wallpaper_path" 
 }
 
 install_missing_packages() {
@@ -297,6 +302,27 @@ install_missing_packages() {
         done
         exit 1
     fi
+}
+
+uninstall_shell() {
+# Uninstalls all pkgs used by the shell; except for protected pkgs
+# protected pkgs are specified in protected_packages variable
+    section "Uninstalling packages..."
+    for pkg in "${packages[@]}"; do
+        # Check if package is protected
+        if [[ " ${protected_packages[*]} " == *" $pkg "* ]]; then
+            log info "Skipping protected package: $pkg"
+            continue
+        fi
+        # Remove unprotected pkgs 
+        if $aur_helper -Rns --noconfirm "$pkg" &>/dev/null; then
+            log info "Uninstalling $pkg..."
+        else
+            log warn "Failed to uninstall $pkg"
+        fi
+    done
+    log info "Removing orphan packages..."
+    $aur_helper -Rns $($aur_helper -Qdtq) > /dev/null 2>&1
 }
 
 update_system() {
