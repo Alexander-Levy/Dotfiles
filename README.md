@@ -13,16 +13,27 @@ The purpose of this repository is simply to keep track of my dotfiles, feel free
 | Binds                        | Keybind description                   |
 |------------------------------|---------------------------------------|
 | Alt + Space                  | Open app launcher                     |
-| Ctrl + Space                 | Open terminal                         |
+| Super + Space                | Open terminal                         |
 | Super + Q                    | Close window                          |
 | Super + B                    | Open firefox (browser)                |
 | Super + E                    | Open yazi (terminal file manager)     |
 | Super + G                    | Open steam (game launcher)            |
 | Super + V                    | Open clipboard manager                |
-| Super + N                    | Toggle notification center            |
 | Super + P                    | Use colorpicker and copy to clipboard |
-| Alt + Tab, Alt + Shift + Tab | Cycle througth opened windows         |
-| More                         | TODO                                  |
+| Super + Shift + S            | Take screenshot and copy to clipboard |
+| Super + Ctrl + Shift + S     | Take screenshot and save image        |
+| Ctrl + Shift + Escape        | Open task manager (btop)              |
+| Super + Ctrl + W             | Toggle wallpaper backend (hypr/mpv)   |
+| Super + Shift + W            | Reload top bar (waybar)               |
+| Super + Ctrl + Shift + W     | Kill wallpaper backend                |
+| Super + L                    | Lock the device (hyprlock)            |
+| Super + M                    | Shutdown Hyprland (hyprshutdown)      |
+| Super + T                    | Toggle floating/tiled mode for window |
+| Super + F                    | Toggle fullscreen                     |
+| Super + Ctrl + T             | Toggle scrolling/dwindle layout       |
+| Super + 1-5                  | Change workspace                      |
+| Super + Ctrl + 1-5           | Move window to workspace              |
+| Super + Shift + 1-5          | Move window to workspace silently     |
 
 ### Neovim keybinds
 
@@ -32,7 +43,6 @@ Only custom keybinds are shown here as all the usual keybindings from neovim (vi
 |------------------------------|-------------------------------------------|
 | Alt + w                      | Save file                                 |
 | Alt + q                      | Close file                                |
-| Alt + r                      | Source file                               |
 | Alt + t                      | Open new tab                              |
 | Alt + up, Alt + down         | Move current line up or down              |
 | Alt + e                      | Open file tree                            |
@@ -54,23 +64,23 @@ Only custom keybinds are shown here as all the usual keybindings from neovim (vi
 
 1. Install an AUR helper if you don't have one installed already. 
 2. Ensure that all dependencies are installed.
-3. Clone the repository and symlink the desired configuration files 
+3. Clone the repository and copy the desired configuration files 
 
 ```bash
 git clone https://github.com/Alexander-Levy/Dotfiles.git
-stow --target="<target_dir>" --dir="<../source_dir>" <package>
+cp <source> <target>
 ```
 
 ### Automated 
 
-Clone the repo and run the installation script. It will detect & download all missing dependencies, install an AUR helper if one is not installed already, and sync the configuration files. If you already installed and want something new that was added simply run the update script, no need to resintall :D.
-
+Clone the repo and run the installation script. It will detect & download all missing dependencies, install an AUR helper if one is not installed already, and sync the configuration files. 
 ```bash
 git clone https://github.com/Alexander-Levy/Dotfiles.git
 cd Dotfiles/scripts
 ./install.sh
 ```
-
-## TODO
-- [ ] Complete list of hyprland binds
-
+If you already installed and want something new that was added simply run the update script, no need to resintall :D.
+```bash
+cd Dotfiles/scripts
+./update.sh
+```
