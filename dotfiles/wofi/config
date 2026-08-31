@@ -32,4 +32,4 @@ key_forward=Tab
 key_backward=Shift-ISO_Left_Tab
 
 # Style
-style=/home/levy/.config/wofi/style.css
+style=/home/alex/.config/wofi/style.css

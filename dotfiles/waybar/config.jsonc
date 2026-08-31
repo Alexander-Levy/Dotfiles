@@ -142,7 +142,6 @@
     },
 // Caps and NumLock Key Indicators
     "keyboard-state": {
-        "device-path": "/dev/input/event4",
         "numlock":      true,
         "capslock":     false,
         "scrolllock":   false,

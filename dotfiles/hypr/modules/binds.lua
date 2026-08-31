@@ -8,8 +8,6 @@ local terminal     = "kitty"
 local gameLauncher = "steam"
 
 -- Shell Elements
-local nitroSense   = "DAMX"
-local notification = "swaync-client -t"
 local fileManager  = terminal .. " -e yazi"
 local taskManager  = terminal .. " -o font_size=13.0 -e btop"
 
@@ -129,11 +127,9 @@ hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + G", hl.dsp.exec_cmd(gameLauncher))
-hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(nitroSense))
 
 -- System Utilities 
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(clipBoard))
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notification))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd(colorPicker))
 hl.bind(mainMod .. " + SHIFT+ S", hl.dsp.exec_cmd(screenshot))
 hl.bind(mainMod .. " + CTRL + SHIFT+ S", hl.dsp.exec_cmd(saveScreenshot))
