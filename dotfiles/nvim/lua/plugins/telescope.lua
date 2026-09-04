@@ -44,5 +44,11 @@ return{
         end,
     },
     { 'nvim-telescope/telescope-ui-select.nvim' },
-}
 
+    -- Keybinds
+    vim.keymap.set("n", "<A-v>", require("telescope.builtin").oldfiles, {}),     -- Alt + v: Browse recent files
+    vim.keymap.set("n", "<A-g>", require("telescope.builtin").live_grep, {}),    -- Alt + g: Browse files by content
+    vim.keymap.set("n", "<A-f>", require("telescope.builtin").find_files, {}),   -- Alt + f: Browse files by name
+    vim.keymap.set("n", "<C-g>", require("telescope.builtin").git_status),       -- Ctrl + g: Show git status & preview diff
+    vim.keymap.set("n", "<C-c>", require("telescope.builtin").colorscheme, {}),  -- Shift + c: change colorscheme
+}

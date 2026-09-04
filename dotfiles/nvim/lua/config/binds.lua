@@ -1,11 +1,17 @@
 -- ===========================================================================
 -- Levy's Neovim Keybinds
 -- ===========================================================================
+vim.g.mapleader = " "
+
 -- File actions
 vim.keymap.set("n", "<A-w>", ":w<CR>")      -- Alt + s: Save file 
 vim.keymap.set("n", "<A-q>", ":q<CR>")      -- Alt + q: Quit nvim 
-vim.keymap.set("n", "<A-r>", ":so<CR>")     -- Alt + r: Source file 
+vim.keymap.set("n", "<A-r>", ":so<CR>")     -- Alt + r: Source current file
+
+-- Quick actions
+vim.keymap.set("n", "<A-s>", "<C-w>w")      -- Alt + s: Switch window
 vim.keymap.set("n", "<A-t>", ":tabnew<CR>") -- Alt + t: New tab 
+vim.keymap.set("n", "<A-y>", ":vsplit<CR>") -- Alt + y: Split the screen 
 
 -- Line actions
 vim.keymap.set("n", "<A-Up>",   ":m .-2<CR>==")     -- Alt + Up:   Move line up

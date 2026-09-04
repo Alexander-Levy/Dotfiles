@@ -13,12 +13,38 @@ return{
         },
 
         config = function()
-            local animated_art = "cactus"
+            local splash = "cactus"
+            local splash_path = vim.fn.stdpath("data") .. "/milli/splashes/" .. splash .. ".lua"
+
+            -- Automatically install the splash if it isn't present
+            if vim.fn.filereadable(splash_path) == 0 then
+                vim.notify("Installing Milli splash: " .. splash, vim.log.levels.INFO)
+                vim.cmd("MilliInstall " .. splash)
+            end
+
+            -- Pre-load dashboard elements
+            local splash_data = require("milli").load({
+                splash = splash,
+            })
+            vim.api.nvim_set_hl(0, "DashboardProjectTitle", {
+                fg = "#a48cf2",
+                bold = true,
+            })
+            vim.api.nvim_set_hl(0, "DashboardProjectIcon", {
+                fg = "#37f499",
+            })
+            vim.api.nvim_set_hl(0, "DashboardMruTitle", {
+                fg = "#f16c75",
+                bold = true,
+            })
+            vim.api.nvim_set_hl(0, "DashboardFiles", {
+                fg = "#0c7a94",
+            })
 
             require("dashboard").setup({
                 theme = 'hyper',
                 config = {
-                    header   = require("milli").load({ splash = animated_art }).frames[1],
+                    header = splash_data.frames[1],
                     footer   = {},
                     packages = { enable = false },
                     mru      = { enable = true, limit = 4 },
@@ -47,8 +73,7 @@ return{
                     },
                 },
             })
-            require("milli").dashboard({ splash = animated_art, loop = true })
+            require("milli").dashboard({ splash = splash, loop = true })
         end,
     },
 }
-
