@@ -16,7 +16,7 @@ packages=(
     # Hyprland & related pkgs 
     hyprland hyprpaper hyprlock hyprshot hyprpicker hyprsunset hyprshutdown hyprpolkitagent 
     # Desktop shell & elements
-    kitty waybar mako bluetui wiremix fastfetch swayosd 
+    wofi kitty waybar mako bluetui wiremix fastfetch swayosd 
     # Terminal tools 
     bat btop cmake curl git lazygit fzf vim fish ncdu yazi
     # Neovim(+ plugins) deps
