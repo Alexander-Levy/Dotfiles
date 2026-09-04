@@ -1,12 +1,12 @@
 # Levy's Yazi
 
 [mgr]
-ratio          = [ 3, 6, 6 ] # ratios [back | current dir | preview] 0 disables
+ratio          = [ 3, 6, 5 ] # ratios [back | current dir | preview] 0 disables
 linemode       = "size"      # Options: none, size, btime, mtime, permissions, owner
 # sort_by        = ""
 sort_dir_first = true
 sort_reverse   = false
-show_hidden    = true
+show_hidden    = false
 show_symlink   = true
 scrolloff      = 5
 mouse_events   = [ "click", "scroll", "drag" ]

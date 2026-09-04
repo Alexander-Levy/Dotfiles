@@ -13,19 +13,6 @@ return{
         },
 
         config = function()
-            -- Liked splashes: 
-            --      blackhole, 
-            --      cactus,
-            --      chrome, 
-            --      dancerramp, 
-            --      finger, 
-            --      lighningtornado, 
-            --      lights, 
-            --      shader, 
-            --      skeleton, 
-            --      spaceship, 
-            --      vibecat, 
-            --      vibecattwo.
             local animated_art = "cactus"
 
             require("dashboard").setup({
