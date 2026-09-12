@@ -48,6 +48,7 @@
         "format-disabled": " 󱚼 ",
         "tooltip-format": " NETWORK STATUS:\n Name:\t\t{essid} \n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Local IP:\t\t{ipaddr}",
         "tooltip-format-wifi": " NETWORK STATUS:\n Name:\t\t\t{essid}\n Signal Strength:\t{signalStrength}%\n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Frecuency:\t\t{frequency} GHz\n Local IP:\t\t{ipaddr}",
+        "tooltip-format-ethernet": " NETWORK STATUS:\n Interface Subsystem:\t{ifname} \n Upload Speed:\t\t{bandwidthUpBytes}\n Download Speed:\t{bandwidthDownBytes}\n Bandwidth:\t\t{bandwidthTotalBytes}\n Local IP:\t\t{ipaddr}",
         "on-click": "kitty --title kitty-nmmgr -e wlctl"
     },
 // Bluetooth
@@ -56,8 +57,10 @@
         "format": "  ",
         "format-disabled": " 󰂲 ", 
         "format-connected": " ({num_connections}) ",
-        "tooltip-format": " COMMUNICATION STATUS:\n Controller:\t{controller_alias}\n Status:\t{status}\n Devices:\t{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias}",
+        "format-connected-battery": " ({num_connections}){device_battery_percentage}% ",
+        "tooltip-format": " COMMUNICATION STATUS:\n Controller:\t{controller_alias}\n System State:\t{status}",
+        "tooltip-format-connected": " COMMUNICATION STATUS:\n Controller:\t{controller_alias}\n Status:\t{status}\n Connections:\t{num_connections}\n Devices:\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "\t\t{device_alias} {device_battery_percentage}%",
         "on-click": "kitty --title kitty-blmgr -e bluetui"
     },
 // Microphone
