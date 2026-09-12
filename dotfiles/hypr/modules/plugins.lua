@@ -1,21 +1,33 @@
 -- ===========================================================================
 -- Levy's Hyprland Plugins
 -- ===========================================================================
-hl.config({
-    plugin = {
-        scrolloverview = {
-            gesture_distance = 300, -- how far is the "max" for the gesture
-            scale = 0.55,            -- preferred overview scale
-            workspace_gap = 100,
-            layout = "vertical",    -- vertical or horizontal
-            wallpaper = 0,          -- 0: global only, 1: per-workspace only, 2: both
-            blur = true,            -- blur only the main overview wallpaper
-        },
-    },
-})
+local function plugin_loaded(name)
+    for _, plugin in pairs(hl.get_loaded_plugins()) do
+        if plugin.name == name then
+            return true
+        end
+    end
+    return false
+end
 
--- Toggle ScrollOverview with {Super + Tab} or with 3 finger gesture on touchpad
-hl.bind("SUPER + TAB", function()
-    hl.plugin.scrolloverview.overview("toggle all")
-end)
-hl.plugin.scrolloverview.gesture({ fingers = 3, direction = "vertical" })
+if plugin_loaded("scrolloverview") then
+    hl.config({
+        plugin = {
+            scrolloverview = {
+                gesture_distance = 300,
+                scale = 0.55,
+                workspace_gap = 100,
+                layout = "vertical", -- vertical | horizontal
+                wallpaper = 0,       -- 0: global, 1: per-workspace, 2: both
+                blur = true,
+            },
+        },
+    })
+
+    hl.bind("SUPER + TAB", function()
+        hl.plugin.scrolloverview.overview("toggle all")
+    end)
+    hl.plugin.scrolloverview.gesture({
+        fingers = 3, direction = "vertical",
+    })
+end
