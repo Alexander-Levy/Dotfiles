@@ -1,9 +1,8 @@
 # Author:  Alexander Levy
 # Blob:    Helper functions used for managing dotfiles with symlinks
-# Version: v0.5.2 Added uninstalling & config deletion functions
+# Version: v0.6.0 Removed AUR dependencies
 
 # Variables
-aur_helper=""
 failed=()
 missing=()
 packages=(
@@ -21,10 +20,8 @@ packages=(
     bat btop cmake curl git lazygit fzf vim fish ncdu yazi
     # Neovim(+ plugins) deps
     neovim npm wget unzip ripgrep tree-sitter-cli
-    # Aur pkgs 
-    mpvpaper wlctl-bin
 )
-protected_packages=( vim power-profiles-daemon brightnessctl )
+protected_packages=( fish git unzip vim brightnessctl power-profiles-daemon )
 
 # Paths
 current_path="$(realpath "../$(dirname "$0")")"
@@ -76,85 +73,11 @@ log() {
 }
 
 ##########################################################################################
-# AUR related functions
-##########################################################################################
-aur_helper_install() {
-# Download and install an AUR helper
-# Supported options: paru or yay
-    aur_helper="$1"
-    if [[ "$aur_helper" != "paru" && "$aur_helper" != "yay" ]]; then
-        log err "Unsupported AUR helper: $aur_helper"
-        return 1
-    else
-        log info "Installing $aur_helper..."
-        sudo pacman -S --needed base-devel git --noconfirm > /dev/null 2>&1
-        git clone https://aur.archlinux.org/$aur_helper.git  /tmp/$aur_helper > /dev/null 2>&1
-        (cd /tmp/$aur_helper && makepkg -si --noconfirm) > /dev/null 2>&1
-        rm -rf /tmp/$aur_helper
-        log ok "[Success] Installed $aur_helper!\n"
-    fi
-}
-
-aur_helper_install_selection() {
-# Helper funcs; shows all currently available aur helpers
-    log info "Please select one to install:"
-    log info "1) paru"
-    log info "2) yay"
-    log info "3) Why not both?"
-    log info "4) Don't install an AUR helper, exit script."
-    read -rp "Enter your choice [1-4]: " choice
-    case $choice in
-        1)  aur_helper_install paru ;;
-        2)  aur_helper_install yay  ;;
-        3)  aur_helper_install yay  ;  
-            aur_helper_install paru ;;
-        4)  log warn "Exiting..."; exit 0 ;;
-        *)  log warn "Invalid option, exiting..."; exit 1 ;;
-    esac
-}
-
-aur_helper_check() {
-# Check if an AUR helper is installed, if not prompts to install helper.
-    local yay_installed=0
-    local paru_installed=0
-    section "Checking if an AUR Helper is installed... "
-    if command -v paru &>/dev/null; then
-        paru_installed=1
-        log ok "[Success] paru found!\n"
-    fi
-    if command -v yay &>/dev/null; then
-        yay_installed=1
-        log ok "[Success] yay found!\n"
-    fi
-    # If both are installed choose which one to use
-    if [[ $yay_installed -eq 1 && $paru_installed -eq 1 ]]; then    
-        log info "Both paru and yay are installed, please select which one to use:"
-        log info "1) paru"
-        log info "2) yay"
-        read -rp "Enter your choice [1-2]: " choice
-        case $choice in
-            1)  aur_helper="paru" ;;
-            2)  aur_helper="yay"  ;;
-            *)  aur_helper="paru" ;;
-        esac
-    elif [[ $yay_installed -eq 0 && $paru_installed -eq 1 ]]; then
-        aur_helper="paru"
-    elif [[ $yay_installed -eq 1 && $paru_installed -eq 0 ]]; then
-        aur_helper="yay"
-    # If no aur helpers are found, go to install 
-    elif [[ $yay_installed -eq 0 && $paru_installed -eq 0 ]]; then    
-        log warn "No AUR helper found."
-        aur_helper_install_selection
-    fi
-}
-
-##########################################################################################
 # Core functions
 ##########################################################################################
 prime() {
 # Cache password so that its only asked once to the user
-    sudo -v
-    while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+    sudo -i
 }
 
 symlink() {
@@ -266,11 +189,11 @@ del_config() {
 }
 
 install_missing_packages() {
-# Installs all packages in $missing variable using $aur_helper as 
+# Installs all packages in $missing variable using pacman as 
 # the package manager.
     section "Checking packages..."
     for pkg in "${packages[@]}"; do
-        if $aur_helper -Q "$pkg" &>/dev/null; then
+        if pacman -Q "$pkg" &>/dev/null; then
             log ok   "  [OKAY] $pkg"
         else
             log warn "  [MISS] $pkg"
@@ -285,7 +208,7 @@ install_missing_packages() {
     [[ "$answer" =~ ^[yY] ]] || exit 0
     for pkg in "${missing[@]}"; do
         log infono "Installing $pkg... "
-        if $aur_helper -S --noconfirm "$pkg" > /tmp/pkg_err 2>&1; then
+        if pacman -S --noconfirm "$pkg" > /tmp/pkg_err 2>&1; then
             log ok "done!"
         else
             log warn "failed to install"
@@ -315,14 +238,14 @@ uninstall_shell() {
             continue
         fi
         # Remove unprotected pkgs 
-        if $aur_helper -Rns --noconfirm "$pkg" &>/dev/null; then
+        if pacman -Rns --noconfirm "$pkg" &>/dev/null; then
             log info "Uninstalling $pkg..."
         else
             log warn "Failed to uninstall $pkg"
         fi
     done
     log info "Removing orphan packages..."
-    $aur_helper -Rns $($aur_helper -Qdtq) > /dev/null 2>&1
+    pacman -Rns $(pacman -Qdtq) > /dev/null 2>&1
 }
 
 update_system() {
@@ -332,3 +255,9 @@ update_system() {
     log ok "Update completed!"
 }
 
+##########################################################################################
+# Build functions
+##########################################################################################
+install_mpvpaper() {}
+
+install_wlctl() {}
