@@ -2,7 +2,6 @@
 -- Levy's Hyprland Programs & Keybinds
 -- ===========================================================================
 -- Default Programs 
-local menu         = "wofi"
 local browser      = "firefox"
 local terminal     = "kitty"
 local gameLauncher = "steam"
@@ -17,36 +16,14 @@ local closeSession   = "hyprshutdown"
 local colorPicker    = "hyprpicker -n -a"
 local saveScreenshot = "hyprshot -m region"
 local screenshot     = "hyprshot -m region --clipboard-only"
-local clipBoard      = "cliphist list | wofi --dmenu | cliphist decode | wl-copy"
 
--- Animated Wallpaper
-AnimatedWallpaper = "~/Wallpapers/rain-coffee.mp4"
-StartMpvpaper     = "mpvpaper -s -o '--hwdec=auto --vd-lavc-threads=2 --profile=fast no-audio loop' ALL "
-
--- Restart shell elements
-local restartWaybar     = "pkill waybar; waybar"
-local changeToHyprpaper = "pkill mpvpaper; hyprpaper"
-local changeToMpvpaper  = "pkill hyprpaper; " .. StartMpvpaper .. AnimatedWallpaper
-local killWallpapers    = "pkill mpvpaper; pkill hyprpaper"
-
--- Modifier key
+-- Variables
 local mainMod = "SUPER"
+local ipc = "noctalia msg "
 
 -- ===========================================================================
 -- Functions
 -- ===========================================================================
--- Toggle between hyprpaper and mpvpaper as wallpapers backend
-local wallpaperBackend = "animated"
-local function toggle_wallpaper()
-    if wallpaperBackend == "image" then
-        hl.exec_cmd(changeToMpvpaper)
-        wallpaperBackend = "animated"
-    else
-        hl.exec_cmd(changeToHyprpaper)
-        wallpaperBackend = "image"
-    end
-end
-
 -- Keybinds for scrolling layout
 local function bind_scrolling()
     hl.bind(mainMod .. " + K", hl.dsp.layout("swapcol r"))
@@ -119,7 +96,7 @@ end
 -- General binds
 -- ===========================================================================
 -- App launcher, terminal & close windows
-hl.bind("ALT  + SPACE", hl.dsp.exec_cmd(menu))
+hl.bind("ALT + Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 
@@ -129,16 +106,16 @@ hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + G", hl.dsp.exec_cmd(gameLauncher))
 
 -- System Utilities 
-hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(clipBoard))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd(colorPicker))
 hl.bind(mainMod .. " + SHIFT+ S", hl.dsp.exec_cmd(screenshot))
 hl.bind(mainMod .. " + CTRL + SHIFT+ S", hl.dsp.exec_cmd(saveScreenshot))
 hl.bind("CTRL + SHIFT + ESCAPE", hl.dsp.exec_cmd(taskManager))
 
--- Shell elements (Status bar & Wallpaper backend)
-hl.bind(mainMod .. " + CTRL + W", toggle_wallpaper)
-hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(restartWaybar))
-hl.bind(mainMod .. " + CTRL + SHIFT + W", hl.dsp.exec_cmd(killWallpapers))
+-- Shell elements
+hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"))
+hl.bind(mainMod .. " + I", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
+hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(ipc .. "panel-open clipboard"))
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(ipc .. "panel-toggle wallpaper"))
 
 -- Session binds (logout & exit Hyprland)
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lockScreen))
@@ -191,10 +168,10 @@ hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = tr
 -- ===========================================================================
 -- Volume and Brightness binds
 -- ===========================================================================
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume raise"),       { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume lower"),       { locked = true, repeating = true })
-hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), { locked = true, repeating = false })
-hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("swayosd-client --input-volume mute-toggle"),  { locked = true, repeating = false })
-hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("swayosd-client --brightness raise"),	       { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("swayosd-client --brightness lower"),	       { locked = true, repeating = true })
+hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd(ipc .. "volume-up"))
+hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd(ipc .. "volume-down"))
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd(ipc .. "volume-mute"))
+hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd(ipc .. "mic-mute"))
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd(ipc .. "brightness-up"))
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(ipc .. "brightness-down"))
 
