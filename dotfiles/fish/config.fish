@@ -9,6 +9,9 @@ if status is-interactive
     fetch --infinite
 end
 
+# Use ff for system fetch
+alias ff "fetch --infinite"
+
 # Replace ls with eza 
 alias ls "eza --icons --group-directories-first --color=auto"
 alias la "eza -la --icons --group-directories-first --color=auto"

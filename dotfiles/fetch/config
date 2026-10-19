@@ -1,19 +1,22 @@
 # Levy's fetch config
-# Data settings
+
+# Appearance
+label_color=cyan
+
+# Fields
 os
 kernel
-shell
-terminal
 packages
+wm
+shell
 memory
+disk
 colors
 
 # Logo settings
-# light=top-left      # (top-left, top-right, top, left, right, front, bottom-left, bottom-right)
-spin=y
+light=bottom-left
+spin=xy
 speed=0.8
-size=0.65
-depth=2.0
-#height=36           # (override render height in rows)
-#Options: ascii, blocks, sextants
-shading_mode=sextants 
+# size=0.65
+# depth=2.0
+shading_mode=ascii
