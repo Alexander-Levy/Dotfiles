@@ -1,25 +1,21 @@
 -- ===========================================================================
 -- Levy's Hyprland Programs & Keybinds
 -- ===========================================================================
+local mainMod = "SUPER"
+local ipc     = "noctalia msg "
+
 -- Default Programs 
-local browser      = "firefox"
+local browser      = "zen-browser"
 local terminal     = "kitty"
 local gameLauncher = "steam"
 
 -- Shell Elements
 local fileManager  = terminal .. " -e yazi"
-local taskManager  = terminal .. " -o font_size=13.0 -e btop"
+local taskManager  = terminal .. " -o font_size=12.0 -e btop"
 
 -- Desktop utilities
-local lockScreen     = "hyprlock"
 local closeSession   = "hyprshutdown"
 local colorPicker    = "hyprpicker -n -a"
-local saveScreenshot = "hyprshot -m region"
-local screenshot     = "hyprshot -m region --clipboard-only"
-
--- Variables
-local mainMod = "SUPER"
-local ipc = "noctalia msg "
 
 -- ===========================================================================
 -- Functions
@@ -103,22 +99,24 @@ hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 -- Programs
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("thunar"))
 hl.bind(mainMod .. " + G", hl.dsp.exec_cmd(gameLauncher))
 
 -- System Utilities 
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd(colorPicker))
-hl.bind(mainMod .. " + SHIFT+ S", hl.dsp.exec_cmd(screenshot))
-hl.bind(mainMod .. " + CTRL + SHIFT+ S", hl.dsp.exec_cmd(saveScreenshot))
 hl.bind("CTRL + SHIFT + ESCAPE", hl.dsp.exec_cmd(taskManager))
 
 -- Shell elements
-hl.bind(mainMod .. " + S", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"))
+hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(ipc .. "panel-toggle control-center"))
 hl.bind(mainMod .. " + I", hl.dsp.exec_cmd(ipc .. "settings-toggle"))
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(ipc .. "panel-open clipboard"))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(ipc .. "panel-toggle wallpaper"))
+hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(ipc .. "panel-toggle noctalia/mpvpaper:picker"))
+hl.bind(mainMod .. " + SHIFT+ S",        hl.dsp.exec_cmd(ipc .. "screenshot-region"))
+hl.bind(mainMod .. " + CTRL + SHIFT+ S", hl.dsp.exec_cmd(ipc .. "screenshot-annotate"))
 
--- Session binds (logout & exit Hyprland)
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(lockScreen))
+-- Session binds (logout & exit)
+hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(ipc .. "session lock"))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(closeSession))
 
 -- ===========================================================================
