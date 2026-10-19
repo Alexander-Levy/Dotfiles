@@ -10,11 +10,9 @@ Configuration files for all programs managed by this repository. Each folder is 
 | fastfetch        | System info fetch tool config and custom logo    |
 | fish             | Fish shell config, aliases and custom functions  |
 | hypr             | Hyprland, hyprpaper, hyprlock config             |
-| kitty            | Terminal emulator theme and keybinds             |
+| noctalia         | Complete desktop shell (wallpaper/bar/etc)       |
 | nvim             | Neovim plugins, keybinds and LSP setup           |
-| snappy-switcher  | Window switcher theme and behavior               |
-| swaync           | Notification center styling and config           |
-| waybar           | Status bar modules, layout and styling           |
+| kitty            | Terminal emulator theme and keybinds             |
 | yazi             | Terminal file manager config and keybinds        |
 
 ## Usage
